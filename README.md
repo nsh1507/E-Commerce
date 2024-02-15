@@ -6,7 +6,7 @@ An online U-Fund system built in Java 17=> and ___ _replace with other platform 
 ## Team
 
 - Borneil Gope
-- Cameron Marsh
+- MEMBER2
 - MEMBER3
 - MEMBER4
 
