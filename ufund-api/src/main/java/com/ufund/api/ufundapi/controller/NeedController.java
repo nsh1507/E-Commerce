@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.ufund.api.ufundapi.persistence.NeedsDAO;
-import com.ufund.api.ufundapi.model.Needs;
+import com.ufund.api.ufundapi.persistence.NeedDAO;
+import com.ufund.api.ufundapi.model.Need;
 
 /**
  * Handles the REST API requests for the Needs resource

@@ -8,7 +8,7 @@ import com.ufund.api.ufundapi.model.Needs;
  * 
  * @author SWEN Faculty
  */
-public interface NeedsDAO {
+public interface NeedDAO {
     /**
      * Retrieves all {@linkplain Needs needs}
      * 
