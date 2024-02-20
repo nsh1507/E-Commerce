@@ -1,9 +1,5 @@
 package com.ufund.api.ufundapi.persistence;
 
-<<<<<<< HEAD
-public class NeedFileDAO {
-    
-=======
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import com.ufund.api.ufundapi.model.Need;
 
+
+@Component
 public class NeedFileDAO {
     private static final Logger LOG = Logger.getLogger(NeedFileDAO.class.getName());
     Map<Integer,Need> needs;   // Provides a local cache of the need objects
@@ -173,7 +171,7 @@ public class NeedFileDAO {
         synchronized(needs) {
             // We create a new need object because the id field is immutable
             // and we need to assign the next unique id
-            Need newNeed = new Need(nextId(),need.getName());
+            Need newNeed = new Need(nextId(),need.getName(), need.getCost(),need.getQuantity(), need.getQuantity());
             needs.put(newNeed.getId(),newNeed);
             save(); // may throw an IOException
             return newNeed;
@@ -209,5 +207,4 @@ public class NeedFileDAO {
                 return false;
         }
     }
->>>>>>> 2932c797be1abf488e6776bf789539000c171373
 }
