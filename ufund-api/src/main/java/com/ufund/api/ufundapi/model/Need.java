@@ -105,6 +105,6 @@ public class Need {
      */
     @Override
     public String toString() {
-        return String.format(STRING_FORMAT,id, cost, type, quantity, name);
+        return String.format(STRING_FORMAT,id, name, cost, quantity,type);
     }
 }
