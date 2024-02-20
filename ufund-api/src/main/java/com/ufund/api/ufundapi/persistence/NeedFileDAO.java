@@ -171,11 +171,9 @@ public class NeedFileDAO implements NeedDAO {
         synchronized(needs) {
             // We create a new need object because the id field is immutable
             // and we need to assign the next unique id
-<<<<<<< HEAD
+
             Need newNeed = new Need(nextId(),need.getName(), need.getCost(),need.getQuantity(),need.getType());
-=======
-            Need newNeed = new Need(nextId(),need.getName(), need.getCost(),need.getQuantity(), need.getType());
->>>>>>> 1745a9a83feedc155d8fea9bf91090b25e7757f6
+
             needs.put(newNeed.getId(),newNeed);
             save(); // may throw an IOException
             return newNeed;
