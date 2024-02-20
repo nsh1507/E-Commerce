@@ -132,7 +132,7 @@ public class NeedController {
         LOG.info("POST /needs " + need);
         try {   
             Need new_Need = needDAO.createNeed(need);
-            if (new_Need != null){
+            if (new_Need == null){
                 return new ResponseEntity<Need>(new_Need,HttpStatus.CREATED);
             }
             else{
