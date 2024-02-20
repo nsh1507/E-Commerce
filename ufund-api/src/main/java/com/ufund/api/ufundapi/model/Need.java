@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  * @author Nam Huynh
  */
-public class Needs {
-    private static final Logger LOG = Logger.getLogger(Needs.class.getName());
+public class Need {
+    private static final Logger LOG = Logger.getLogger(Need.class.getName());
 
     // Package private for tests
     static final String STRING_FORMAT = "Need [id=%d, cost=%d, quantity=%d, type=%s, name=%s]";
@@ -35,7 +35,7 @@ public class Needs {
      * is not provided in the JSON object, the Java field gets the default Java
      * value, i.e. 0 for int
      */
-    public Needs(@JsonProperty("id") int id, @JsonProperty("name") String name,@JsonProperty("cost") int cost,
+    public Need(@JsonProperty("id") int id, @JsonProperty("name") String name,@JsonProperty("cost") int cost,
                 @JsonProperty("quantity") int quantity,@JsonProperty("type") String type) {
         this.id = id;
         this.name = name;
