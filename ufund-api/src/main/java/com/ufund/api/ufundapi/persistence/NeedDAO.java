@@ -27,7 +27,7 @@ public interface NeedDAO {
      * 
      * @throws IOException if an issue with underlying storage is found
      */
-    Need[] findNeed(String containsText) throws IOException;
+    Need[] findNeeds(String containsText) throws IOException;
 
     /**
      * Retrieves a {@linkplain Need need} with the given id
@@ -53,7 +53,7 @@ public interface NeedDAO {
      * 
      * @throws IOException if an issue with underlying storage
      */
-    Need addNeed(Need need) throws IOException;
+    Need createNeed(Need need) throws IOException;
 
     /**
      * Updates and saves a {@linkplain Need need}
