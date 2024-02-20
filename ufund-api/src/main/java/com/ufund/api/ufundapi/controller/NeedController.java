@@ -29,7 +29,7 @@ import com.ufund.api.ufundapi.model.Need;
  */
 
 @RestController
-@RequestMapping("need")
+@RequestMapping("needs")
 public class NeedController {
     private static final Logger LOG = Logger.getLogger(NeedController.class.getName());
     private NeedDAO needDAO;
@@ -156,7 +156,7 @@ public class NeedController {
      */
     @PutMapping("")
     public ResponseEntity<Need> updateNeeds(@RequestBody Need needs) {
-        LOG.info("PUT /heroes " + needs);
+        LOG.info("PUT /needs " + needs);
         try {   
             Need updated = needDAO.updateNeed(needs);
             if (updated != null){
@@ -183,7 +183,7 @@ public class NeedController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Need> deleteNeed(@PathVariable int id) {
-        LOG.info("DELETE /heroes/" + id);
+        LOG.info("DELETE /needs/" + id);
         try {
            Boolean deleted = needDAO.deleteNeed(id);
            if (deleted){
