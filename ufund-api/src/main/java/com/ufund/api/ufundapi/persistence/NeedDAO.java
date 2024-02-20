@@ -1,14 +1,14 @@
 package com.ufund.api.ufundapi.persistence;
 
 import java.io.IOException;
-import com.ufund.api.ufundapi.model.Needs;
+import com.ufund.api.ufundapi.model.Need;
 
 /**
  * Defines the interface for Hero object persistence
  * 
  * @author SWEN Faculty
  */
-public interface NeedsDAO {
+public interface NeedDAO {
     /**
      * Retrieves all {@linkplain Needs needs}
      * 
