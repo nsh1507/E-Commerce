@@ -11,10 +11,10 @@ geometry: margin=1in
 ## Team Information
 * Team name: TEAMNAME
 * Team members
-  * MEMBER1
-  * MEMBER2
-  * MEMBER3
-  * MEMBER4
+  * Nam Huynh
+  * Saavan Tandon
+  * Borneil Gope
+  * Cameron Marsh
 
 ## Executive Summary
 
