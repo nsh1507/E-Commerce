@@ -9,7 +9,7 @@ geometry: margin=1in
 > and appear in the generated PDF in italics but do so only **after** all team members agree that the requirements for that section and current Sprint have been met. **Do not** delete future Sprint expectations._
 
 ## Team Information
-* Team name: TEAMNAME
+* Team name: BCNS
 * Team members
   * Nam Huynh
   * Saavan Tandon
@@ -27,9 +27,18 @@ This is a summary of the project.
 ### Glossary and Acronyms
 > _**[Sprint 2 & 4]** Provide a table of terms and acronyms._
 
-| Term | Definition |
-|------|------------|
-| SPA | Single Page |
+| Term   |          Definition                |
+|--------|------------------------------------|
+| SPA    |  Single Page                       |
+| DAO    |  Data Access Object                |
+| CSS	   |  Cascading Style Sheets            |
+| TS	   |  Type Script                       |
+| HTML   |	Hypertext Markup Language         |
+| Admin  |	Can edit products and orders      |
+| User   | Generic person using the site      |
+|Customer| Person that has an account         |
+|Need    |A purchasable item in the cupboard  |
+|Cupboard| Access to the needs                |
 
 
 ## Requirements
@@ -54,7 +63,7 @@ This section describes the features of the application.
 
 This section describes the application domain.
 
-![Domain Model](domain-model-placeholder.png)
+![Domain Model](Domain-Model.png)
 
 > _**[Sprint 2 & 4]** Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
