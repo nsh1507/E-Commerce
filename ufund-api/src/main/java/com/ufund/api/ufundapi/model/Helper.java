@@ -75,7 +75,7 @@ public class Helper {
 
     /**
      * Sets the password of the helper - necessary for JSON object to Java object deserialization
-     * @param quantity The password of the helper
+     * @param password The password of the helper
      */
     public void setPassword(String password) {this.password = password;}
 
@@ -87,8 +87,8 @@ public class Helper {
 
 
     /**
-     * Check whethr the user is an admin or not
-     * @param quantity The quantity of the product
+     * Check whether the user is an admin or not
+     * * @return whether the user is an admin or not
      */
     public boolean isAdmin() {return admin;}
 
@@ -96,6 +96,7 @@ public class Helper {
     /**
      * {@inheritDoc}
      */
+
     @Override
     public String toString() {
         return String.format(STRING_FORMAT,id, name, cart, password, admin);
