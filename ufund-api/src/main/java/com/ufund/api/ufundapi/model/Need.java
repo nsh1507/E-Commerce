@@ -22,7 +22,6 @@ public class Need {
 
 
     /**
-     * Create a hero with the given id and name
      * @param id The id of the product
      * @param cost The cost of the product
      * @param quantity The quantity of the product
