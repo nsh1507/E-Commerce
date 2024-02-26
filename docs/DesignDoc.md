@@ -9,12 +9,12 @@ geometry: margin=1in
 > and appear in the generated PDF in italics but do so only **after** all team members agree that the requirements for that section and current Sprint have been met. **Do not** delete future Sprint expectations._
 
 ## Team Information
-* Team name: TEAMNAME
+* Team name: BCNS
 * Team members
-  * MEMBER1
-  * MEMBER2
-  * MEMBER3
-  * MEMBER4
+  * Nam Huynh
+  * Saavan Tandon
+  * Borneil Gope
+  * Cameron Marsh
 
 ## Executive Summary
 
@@ -27,9 +27,18 @@ This is a summary of the project.
 ### Glossary and Acronyms
 > _**[Sprint 2 & 4]** Provide a table of terms and acronyms._
 
-| Term | Definition |
-|------|------------|
-| SPA | Single Page |
+| Term   |          Definition                |
+|--------|------------------------------------|
+| SPA    |  Single Page                       |
+| DAO    |  Data Access Object                |
+| CSS	   |  Cascading Style Sheets            |
+| TS	   |  Type Script                       |
+| HTML   |	Hypertext Markup Language         |
+| Admin  |	Can edit products and orders      |
+| User   | Generic person using the site      |
+|Customer| Person that has an account         |
+|Need    |A purchasable item in the cupboard  |
+|Cupboard| Access to the needs                |
 
 
 ## Requirements
@@ -54,7 +63,7 @@ This section describes the features of the application.
 
 This section describes the application domain.
 
-![Domain Model](domain-model-placeholder.png)
+![Domain Model](Domain-Model.png)
 
 > _**[Sprint 2 & 4]** Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
@@ -117,7 +126,7 @@ This section describes the web interface flow; this is how the user views and in
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as critical attributes and methods._
 > 
-![Replace with your ViewModel Tier class diagram 1, etc.](model-placeholder.png)
+![Replace with your ViewModel Tier class diagram 1, etc.](ViewModel-Tier.png)
 
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
@@ -129,7 +138,7 @@ This section describes the web interface flow; this is how the user views and in
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as critical attributes and methods._
 > 
-![Replace with your Model Tier class diagram 1, etc.](model-placeholder.png)
+![Replace with your Model Tier class diagram 1, etc.](Model-Tier.png)
 
 ## OO Design Principles
 

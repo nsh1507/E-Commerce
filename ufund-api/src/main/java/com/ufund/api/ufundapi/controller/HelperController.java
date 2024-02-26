@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.ufund.api.ufundapi.persistence.NeedDAO;
-import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.persistence.HelperDAO;
+import com.ufund.api.ufundapi.model.Helper;
 
 /**
  * Handles the REST API requests for the Needs resource
@@ -29,38 +29,38 @@ import com.ufund.api.ufundapi.model.Need;
  */
 
 @RestController
-@RequestMapping("needs")
-public class NeedController {
-    private static final Logger LOG = Logger.getLogger(NeedController.class.getName());
-    private NeedDAO needDAO;
+@RequestMapping("helpers")
+public class HelperController {
+    private static final Logger LOG = Logger.getLogger(HelperController.class.getName());
+    private HelperDAO helperDAO;
 
     /**
      * Creates a REST API controller to reponds to requests
      * 
-     * @param needDAO The {@link Need Data Access Object} to perform CRUD operations
+     * @param helperDAO The {@link Need Data Access Object} to perform CRUD operations
      * <br>
      * This dependency is injected by the Spring Framework
      */
-    public NeedController(NeedDAO needDAO) {
-        this.needDAO = needDAO;
+    public HelperController(HelperDAO helperDAO) {
+        this.helperDAO = helperDAO;
     }
 
     /**
-     * Responds to the GET request for a {@linkplain Need need} for the given id
+     * Responds to the GET request for a {@linkplain Helper helper} for the given id
      * 
-     * @param id The id used to locate the {@link Need need}
+     * @param id The id used to locate the {@link Helper helper}
      * 
-     * @return ResponseEntity with {@link Need need} object and HTTP status of OK if found<br>
+     * @return ResponseEntity with {@link Helper helper} object and HTTP status of OK if found<br>
      * ResponseEntity with HTTP status of NOT_FOUND if not found<br>
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Need> getNeed(@PathVariable int id) {
-        LOG.info("GET /needs/" + id);
+    public ResponseEntity<Helper> getHelper(@PathVariable int id) {
+        LOG.info("GET /helpers/" + id);
         try {
-            Need need = needDAO.getNeed(id);
-            if (need != null)
-                return new ResponseEntity<Need>(need,HttpStatus.OK);
+            Helper helper = helperDAO.getHelper(id);
+            if (helper != null)
+                return new ResponseEntity<Helper>(helper,HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -71,19 +71,19 @@ public class NeedController {
     }
 
     /**
-     * Responds to the GET request for all {@linkplain Needs needs}
+     * Responds to the GET request for all {@linkplain Helper helper}
      * 
-     * @return ResponseEntity with array of {@link Needs needs} objects (may be empty) and
+     * @return ResponseEntity with array of {@link Helper helper} objects (may be empty) and
      * HTTP status of OK<br>
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @GetMapping("")
-    public ResponseEntity<Need[]> getNeeds() {
-        LOG.info("GET /needs");
+    public ResponseEntity<Helper[]> getHelpers() {
+        LOG.info("GET /helpers");
         try {
-            Need[] needsArray = needDAO.getNeeds();
-            if (needsArray != null)
-                return new ResponseEntity<Need[]>(needsArray,HttpStatus.OK);
+            Helper[] helpersArray = helperDAO.getHelpers();
+            if (helpersArray != null)
+                return new ResponseEntity<Helper[]>(helpersArray,HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -95,22 +95,22 @@ public class NeedController {
     }
 
     /**
-     * Responds to the GET request for all {@linkplain Need need} whose name contains
+     * Responds to the GET request for all {@linkplain Helper helper} whose name contains
      * the text in name
      * 
-     * @param name The name parameter which contains the text used to find the {@link Need need}
+     * @param name The name parameter which contains the text used to find the {@link Helper helper}
      * 
-     * @return ResponseEntity with array of {@link Need need} objects (may be empty) and
+     * @return ResponseEntity with array of {@link Helper helper} objects (may be empty) and
      * HTTP status of OK<br>
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
     */
 
     @GetMapping("/")
-    public ResponseEntity<Need[]> searchNeeds(@RequestParam String name) {
-        LOG.info("GET /needs/?name="+name);
+    public ResponseEntity<Helper[]> searchHelpers(@RequestParam String name) {
+        LOG.info("GET /helpers/?name="+name);
         try {
-            Need[] needsArray = needDAO.findNeeds(name);
-            return new ResponseEntity<Need[]>(needsArray,HttpStatus.OK);
+            Helper[] helpersArray = helperDAO.findHelpers(name);
+            return new ResponseEntity<Helper[]>(helpersArray,HttpStatus.OK);
         }
         catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
@@ -119,48 +119,48 @@ public class NeedController {
     }
 
     /**
-     * Creates a {@linkplain Need need} with the provided needs object
+     * Creates a {@linkplain Helper helper} with the provided needs object
      * 
-     * @param need - The {@link Need need} to create
+     * @param helper - The {@link Helper helper} to create
      * 
-     * @return ResponseEntity with created {@link Need need} object and HTTP status of CREATED<br>
-     * ResponseEntity with HTTP status of CONFLICT if {@link Need need} object already exists<br>
+     * @return ResponseEntity with created {@link Helper helper} object and HTTP status of CREATED<br>
+     * ResponseEntity with HTTP status of CONFLICT if {@link Helper helper} object already exists<br>
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PostMapping("")
-    public ResponseEntity<Need> createNeed(@RequestBody Need need) {
-        LOG.info("POST /needs " + need);
+    public ResponseEntity<Helper> createNeed(@RequestBody Helper helper) {
+        LOG.info("POST /helpers " + helper);
 
         try {
-            Need[] conflicts = needDAO.findNeeds(need.getName());
-            for (Need n : conflicts) {
-                if (n.getName().equals(need.getName())) {
+            Helper[] conflicts = helperDAO.findHelpers(helper.getName());
+            for (Helper n : conflicts) {
+                if (n.getName().equals(helper.getName())) {
                     return new ResponseEntity<>(HttpStatus.CONFLICT);
                 }
             }
-            Need needResponse = needDAO.createNeed(need);
-            return new ResponseEntity<Need>(needResponse, HttpStatus.CREATED);
+            Helper helperResponse = helperDAO.createHelper(helper);
+            return new ResponseEntity<Helper>(helperResponse, HttpStatus.CREATED);
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     * Updates the {@linkplain Need need} with the provided {@linkplain Needs needs} object, if it exists
+     * Updates the {@linkplain Helper helper} with the provided {@linkplain Helper helper} object, if it exists
      * 
-     * @param needs The {@link Need need} to update
+     * @param helpers The {@link Helper helper} to update
      * 
-     * @return ResponseEntity with updated {@link Need need} object and HTTP status of OK if updated<br>
+     * @return ResponseEntity with updated {@link Helper helper} object and HTTP status of OK if updated<br>
      * ResponseEntity with HTTP status of NOT_FOUND if not found<br>
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PutMapping("")
-    public ResponseEntity<Need> updateNeeds(@RequestBody Need needs) {
-        LOG.info("PUT /needs " + needs);
+    public ResponseEntity<Helper> updateHelpers(@RequestBody Helper helpers) {
+        LOG.info("PUT /helpers " + helpers);
         try {   
-            Need updated = needDAO.updateNeed(needs);
+            Helper updated = helperDAO.updateHelpers(helpers);
             if (updated != null){
-                return new ResponseEntity<Need>(updated, HttpStatus.OK);
+                return new ResponseEntity<Helper>(updated, HttpStatus.OK);
             }
             else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -182,10 +182,10 @@ public class NeedController {
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Need> deleteNeed(@PathVariable int id) {
-        LOG.info("DELETE /needs/" + id);
+    public ResponseEntity<Helper> deleteHelper(@PathVariable int id) {
+        LOG.info("DELETE /helpers/" + id);
         try {
-           Boolean deleted = needDAO.deleteNeed(id);
+           Boolean deleted = helperDAO.deleteHelper(id);
            if (deleted){
                return new ResponseEntity<>(HttpStatus.OK);
            }

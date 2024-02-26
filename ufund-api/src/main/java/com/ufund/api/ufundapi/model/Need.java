@@ -12,17 +12,16 @@ public class Need {
     private static final Logger LOG = Logger.getLogger(Need.class.getName());
 
     // Package private for tests
-    static final String STRING_FORMAT = "Need [id=%d, cost=%d, quantity=%d, type=%s, name=%s]";
+    static final String STRING_FORMAT = "Need [id=%d, name=%s, cost=%d, quantity=%d, type=%s]";
 
     @JsonProperty("id") private int id;
+    @JsonProperty("name") private String name;
     @JsonProperty("cost") private int cost;
     @JsonProperty("quantity") private int quantity;
     @JsonProperty("type") private String type;
-    @JsonProperty("name") private String name;
 
 
     /**
-     * Create a hero with the given id and name
      * @param id The id of the product
      * @param cost The cost of the product
      * @param quantity The quantity of the product
@@ -105,6 +104,6 @@ public class Need {
      */
     @Override
     public String toString() {
-        return String.format(STRING_FORMAT,id, cost, type, quantity, name);
+        return String.format(STRING_FORMAT,id, name, cost, quantity,type);
     }
 }
