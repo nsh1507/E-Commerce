@@ -20,7 +20,7 @@ import org.springframework.http.ResponseEntity;
 /**
  * Test the Need Controller class
  * 
- * @author SWEN Faculty
+ * @author Nam Huynh
  */
 @Tag("Controller-tier")
 public class NeedControllerTest {
