@@ -1,4 +1,4 @@
-package com;
+package com.ufund.api.persistance;
 // Source code is decompiled from a .class file using FernFlower decompiler.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
