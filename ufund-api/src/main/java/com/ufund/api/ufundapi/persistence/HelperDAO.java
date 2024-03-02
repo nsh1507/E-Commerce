@@ -7,7 +7,6 @@ import com.ufund.api.ufundapi.model.Helper;
 /**
  * Interface for saving a helper to the data store
  * 
- * @author Matt London
  */
 public interface HelperDAO {
     /**
