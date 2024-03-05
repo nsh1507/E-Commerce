@@ -119,7 +119,7 @@ public class HelperController {
     }
 
     /**
-     * Creates a {@linkplain Helper helper} with the provided needs object
+     * Creates a {@linkplain Helper helper} with the provided helper object
      * 
      * @param helper - The {@link Helper helper} to create
      * 

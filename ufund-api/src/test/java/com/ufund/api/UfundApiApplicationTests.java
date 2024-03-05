@@ -1,4 +1,4 @@
-package com.ufund.api.ufundapi;
+package com.ufund.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

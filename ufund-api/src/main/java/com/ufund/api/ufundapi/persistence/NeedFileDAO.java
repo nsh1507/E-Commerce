@@ -14,9 +14,8 @@ import org.springframework.stereotype.Component;
 
 import com.ufund.api.ufundapi.model.Need;
 
-
 @Component
-public class NeedFileDAO implements NeedDAO {
+public class NeedFileDAO implements NeedDAO{
     private static final Logger LOG = Logger.getLogger(NeedFileDAO.class.getName());
     Map<Integer,Need> needs;   // Provides a local cache of the need objects
                                 // so that we don't need to read from the file
@@ -171,9 +170,7 @@ public class NeedFileDAO implements NeedDAO {
         synchronized(needs) {
             // We create a new need object because the id field is immutable
             // and we need to assign the next unique id
-
-            Need newNeed = new Need(nextId(),need.getName(), need.getCost(),need.getQuantity(),need.getType());
-
+            Need newNeed = new Need(nextId(), need.getName(), need.getCost(), need.getQuantity(), need.getType());
             needs.put(newNeed.getId(),newNeed);
             save(); // may throw an IOException
             return newNeed;
