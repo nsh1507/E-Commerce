@@ -36,7 +36,6 @@ public class BasketController {
     public BasketController( BasketDAO basketDAO, NeedDAO needDAO) {
         this.basketDAO = basketDAO;
         this.needDAO = needDAO;
-
     }
 
     /**
@@ -52,8 +51,33 @@ public class BasketController {
      */
     @PostMapping("/baskets/{id}/need")
     public ResponseEntity<Need> addToBasket( @RequestBody Need need, @PathVariable int id) {
-        return new ResponseEntity<Need>(HttpStatus.NOT_FOUND);
-    } 
+        try {
+            // locate product in cupboard
+            basketDAO.updateBasket(id);
+            Need[] results = needDAO.findNeeds( need.getName() );
+            boolean located = false;
+            for( Need current : results ) {
+                located = (current.getName().equals(need.getName()));
+                if( located ) break;
+            }
+            if( ! located ) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            // Check if need is already in basket
+            results = basketDAO.searchBasket( id, need.getName());
+            for( Need current : results) {
+                if ( current.getName().equals(need.getName()) ) {
+                    return new ResponseEntity<Need>(HttpStatus.CONFLICT);
+                }
+            }
+            // Add to the basket
+            basketDAO.addToBasket(id, need);
+            return new ResponseEntity<Need>(need, HttpStatus.CREATED);
+
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     /**
      * Gets the contents of a Helper's funding basket.
@@ -63,8 +87,15 @@ public class BasketController {
      *         {@link ResponseEntity ResponseEntity} HTTP status INTERNAL_SERVER_ERROR otherewise
      */
     @GetMapping("/baskets/{userid}")
-    public ResponseEntity<Need> getBasketContents( @PathVariable int id ) {
-        return new ResponseEntity<Need>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Need[]> getBasketContents( @PathVariable int id ) throws IOException {
+        try {
+            basketDAO.updateBasket(id);
+
+            Need[] contents = basketDAO.getContents(id); 
+            return new ResponseEntity<Need[]>(HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<Need[]>(HttpStatus.INTERNAL_SERVER_ERROR); 
+        }
     }
 
     /**
@@ -76,7 +107,17 @@ public class BasketController {
      */
     @GetMapping("/baskets/{id}/need/{needid}")
     public ResponseEntity<Need> getNeed( @PathVariable int id, @PathVariable int needid) {
-        return new ResponseEntity<Need>(HttpStatus.NOT_FOUND);
+        try {
+            basketDAO.updateBasket(id);
+            Need need = basketDAO.getBasketNeed(id, needid);
+            if( need == null ) {
+                return new ResponseEntity<Need>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<Need>(need, HttpStatus.OK);
+            }
+        } catch( IOException e ) {
+           return new ResponseEntity<Need>(HttpStatus.INTERNAL_SERVER_ERROR); 
+        }
     }
 
     /**
@@ -89,7 +130,19 @@ public class BasketController {
      */
     @GetMapping("/baskets/{id}/need/{needid}")
     public ResponseEntity<Need> deleteNeed( @PathVariable int id, @PathVariable int needid) {
-        return new ResponseEntity<Need>(HttpStatus.NOT_FOUND);
+        try {
+            basketDAO.updateBasket(id);
+
+            Need need = basketDAO.getBasketNeed(id, needid);
+            if( need == null ) {
+                return new ResponseEntity<Need>(HttpStatus.NOT_FOUND);
+            } else {
+                basketDAO.removeFromBasket(id, needid);
+                return new ResponseEntity<Need>(HttpStatus.OK);
+            }
+        } catch( IOException e) {
+            return new ResponseEntity<Need>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -100,16 +153,37 @@ public class BasketController {
      */
     @GetMapping("/baskets/{id}/")
     public ResponseEntity<Need> clearBasket( @PathVariable int id ) {
-        return new ResponseEntity<Need>(HttpStatus.NOT_FOUND);
+        try {
+            basketDAO.updateBasket(id);
+            basketDAO.clearBasket(id);
+            return new ResponseEntity<Need>(HttpStatus.OK);
+        } catch( IOException e) {
+            return new ResponseEntity<Need>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
      * 
-     * @return
+     * @param id the id of the basket
+     * @param name the keyword being searched
+     * @return {@link ResponseEntity ResponseEntity} HTTP status OK on success
+     *         {@link ResponseEntity ResponseEntity} HTTP status NOT_FOUND if product can't be located
+     *         {@link ResponseEntity ResponseEntity} HTTP status INTERNAL_SERVER_ERROR otherwise
      */
     @GetMapping("/baskets/{id}/")
-    public ResponseEntity<Need> searchBasket(@PathVariable int id, @RequestParam String name) {
-        return new ResponseEntity<Need>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Need[]> searchBasket(@PathVariable int id, @RequestParam String name) {
+        try {
+            basketDAO.updateBasket(id);
+
+            Need[] needs = basketDAO.searchBasket(id, name);
+            if( needs.length != 0 ) {
+                return new ResponseEntity<Need[]>(needs, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Need[]>(HttpStatus.NOT_FOUND);
+            }
+        } catch( IOException e ) {
+            return new ResponseEntity<Need[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
