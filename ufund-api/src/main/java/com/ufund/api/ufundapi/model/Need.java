@@ -12,7 +12,7 @@ public class Need {
     private static final Logger LOG = Logger.getLogger(Need.class.getName());
 
     // Package private for tests
-    static final String STRING_FORMAT = "Need [id=%d, name=%s, cost=%d, quantity=%d, type=%s]";
+    public static final String STRING_FORMAT = "Need [id=%d, name=%s, cost=%d, quantity=%d, type=%s]";
 
     @JsonProperty("id") private int id;
     @JsonProperty("name") private String name;
