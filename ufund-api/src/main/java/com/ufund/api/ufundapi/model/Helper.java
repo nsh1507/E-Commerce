@@ -36,7 +36,7 @@ public class Helper {
     public Helper(@JsonProperty("id") int id, @JsonProperty("name") String name,@JsonProperty("cart") int cart,
             @JsonProperty("password") String password, @JsonProperty("admin") boolean admin ) {
         this.id = id;
-        this.name = name;
+        this.name = name; 
         this.password = password;
         this.cart = cart;
         this.admin = admin;
@@ -69,7 +69,7 @@ public class Helper {
 
     /**
      * Retrieves the cart id of the helper
-     * @return The cost of the product
+     * @return The cost of the productm 
      */
     public int getCart() {return cart;}
 
