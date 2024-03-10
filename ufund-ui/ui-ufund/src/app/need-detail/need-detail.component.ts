@@ -24,12 +24,19 @@ export class NeedDetailComponent implements OnInit {
   }
 
   getNeed(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
     this.needService.getNeed(id)
       .subscribe(need => this.need = need);
   }
 
   goBack(): void {
     this.location.back();
+  }
+
+  save(): void {
+    if (this.need) {
+      this.needService.updateNeed(this.need)
+        .subscribe(() => this.goBack());
+    }
   }
 }
