@@ -20,7 +20,7 @@ import com.ufund.api.ufundapi.persistence.HelperDAO;
 import com.ufund.api.ufundapi.model.Helper;
 
 /**
- * Handles the REST API requests for the Needs resource
+ * Handles the REST API requests for the Helpers resource
  * <p>
  * {@literal @}RestController Spring annotation identifies this class as a REST API
  * method handler to the Spring framework
@@ -37,7 +37,7 @@ public class HelperController {
     /**
      * Creates a REST API controller to reponds to requests
      * 
-     * @param helperDAO The {@link Need Data Access Object} to perform CRUD operations
+     * @param helperDAO The {@link Helper Data Access Object} to perform CRUD operations
      * <br>
      * This dependency is injected by the Spring Framework
      */
@@ -128,7 +128,7 @@ public class HelperController {
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PostMapping("")
-    public ResponseEntity<Helper> createNeed(@RequestBody Helper helper) {
+    public ResponseEntity<Helper> createHelper(@RequestBody Helper helper) {
         LOG.info("POST /helpers " + helper);
 
         try {
@@ -173,9 +173,9 @@ public class HelperController {
     }
 
     /**
-     * Deletes a {@linkplain Need need} with the given id
+     * Deletes a {@linkplain Helper helper} with the given id
      * 
-     * @param id The id of the {@link Need need} to deleted
+     * @param id The id of the {@link Helper helper} to deleted
      * 
      * @return ResponseEntity HTTP status of OK if deleted<br>
      * ResponseEntity with HTTP status of NOT_FOUND if not found<br>
