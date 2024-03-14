@@ -114,12 +114,12 @@ public class HelperFileDAO implements HelperDAO {
         helpers = new TreeMap<>();
         nextId = 0;
 
-        // Deserializes the JSON objects from the file into an array of needs
+        // Deserializes the JSON objects from the file into an array of helpers
         // readValue will throw an IOException if there's an issue with the file
         // or reading from the file
         Helper[] helperArray = objectMapper.readValue(new File(filename),Helper[].class);
 
-        // Add each need to the tree map and keep track of the greatest id
+        // Add each helper to the tree map and keep track of the greatest id
         for (Helper helper : helperArray) {
             helpers.put(helper.getId(),helper);
             if (helper.getId() > nextId)

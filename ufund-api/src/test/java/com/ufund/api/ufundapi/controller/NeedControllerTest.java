@@ -1,4 +1,4 @@
-package com.ufund.api.controller;
+package com.ufund.api.ufundapi.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
@@ -9,7 +9,6 @@ import java.io.IOException;
 
 import com.ufund.api.ufundapi.persistence.NeedDAO;
 import com.ufund.api.ufundapi.model.Need;
-import com.ufund.api.ufundapi.controller.NeedController;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
