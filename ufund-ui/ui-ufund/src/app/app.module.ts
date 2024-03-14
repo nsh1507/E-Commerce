@@ -11,6 +11,7 @@ import { NeedDetailComponent } from './need-detail/need-detail.component';
 import { NeedsComponent } from './needs/needs.component';
 import { NeedSearchComponent } from './need-search/need-search.component';
 import { MessagesComponent } from './messages/messages.component';
+import { UserLoginComponent } from './user-login/user-login.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { MessagesComponent } from './messages/messages.component';
     NeedsComponent,
     NeedDetailComponent,
     MessagesComponent,
-    NeedSearchComponent
+    NeedSearchComponent,
+    UserLoginComponent
   ],
   bootstrap: [ AppComponent ]
 })
