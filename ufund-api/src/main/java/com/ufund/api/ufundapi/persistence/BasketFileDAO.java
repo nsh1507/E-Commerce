@@ -2,9 +2,10 @@ package com.ufund.api.ufundapi.persistence;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,66 +29,134 @@ public class BasketFileDAO implements BasketDAO {
 
 
     //CONSTRUCTOR
-    public CartFileDAO(@Value("${baskets.file}") String filename, ObjectMapper objectMapper) throws IOException {
+    public BasketFileDAO(@Value("${baskets.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
         load();
     }
 
     private boolean save() throws IOException {
-
+        objectMapper.writeValue(new File(filename), needs.values());
+        return true;
     }
 
     private boolean load() throws IOException {
         needs = new TreeMap<>();
-        // Deserialize JSON objects into an array (may throw an IOException)
-        Basket[] basketArray = objectMapper.readValue( new File(filename), Basket[].class );
+        File file = new File(filename);
 
-        // Populate the tree map with the baskets
+        if(!file.exists()){
+            return false;
+        }
+
+        Basket[] baskets = objectMapper.readValue(file, Basket[].class);
+        for(Basket basket: baskets){
+            for(Need need: basket.getContents()){
+                needs.put(need.getId(), need);
+            }
+        }
+
+        return true;
     }
 
 
 
     @Override
     public boolean addToBasket(int id, Need need) throws IOException {
-        // TODO Auto-generated method stub
-        return false;
+        Basket[] baskets = objectMapper.readValue(new File(filename), Basket[].class);
+        boolean updated = false;
+
+        for(Basket basket : baskets){
+            if(basket.getId() == id){
+                basket.getContents().add(need);
+                updated = true;
+                break;
+            }
+            
+        }
+        if(updated){
+            objectMapper.writeValue(new File(filename), baskets);
+        }
+
+        return updated;
     }
 
     @Override
     public boolean clearBasket(int id) throws IOException {
-        // TODO Auto-generated method stub
-        return false;
+        Basket[] baskets = objectMapper.readValue(new File(filename), Basket[].class);
+        boolean updated = false;
+    
+        for(Basket basket : baskets){
+            if(basket.getId() == id){
+                basket.getContents().clear();
+                updated = true;
+                break;
+            }
+        }
+    
+        if(updated){
+            objectMapper.writeValue(new File(filename), baskets);
+        }
+    
+        return updated;
     }
 
     @Override
     public Need getBasketNeed(int id, int needid) {
-        // TODO Auto-generated method stub
-        return null;
+        return needs.get(needid);
     }
 
     @Override
     public Need[] getContents(int id) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        Basket[] baskets = objectMapper.readValue(new File(filename), Basket[].class);
+    
+        for(Basket basket : baskets){
+            if(basket.getId() == id){
+                return basket.getContents().toArray(new Need[0]);
+            }
+        }
+    
+        return new Need[0];
     }
 
     @Override
     public boolean removeFromBasket(int id, int needid) throws IOException {
-        // TODO Auto-generated method stub
-        return false;
+        Basket[] baskets = objectMapper.readValue(new File(filename), Basket[].class);
+        boolean updated = false;
+    
+        for(Basket basket : baskets){
+            if(basket.getId() == id){
+                basket.getContents().removeIf(need -> need.getId() == needid);
+                updated = true;
+                break;
+            }
+        }
+    
+        if(updated){
+            objectMapper.writeValue(new File(filename), baskets);
+        }
+    
+        return updated;
     }
 
     @Override
     public Need[] searchBasket(int id, String name) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        Basket[] baskets = objectMapper.readValue(new File(filename), Basket[].class);
+    
+        for(Basket basket : baskets){
+            if(basket.getId() == id){
+                List<Need> foundNeeds = basket.getContents().stream()
+                    .filter(need -> need.getName().equalsIgnoreCase(name))
+                    .collect(Collectors.toList());
+                return foundNeeds.toArray(new Need[0]);
+            }
+        }
+    
+        return new Need[0];
     }
 
     @Override
     public void updateBasket(int id) throws IOException {
-        // TODO Auto-generated method stub
-        
+        return;
     }
     
     
