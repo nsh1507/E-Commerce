@@ -128,7 +128,7 @@ public class BasketController {
      *         {@link ResponseEntity ResponseEntity} HTTP status NOT_FOUND if need not found
      *         {@link ResponseEntity ResponseEntity} HTTP status INTERNAL_SERVER_ERROR otherwise
      */
-    @GetMapping("/baskets/{id}/need/{needid}")
+    @DeleteMapping("/baskets/{id}/need/{needid}")
     public ResponseEntity<Need> deleteNeed( @PathVariable int id, @PathVariable int needid) {
         try {
             basketDAO.updateBasket(id);
@@ -151,7 +151,7 @@ public class BasketController {
      * @return {@link ResponseEntity ResponseEntity} HTTP status OK if successful
      *         {@link ResponseEntity ResponseEntity} HTTP status INTERNAL_SERVER_ERROR otherwise
      */
-    @GetMapping("/baskets/{id}/")
+    @DeleteMapping("/baskets/{id}/")
     public ResponseEntity<Need> clearBasket( @PathVariable int id ) {
         try {
             basketDAO.updateBasket(id);
