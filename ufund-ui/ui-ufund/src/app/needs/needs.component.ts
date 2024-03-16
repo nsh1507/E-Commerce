@@ -22,10 +22,12 @@ export class NeedsComponent implements OnInit {
     .subscribe(needs => this.needs = needs);
   }
 
-  add(name: string): void {
+  add(name: string, cost: number, quantity: number, type: string): void {
     name = name.trim();
-    if (!name) { return; }
-    this.needService.addNeed({ name } as Need)
+    type = type.trim();
+    let id: unknown;
+    if (!name || !type) { return; }
+    this.needService.addNeed({name, cost, quantity, type } as Need)
       .subscribe(need => {
         this.needs.push(need);
       });

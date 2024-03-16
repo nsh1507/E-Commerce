@@ -12,6 +12,7 @@ import { NeedsComponent } from './needs/needs.component';
 import { NeedSearchComponent } from './need-search/need-search.component';
 import { MessagesComponent } from './messages/messages.component';
 import { UserLoginComponent } from './user-login/user-login.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    RouterModule,
 
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
