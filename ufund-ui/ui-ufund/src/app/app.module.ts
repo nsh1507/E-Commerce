@@ -12,18 +12,13 @@ import { NeedsComponent } from './needs/needs.component';
 import { NeedSearchComponent } from './need-search/need-search.component';
 import { MessagesComponent } from './messages/messages.component';
 import { UserLoginComponent } from './user-login/user-login.component';
-<<<<<<< HEAD
-=======
 import { RouterModule } from '@angular/router';
->>>>>>> main
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-<<<<<<< HEAD
-=======
     HttpClientModule,
     RouterModule,
 
@@ -31,7 +26,6 @@ import { RouterModule } from '@angular/router';
     // and returns simulated server responses.
     // Remove it when a real server is ready to receive requests.
    
->>>>>>> main
   ],
   declarations: [
     AppComponent,
