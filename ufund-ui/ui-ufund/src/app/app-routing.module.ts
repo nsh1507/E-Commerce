@@ -8,7 +8,11 @@ import { UserLoginComponent } from './user-login/user-login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
+<<<<<<< HEAD
   { path: 'login', component: UserLoginComponent},
+=======
+  { path: 'login', component: UserLoginComponent },
+>>>>>>> main
   { path: 'dashboard', component: DashboardComponent },
   { path: 'detail/:id', component: NeedDetailComponent },
   { path: 'needs', component: NeedsComponent }
