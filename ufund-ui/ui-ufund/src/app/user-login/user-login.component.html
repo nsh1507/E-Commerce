@@ -1,17 +1,38 @@
 <div class="container">
     <div class="left-section"></div>
     <div class="right-section">
-        <div class="login-container">
+
+        <!-- Sign Up  -->
+        <div class="signUp-container" *ngIf="signUp">
+            <form class="signUp-form">
+                <h2 class="signUp-title"> User Sign Up</h2>
+                <div class="form-control">
+                    <input type="text" name="username" [(ngModel)]="signUpObj.username" placeholder="Username" required>
+                </div>
+                <div class="form-control">
+                    <input type="password" name="password" [(ngModel)]="signUpObj.password" placeholder="Password" required>
+                </div>
+                <button (click)="onSignIn()">Sign Up</button>
+                <p>Already have an account? <a href="#">LogIn</a></p>
+            </form>
+        </div>
+
+        <!-- Log In -->
+        <div class="login-container" *ngIf="!signUp">
             <form class="login-form">
                 <h2 class="login-title"> User Login</h2>
                 <div class="form-control">
-                    <input type="text" placeholder="Username" id="username" required>
+                    <input type="text" name="username" [(ngModel)]="logInObj.username" placeholder="Username" required>
                 </div>
                 <div class="form-control">
-                    <input type="password" placeholder="Password" id="password" >
+                    <input type="password" name="password" [(ngModel)]="logInObj.password" placeholder="Password" required>
                 </div>
-                <button type="submit">Login</button>
+                <button (click)="onSignIn()">Login</button>
+                <p>Don't have an account? <a href="#">Sign Up</a></p>
             </form>
         </div>
+
     </div>
+
+    
   </div>

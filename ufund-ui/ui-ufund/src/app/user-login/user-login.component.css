@@ -52,6 +52,30 @@ body {
     color: #027186;
 }
 
+
+.signUp-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgb(10 75 90);
+    width: 100%;
+    max-width: 450px;
+    background: url(https://i.imgur.com/BKyjjFa.png) no-repeat center center fixed;
+    
+}
+
+.signUp-form h2 {
+    color: cornflowerblue;
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+.signUp-title i {
+    margin-right: 10px;
+    color: #027186;
+}
+
+
 .form-control {
     position: relative;
     margin-bottom: 30px;
