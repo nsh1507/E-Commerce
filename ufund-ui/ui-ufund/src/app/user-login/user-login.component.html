@@ -12,8 +12,8 @@
                 <div class="form-control">
                     <input type="password" name="password" [(ngModel)]="signUpObj.password" placeholder="Password" required>
                 </div>
-                <button (click)="onSignIn()">Sign Up</button>
-                <p>Already have an account? <a href="#">LogIn</a></p>
+                <button (click)="onSignIn()" id="signUp">Sign Up</button>
+                <p>Already have an account? <a href="#" (click)="signUp = false">Login</a></p>
             </form>
         </div>
 
@@ -27,8 +27,8 @@
                 <div class="form-control">
                     <input type="password" name="password" [(ngModel)]="logInObj.password" placeholder="Password" required>
                 </div>
-                <button (click)="onSignIn()">Login</button>
-                <p>Don't have an account? <a href="#">Sign Up</a></p>
+                <button (click)="onSignIn()" id="logIn">Login</button>
+                <p>Don't have an account? <a href="#" (click)="signUp = true">Sign Up</a></p>
             </form>
         </div>
 
