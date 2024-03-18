@@ -1,5 +1,7 @@
 <button (click)="logOut()">Logout</button>
 
+<div *ngIf="userService.isAdmin()">
+
 <h2><strong>Add Needs</strong></h2>
 
 <div>
@@ -32,3 +34,4 @@
       (click)="delete(need)">x</button>
   </li>
 </ul>
+</div>

@@ -13,7 +13,7 @@ import { Userservice } from '../user.service';
 export class NeedsComponent implements OnInit {
   needs: Need[] = [];
 
-  constructor(private needService: NeedService, private userService: Userservice, private router: Router) { }
+  constructor(private needService: NeedService, public userService: Userservice, private router: Router) { }
 
   ngOnInit(): void {
     this.getNeeds();
