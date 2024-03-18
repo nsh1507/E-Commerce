@@ -1,17 +1,38 @@
 <div class="container">
     <div class="left-section"></div>
     <div class="right-section">
-        <div class="login-container">
+
+        <!-- Sign Up  -->
+        <div class="signUp-container" *ngIf="signUp">
+            <form class="signUp-form">
+                <h2 class="signUp-title"> User Sign Up</h2>
+                <div class="form-control">
+                    <input #name placeholder="Username" required/>
+                </div>
+                <div class="form-control">
+                    <input #password placeholder="Password" required/>
+                </div>
+                <button (click)="onSignIn(name.value, password.value)">Sign Up</button>
+                <p>Already have an account? <a href="#" (click)="signUp = false">Login</a></p>
+            </form>
+        </div>
+
+        <!-- Log In -->
+        <div class="login-container" *ngIf="!signUp">
             <form class="login-form">
                 <h2 class="login-title"> User Login</h2>
                 <div class="form-control">
-                    <input type="text" placeholder="Username" id="username" required>
+                    <input #name placeholder="Username" required/>
                 </div>
                 <div class="form-control">
-                    <input type="password" placeholder="Password" id="password" >
+                    <input #password placeholder="Password" required/>
                 </div>
-                <button type="submit">Login</button>
+                <button (click)="onLogIn(name.value, password.value)">Login</button>
+                <p>Don't have an account? <a href="#" (click)="signUp = true">Sign Up</a></p>
             </form>
         </div>
+
     </div>
+
+    
   </div>

@@ -14,18 +14,17 @@ import org.springframework.stereotype.Component;
 
 import com.ufund.api.ufundapi.model.Helper;
 
-
 @Component
 public class HelperFileDAO implements HelperDAO {
     private static final Logger LOG = Logger.getLogger(HelperFileDAO.class.getName());
-    Map<Integer,Helper> helpers;   // Provides a local cache of the helper objects
+    Map<String,Helper> helpers;   // Provides a local cache of the helper objects
                                 // so that we don't need to read from the file
                                 // each time
     private ObjectMapper objectMapper;  // Provides conversion between Helper
                                         // objects and JSON text format written
                                         // to the file
-    private static int nextId;  // The next Id to assign to a new helper
     private String filename;    // Filename to read from and write to
+    private static int nextId;  // The next Id to assign to a new helper
 
     /**
      * Creates a Helper File Data Access Object
@@ -38,11 +37,13 @@ public class HelperFileDAO implements HelperDAO {
     public HelperFileDAO(@Value("${helpers.file}") String filename,ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
-        load();  // load the helper from the file
+        load();  // load the helpers from the file
     }
 
+
+
     /**
-     * Generates the next id for a new {@linkplain Helper helper}
+     * Generates the next id for a new {@linkplain Need need}
      * 
      * @return The next id
      */
@@ -51,6 +52,7 @@ public class HelperFileDAO implements HelperDAO {
         ++nextId;
         return id;
     }
+
 
     /**
      * Generates an array of {@linkplain Helper helpers} from the tree map
@@ -61,20 +63,17 @@ public class HelperFileDAO implements HelperDAO {
         return getHelpersArray(null);
     }
 
+
     /**
-     * Generates an array of {@linkplain Helper helpers} from the tree map for any
-     * {@linkplain Helper helpers} that contains the text specified by containsText
-     * <br>
-     * If containsText is null, the array contains all of the {@linkplain Helper helpers}
-     * in the tree map
-     * 
-     * @return  The array of {@link Helper hepers}, may be empty
+     * Generates an array of {@linkplain Helper helpers} from the tree map
+     * used to be private, changing to public for testing
+     * @return  The array of {@link Helper helpers}, may be empty
      */
-    private Helper[] getHelpersArray(String containsText) { // if containsText == null, no filter
+    public Helper[] getHelpersArray(String containsText) {
         ArrayList<Helper> helperArrayList = new ArrayList<>();
 
         for (Helper helper : helpers.values()) {
-            if (containsText == null || helper.getName().contains(containsText)) {
+            if (containsText == null || helper.getUsername().contains(containsText)) {
                 helperArrayList.add(helper);
             }
         }
@@ -102,7 +101,7 @@ public class HelperFileDAO implements HelperDAO {
     }
 
     /**
-     * Loads {@linkplain Helper helper} from the JSON file into the map
+     * Loads {@linkplain Helper helpers} from the JSON file into the map
      * <br>
      * Also sets next id to one more than the greatest id found in the file
      * 
@@ -110,7 +109,7 @@ public class HelperFileDAO implements HelperDAO {
      * 
      * @throws IOException when file cannot be accessed or read from
      */
-    private boolean load() throws IOException {
+    boolean load() throws IOException {
         helpers = new TreeMap<>();
         nextId = 0;
 
@@ -119,9 +118,9 @@ public class HelperFileDAO implements HelperDAO {
         // or reading from the file
         Helper[] helperArray = objectMapper.readValue(new File(filename),Helper[].class);
 
-        // Add each helper to the tree map and keep track of the greatest id
+        // Add each helper to the tree map
         for (Helper helper : helperArray) {
-            helpers.put(helper.getId(),helper);
+            helpers.put(helper.getUsername(),helper);
             if (helper.getId() > nextId)
                 nextId = helper.getId();
         }
@@ -144,20 +143,10 @@ public class HelperFileDAO implements HelperDAO {
     ** {@inheritDoc}
      */
     @Override
-    public Helper[] findHelpers(String containsText) {
+    public Helper getHelper(String username) {
         synchronized(helpers) {
-            return getHelpersArray(containsText);
-        }
-    }
-
-    /**
-    ** {@inheritDoc}
-     */
-    @Override
-    public Helper getHelper(int id) {
-        synchronized(helpers) {
-            if (helpers.containsKey(id))
-                return helpers.get(id);
+            if (helpers.containsKey(username))
+                return helpers.get(username);
             else
                 return null;
         }
@@ -167,14 +156,30 @@ public class HelperFileDAO implements HelperDAO {
     ** {@inheritDoc}
      */
     @Override
+    public Helper loginHelper(String username, String password) {
+        synchronized(helpers) {
+            if (helpers.containsKey(username)) {
+                if (helpers.get(username).getPassword().equals(password)) {
+                    return helpers.get(username);
+                }
+            }
+            
+            return null;
+        }
+    }
+
+    /**
+    ** {@inheritDoc}
+     */
+    @Override
     public Helper createHelper(Helper helper) throws IOException {
         synchronized(helpers) {
-            // We create a new helper object because the id field is immutable
-            // and we need to assign the next unique id
-
-            Helper newHelper = new Helper(nextId(),helper.getName(), helper.getCart(),helper.getPassword(),helper.isAdmin());
-
-            helpers.put(newHelper.getId(),newHelper);
+            // We create a new helper object because the username field is immutable
+            boolean admin = false;
+            if (helper.getUsername().equals("admin")) {admin = true;}
+            int id = nextId();
+            Helper newHelper = new Helper(id, helper.getUsername(),helper.getPassword(), id, admin);
+            helpers.put(newHelper.getUsername(),newHelper);
             save(); // may throw an IOException
             return newHelper;
         }
@@ -184,12 +189,12 @@ public class HelperFileDAO implements HelperDAO {
     ** {@inheritDoc}
      */
     @Override
-    public Helper updateHelpers(Helper helper) throws IOException {
+    public Helper updateHelper(Helper helper) throws IOException {
         synchronized(helpers) {
-            if (helpers.containsKey(helper.getId()) == false)
+            if (helpers.containsKey(helper.getUsername()) == false)
                 return null;  // helper does not exist
 
-            helpers.put(helper.getId(),helper);
+            helpers.put(helper.getUsername(),helper);
             save(); // may throw an IOException
             return helper;
         }
@@ -199,10 +204,10 @@ public class HelperFileDAO implements HelperDAO {
     ** {@inheritDoc}
      */
     @Override
-    public boolean deleteHelper(int id) throws IOException {
+    public boolean deleteHelper(String username) throws IOException {
         synchronized(helpers) {
-            if (helpers.containsKey(id)) {
-                helpers.remove(id);
+            if (helpers.containsKey(username)) {
+                helpers.remove(username);
                 return save();
             }
             else
