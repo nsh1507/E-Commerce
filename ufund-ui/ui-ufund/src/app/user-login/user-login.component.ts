@@ -15,21 +15,21 @@ export class UserLoginComponent {
   constructor(private router: Router, private userService: Userservice){}
 
   onSignIn(name: string, password:string){
-    if (name == "" ){
+    if (name.trim() == "" ){
       alert("Username cannot be blank")
       return;
     }
-    if (password == "" ){
+    if (password.trim() == "" ){
       alert("Password cannot be blank")
       return;
     }
 
-    if (name == 'admin' && password == 'admin'){
-      this.onLogIn(name, password); 
+    if (name.trim() == 'admin' && password.trim() == 'admin'){
+      this.onLogIn(name.trim(), password.trim()); 
       return;
     }
 
-    this.userService.addUser( {username: name, password: password} as User).subscribe((account) => {
+    this.userService.addUser( {username: name.trim(), password: password.trim()} as User).subscribe((account) => {
       if (account) {
         alert("Registration Successful!");
         this.signUp = false;
@@ -43,18 +43,18 @@ export class UserLoginComponent {
 
   
   onLogIn(name: string, password:string){
-    if (name == "" ){
+    if (name.trim() == "" ){
       alert("Username cannot be blank")
       return;
     }
-    if (password == "" ){
+    if (password.trim() == "" ){
       alert("Password cannot be blank")
       return;
     }
 
-    this.userService.loginUser(name, password).subscribe((account) => {
+    this.userService.loginUser(name.trim(), password.trim()).subscribe((account) => {
       if (account) {
-        if (name == 'admin' && password == 'admin'){this.router.navigateByUrl("needs");}
+        if (name.trim() == 'admin' && password.trim() == 'admin'){this.router.navigateByUrl("needs");}
         else{this.router.navigateByUrl("dashboard");}
       }
       else{
