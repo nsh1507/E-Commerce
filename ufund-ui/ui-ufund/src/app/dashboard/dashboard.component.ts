@@ -34,4 +34,12 @@ export class DashboardComponent implements OnInit {
     this.userService.logoutUser();
     this.router.navigateByUrl("login");
   }
+
+  delete() {
+    if(this.user !== null) {
+      this.userService.deleteUser(this.user.username).subscribe(_ => {
+        this.logOut();
+      });
+    }
+  }
 }
