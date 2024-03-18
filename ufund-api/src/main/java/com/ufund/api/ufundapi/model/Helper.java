@@ -37,7 +37,7 @@ public class Helper {
         this.username = username;
         this.password = password;
         this.cart = cart;
-        if (this.username == "admin" && this.password == "admin") {this.admin = true;}
+        if (this.username.equals("admin") && this.password.equals("admin")) {this.admin = true;}
         else{ this.admin = false;}
     }
 
