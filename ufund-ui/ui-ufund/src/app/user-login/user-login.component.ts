@@ -15,6 +15,16 @@ export class UserLoginComponent {
   constructor(private router: Router, private userService: Userservice){}
 
   onSignIn(name: string, password:string){
+    if (name == "" ){
+      alert("Username cannot be blank")
+      return;
+    }
+    if (password == "" ){
+      alert("Password cannot be blank")
+      return;
+    }
+
+
     this.userService.addUser( {username: name, password: password} as User).subscribe((account) => {
       if (account) {
         alert("Registration Successful!");
@@ -29,6 +39,15 @@ export class UserLoginComponent {
 
   
   onLogIn(name: string, password:string){
+    if (name == "" ){
+      alert("Username cannot be blank")
+      return;
+    }
+    if (password == "" ){
+      alert("Password cannot be blank")
+      return;
+    }
+
     this.userService.loginUser(name, password).subscribe((account) => {
       if (account) {
         this.router.navigate(['/dashboard']);
