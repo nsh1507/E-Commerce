@@ -11,12 +11,21 @@ import { NeedDetailComponent } from './need-detail/need-detail.component';
 import { NeedsComponent } from './needs/needs.component';
 import { NeedSearchComponent } from './need-search/need-search.component';
 import { MessagesComponent } from './messages/messages.component';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
+    HttpClientModule,
+    RouterModule,
+
+    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
+    // and returns simulated server responses.
+    // Remove it when a real server is ready to receive requests.
+   
   ],
   declarations: [
     AppComponent,
@@ -24,7 +33,8 @@ import { MessagesComponent } from './messages/messages.component';
     NeedsComponent,
     NeedDetailComponent,
     MessagesComponent,
-    NeedSearchComponent
+    NeedSearchComponent,
+    UserLoginComponent
   ],
   bootstrap: [ AppComponent ]
 })
