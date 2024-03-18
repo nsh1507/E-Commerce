@@ -177,7 +177,8 @@ public class HelperFileDAO implements HelperDAO {
             // We create a new helper object because the username field is immutable
             boolean admin = false;
             if (helper.getUsername().equals("admin")) {admin = true;}
-            Helper newHelper = new Helper(nextId(), helper.getUsername(),helper.getPassword(), nextId(), admin);
+            int id = nextId();
+            Helper newHelper = new Helper(id, helper.getUsername(),helper.getPassword(), id, admin);
             helpers.put(newHelper.getUsername(),newHelper);
             save(); // may throw an IOException
             return newHelper;

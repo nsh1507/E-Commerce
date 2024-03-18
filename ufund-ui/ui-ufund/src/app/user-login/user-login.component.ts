@@ -15,7 +15,7 @@ export class UserLoginComponent {
   constructor(private router: Router, private userService: Userservice){}
 
   onSignIn(name: string, password:string){
-    this.userService.addUser( {username: name, password: password, isAdmin: false} as User).subscribe((account) => {
+    this.userService.addUser( {username: name, password: password} as User).subscribe((account) => {
       if (account) {
         alert("Registration Successful!");
         this.signUp = false;
