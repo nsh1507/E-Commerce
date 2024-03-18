@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import com.ufund.api.ufundapi.model.Helper;
 
-
 @Component
 public class HelperFileDAO implements HelperDAO {
     private static final Logger LOG = Logger.getLogger(HelperFileDAO.class.getName());
@@ -25,6 +24,7 @@ public class HelperFileDAO implements HelperDAO {
                                         // objects and JSON text format written
                                         // to the file
     private String filename;    // Filename to read from and write to
+    private static int nextId;  // The next Id to assign to a new helper
 
     /**
      * Creates a Helper File Data Access Object
@@ -40,16 +40,42 @@ public class HelperFileDAO implements HelperDAO {
         load();  // load the helpers from the file
     }
 
+
+
+    /**
+     * Generates the next id for a new {@linkplain Need need}
+     * 
+     * @return The next id
+     */
+    private synchronized static int nextId() {
+        int id = nextId;
+        ++nextId;
+        return id;
+    }
+
+
+    /**
+     * Generates an array of {@linkplain Helper helpers} from the tree map
+     * 
+     * @return  The array of {@link Helper helpers}, may be empty
+     */
+    private Helper[] getHelpersArray() {
+        return getHelpersArray(null);
+    }
+
+
     /**
      * Generates an array of {@linkplain Helper helpers} from the tree map
      * used to be private, changing to public for testing
      * @return  The array of {@link Helper helpers}, may be empty
      */
-    public Helper[] getHelpersArray() {
+    public Helper[] getHelpersArray(String containsText) {
         ArrayList<Helper> helperArrayList = new ArrayList<>();
 
         for (Helper helper : helpers.values()) {
-            helperArrayList.add(helper);
+            if (containsText == null || helper.getUsername().contains(containsText)) {
+                helperArrayList.add(helper);
+            }
         }
 
         Helper[] helperArray = new Helper[helperArrayList.size()];
@@ -64,7 +90,7 @@ public class HelperFileDAO implements HelperDAO {
      * 
      * @throws IOException when file cannot be accessed or written to
      */
-    boolean save() throws IOException {
+    private boolean save() throws IOException {
         Helper[] helperArray = getHelpersArray();
 
         // Serializes the Java Objects to JSON objects into the file
@@ -85,6 +111,7 @@ public class HelperFileDAO implements HelperDAO {
      */
     boolean load() throws IOException {
         helpers = new TreeMap<>();
+        nextId = 0;
 
         // Deserializes the JSON objects from the file into an array of helpers
         // readValue will throw an IOException if there's an issue with the file
@@ -94,8 +121,11 @@ public class HelperFileDAO implements HelperDAO {
         // Add each helper to the tree map
         for (Helper helper : helperArray) {
             helpers.put(helper.getUsername(),helper);
+            if (helper.getId() > nextId)
+                nextId = helper.getId();
         }
-
+        // Make the next id one greater than the maximum from the file
+        ++nextId;
         return true;
     }
 
@@ -145,7 +175,9 @@ public class HelperFileDAO implements HelperDAO {
     public Helper createHelper(Helper helper) throws IOException {
         synchronized(helpers) {
             // We create a new helper object because the username field is immutable
-            Helper newHelper = new Helper(helper.getUsername(),helper.getPassword());
+            boolean admin = false;
+            if (helper.getUsername().equals("admin")) {admin = true;}
+            Helper newHelper = new Helper(nextId(), helper.getUsername(),helper.getPassword(), nextId(), admin);
             helpers.put(newHelper.getUsername(),newHelper);
             save(); // may throw an IOException
             return newHelper;
