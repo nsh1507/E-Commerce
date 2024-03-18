@@ -27,7 +27,7 @@
                 <div class="form-control">
                     <input #password placeholder="Password" required/>
                 </div>
-                <button (click)="onLogIn()">Login</button>
+                <button (click)="onLogIn(name.value, password.value)">Login</button>
                 <p>Don't have an account? <a href="#" (click)="signUp = true">Sign Up</a></p>
             </form>
         </div>
