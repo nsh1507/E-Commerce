@@ -10,55 +10,75 @@ import com.ufund.api.ufundapi.model.Helper;
  */
 public interface HelperDAO {
     /**
-     * Retrieves all {@link Helper helper} from the data store
+     * Retrieves all {@linkplain Helper helpers}
      * 
-     * @return Array of {@link Helper helper} objects, array may be empty
-     * @throws IOException If the data store cannot be accessed
+     * @return An array of {@link Helper helpers} objects, may be empty
+     * 
+     * @throws IOException if an issue with underlying storage
      */
     Helper[] getHelpers() throws IOException;
 
     /**
-     * Finds all {@link Helper helper} whose name matches given text
+     * Retrieves an {@linkplain Helper helper} with the given username
      * 
-     * @param name Name to search for
-     * @return Array of matching {@link Helper helper}, array may be empty
-     * @throws IOException If the data store cannot be accessed
+     * @param username The username of the {@link Helper helper} to get
+     * 
+     * @return an {@link Helper helper} object with the matching username
+     * <br>
+     * null if no {@link Helper helper} with a matching username is found
+     * 
+     * @throws IOException if an issue with underlying storage
      */
-    Helper[] findHelpers(String name) throws IOException;
+    Helper getHelper(String username) throws IOException;
+
+        /**
+     * Logins to an {@linkplain Helper helper} with the given username and password
+     * 
+     * @param username The username of the {@link Helper helper} to login with
+     * @param password The password of the {@link Helper helper} to login with
+     * 
+     * @return an {@link Helper helper} object with the matching username and password
+     * <br>
+     * null if no {@link Helper helper} with a matching username and password is found
+     * 
+     * @throws IOException if an issue with underlying storage
+     */
+    Helper loginHelper(String username, String password) throws IOException;
 
     /**
-     * Retrieves a {@link Helper helper} from the data store
+     * Creates and saves an {@linkplain Helper helper}
      * 
-     * @param id ID of the {@link Helper helper} to get
-     * @return {@link Helper Helper} or null if not found
-     * @throws IOException If the data store cannot be accessed
-     */
-    Helper getHelper(int id) throws IOException;
-
-    /**
-     * Saves a {@link Helper helper} to the data store
+     * @param helper {@linkplain Helper helper} object to be created and saved
+     * <br>
+     *
+     * @return new {@link Helper helper} if successful, false otherwise 
      * 
-     * @param helper Created {@link Helper helper} to save
-     * @return {@link Helper helper} (null if not found)
-     * @throws IOException If the data store cannot be accessed
+     * @throws IOException if an issue with underlying storage
      */
     Helper createHelper(Helper helper) throws IOException;
 
     /**
-     * Updates a {@link Helper helper} in the data store
+     * Updates and saves an {@linkplain Helper helper}
      * 
-     * @param helper Updated {@link Helper helper} to save
-     * @return {@link Helper helper} (null if not found)
-     * @throws IOException If the data store cannot be accessed
+     * @param {@link Helper helper} object to be updated and saved
+     * 
+     * @return updated {@link Helper helper} if successful, null if
+     * {@link Helper helper} could not be found
+     * 
+     * @throws IOException if underlying storage cannot be accessed
      */
-    Helper updateHelpers(Helper helper) throws IOException;
+    Helper updateHelper(Helper helper) throws IOException;
 
     /**
-     * Deletes a {@link Helper helper} from the data store
+     * Deletes an {@linkplain Helper helper} with the given username
      * 
-     * @param id ID of the {@link Helper helper} to delete
-     * @return True if the ID helper was deleted false if not
-     * @throws IOException If the data store cannot be accessed
+     * @param username The username of the {@link Helper helper}
+     * 
+     * @return true if the {@link Helper helper} was deleted
+     * <br>
+     * false if helper with the given username does not exist
+     * 
+     * @throws IOException if underlying storage cannot be accessed
      */
-    boolean deleteHelper(int id) throws IOException;
+    boolean deleteHelper(String username) throws IOException;
 }

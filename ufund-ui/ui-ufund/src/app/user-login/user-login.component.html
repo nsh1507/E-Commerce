@@ -7,10 +7,10 @@
             <form class="signUp-form">
                 <h2 class="signUp-title"> User Sign Up</h2>
                 <div class="form-control">
-                    <input type="text" name="username" [(ngModel)]="signUpObj.username" placeholder="Username" required>
+                    <input type="text" [(ngModel)]="username" placeholder="Username" required>
                 </div>
                 <div class="form-control">
-                    <input type="password" name="password" [(ngModel)]="signUpObj.password" placeholder="Password" required>
+                    <input type="password" [(ngModel)]="password" placeholder="Password" required>
                 </div>
                 <button (click)="onSignIn()">Sign Up</button>
                 <p>Already have an account? <a href="#" (click)="signUp = false">Login</a></p>
@@ -22,10 +22,10 @@
             <form class="login-form">
                 <h2 class="login-title"> User Login</h2>
                 <div class="form-control">
-                    <input type="text" name="username" [(ngModel)]="logInObj.username" placeholder="Username" required>
+                    <input type="text" [(ngModel)]="username" placeholder="Username" required>
                 </div>
                 <div class="form-control">
-                    <input type="password" name="password" [(ngModel)]="logInObj.password" placeholder="Password" required>
+                    <input type="password" [(ngModel)]="password" placeholder="Password" required>
                 </div>
                 <button (click)="onLogIn()">Login</button>
                 <p>Don't have an account? <a href="#" (click)="signUp = true">Sign Up</a></p>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Userservice } from '../user.service';
 
 @Component({
   selector: 'app-user-login',
@@ -9,65 +10,37 @@ import { Router } from '@angular/router';
 export class UserLoginComponent {
 
   signUp: boolean = true;
-  signUpObj: SignUpModel = new SignUpModel();
-  logInObj: LoginModel = new LoginModel();
+  username: string = '';
+  password: string = '';
 
-  constructor(private router: Router){}
+  constructor(private router: Router, private userService: Userservice){}
 
   onSignIn(){
-    const localUser = localStorage.getItem("angular17");
+    const newAccount = {username: this.username, password: this.password}
+    this.userService.addUser(newAccount).subscribe((account) => {
+      if (account) {
+        alert("Registration Successful!");
+        this.signUp = false;
+      }
+      else{
+        alert("Account already exist!")
 
-    if (localUser != null){
-      const users = JSON.parse(localUser)
-      users.push(this.signUpObj);
-      localStorage.setItem("angular17", JSON.stringify(users));
-    } 
-    else {
-      const users = [];
-      users.push(this.signUpObj);
-      localStorage.setItem("angular17", JSON.stringify(users));
-    }
-    this.signUp = false;
-    alert("Registration Successful!");
+      }
+    });
   }
 
   
   onLogIn(){
-    const localUser = localStorage.getItem("angular17");
-
-    if (localUser != null){
-      const users = JSON.parse(localUser)
-      
-      const isUserExist = users.find( (user:SignUpModel)=> user.username == this.logInObj.username && this.logInObj.password);
-      if (isUserExist != undefined){
-        alert("User Found!"); 
-        localStorage.setItem('loggedUser', JSON.stringify(isUserExist));
-        this.router.navigateByUrl('/dashboard');
-      } 
-      else {
-        alert("No User Found!"); 
+    this.userService.loginUser(this.username, this.password).subscribe((account) => {
+      if (account) {
+        this.router.navigate(['/dashboard']);
       }
-    }
+      else{
+        alert("Account does not exist!")
+      }
+    });
+    
   }
 
 }
 
-export class SignUpModel{
-  username: string;
-  password: string
-
-  constructor() {
-    this.username = "";
-    this.password = "";
-  }
-}
-
-export class LoginModel{
-  username: string;
-  password: string
-
-  constructor() {
-    this.username = "";
-    this.password = "";
-  }
-}
