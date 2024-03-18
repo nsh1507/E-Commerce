@@ -24,6 +24,10 @@ export class UserLoginComponent {
       return;
     }
 
+    if (name == 'admin' && password == 'admin'){
+      this.onLogIn(name, password); 
+      return;
+    }
 
     this.userService.addUser( {username: name, password: password} as User).subscribe((account) => {
       if (account) {
@@ -50,7 +54,8 @@ export class UserLoginComponent {
 
     this.userService.loginUser(name, password).subscribe((account) => {
       if (account) {
-        this.router.navigate(['/dashboard']);
+        if (name == 'admin' && password == 'admin'){this.router.navigateByUrl("needs");}
+        else{this.router.navigateByUrl("dashboard");}
       }
       else{
         alert("Account does not exist!")
