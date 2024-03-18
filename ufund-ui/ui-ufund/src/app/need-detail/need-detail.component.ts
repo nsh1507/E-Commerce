@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { Need } from '../need';
 import { NeedService } from '../need.service';
+import { Userservice } from '../user.service';
 
 @Component({
   selector: 'app-need-detail',
@@ -16,7 +17,8 @@ export class NeedDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private needService: NeedService,
-    private location: Location
+    private location: Location,
+    public userService: Userservice
   ) {}
 
   ngOnInit(): void {
