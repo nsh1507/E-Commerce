@@ -10,13 +10,11 @@ import { Userservice } from '../user.service';
 export class UserLoginComponent {
 
   signUp: boolean = true;
-  username: string = '';
-  password: string = '';
 
   constructor(private router: Router, private userService: Userservice){}
 
-  onSignIn(){
-    const newAccount = {username: this.username, password: this.password}
+  onSignIn(name: string, password:string){
+    const newAccount = {username: name, password: password}
     this.userService.addUser(newAccount).subscribe((account) => {
       if (account) {
         alert("Registration Successful!");
@@ -30,8 +28,8 @@ export class UserLoginComponent {
   }
 
   
-  onLogIn(){
-    this.userService.loginUser(this.username, this.password).subscribe((account) => {
+  onLogIn(name: string, password:string){
+    this.userService.loginUser(name, password).subscribe((account) => {
       if (account) {
         this.router.navigate(['/dashboard']);
       }
