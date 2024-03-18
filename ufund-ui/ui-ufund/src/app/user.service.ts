@@ -12,7 +12,7 @@ import { MessageService } from './message.service';
 export class Userservice {
 
   private usersUrl = 'http://localhost:8080/helpers';  // URL to web api
-  private currentUser?: User;
+  private currentUser: User | null = null;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -48,6 +48,10 @@ export class Userservice {
       tap(user => this.currentUser = user),
       catchError(this.handleError<User>(`getUser username=${username} password=${password}`))
     );
+  }
+
+  logoutUser(): void {
+    this.currentUser = null;
   }
 
   //////// Save methods //////////
