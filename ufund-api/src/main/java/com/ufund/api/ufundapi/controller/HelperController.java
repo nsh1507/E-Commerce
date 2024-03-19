@@ -209,6 +209,7 @@ public class HelperController {
      */
     @PutMapping("/basket/{helpername}")
     public ResponseEntity<Helper> addToBasket(@PathVariable String helpername, @RequestBody Need need) {
+        LOG.info("PUT /helpers/basket/ " + helpername);
         try {
             Helper helper = this.helperDao.getHelper(helpername);
             if (helper == null) {
@@ -227,20 +228,21 @@ public class HelperController {
      * Removes a {@linkplain Need} from the {@linkplain Helper}'s basket
      * 
      * @param helpername Helper to remove the item from
-     * @param need Need to remove from the helper's basket
+     * @param needID ID of need to remove from the helper's basket
      * @return {@linkplain Helper}
      *         status OK if operation is successful
      *         status INTERNAL_SERVER_ERROR if IOException occurs
      */
-    @PostMapping("/basket/{helpername}")
-    public ResponseEntity<Helper> removeFromBasket(@PathVariable String helpername, @RequestBody Need need) {
+    @DeleteMapping("/basket/{helpername}/{needID}")
+    public ResponseEntity<Helper> removeFromBasket(@PathVariable String helpername, @PathVariable int needID) {
+        LOG.info("DELETE /helpers/basket/ " + helpername + needID);
         try {
             Helper helper = this.helperDao.getHelper(helpername);
             if (helper == null) {
                 helper = this.helperDao.createHelper(helper);
             }
 
-            helper.removeFromCart(need.getId());
+            helper.removeFromCart(needID);
             helper = this.helperDao.updateHelper(helper);
             return new ResponseEntity<Helper>(helper, HttpStatus.OK);
         } catch (IOException e) {
