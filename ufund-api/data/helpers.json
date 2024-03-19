@@ -1,1 +1,1 @@
-[{"id":12,"username":"1","password":"1","cart":12,"admin":false},{"id":4,"username":"12","password":"12","cart":4,"admin":false},{"id":6,"username":"123","password":"123","cart":6,"admin":false},{"id":5,"username":"222","password":"1","cart":5,"admin":false},{"id":1,"username":"admin","password":"admin","cart":1,"admin":true}]
+[{"id":1,"username":"admin","password":"admin","admin":true,"cart":[]}]

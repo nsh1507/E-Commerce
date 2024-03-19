@@ -1,5 +1,6 @@
 package com.ufund.api.ufundapi.model;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,16 +16,16 @@ public class Helper {
     @JsonProperty("id") private int id;
     @JsonProperty("username") private String username;
     @JsonProperty("password") private String password;
-    @JsonProperty("cart") private int cart;
     @JsonProperty("admin") private boolean admin;
+    @JsonProperty("cart") private ArrayList<Need> cart;
 
     /**
      * Create an helper with the given username and password
      * @param id The id of the helper
      * @param username The username of the helper
      * @param password The password of the helper
-     * @param cart The cart of the helper
      * @param admin whether user is admin
+     * @param cart list of Needs
      * 
      * {@literal @}JsonProperty is used in serialization and deserialization
      * of the JSON object to the Java object in mapping the fields.  If a field
@@ -32,7 +33,7 @@ public class Helper {
      * value, i.e. 0 for int
      */
     public Helper(@JsonProperty("id") int id, @JsonProperty("username") String username, @JsonProperty("password") String password,
-                @JsonProperty("cart") int cart,@JsonProperty("admin") Boolean admin) {
+                  @JsonProperty("admin") Boolean admin, @JsonProperty("cart") ArrayList<Need> cart ) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -73,16 +74,16 @@ public class Helper {
     public String getPassword() {return this.password;}
 
     /**
-     * Sets the cartId of the helper - necessary for JSON object to Java object deserialization
-     * @param cart The cartId of the helper
+     * adds an item to the end of the shopping cart
+     * @param quantity The product to add
      */
-    public void setCart(int cart) {this.cart = cart;}
+    public void addToCart(Need prod) {this.cart.add(prod);}
 
     /**
-     * Retrieves the cartId of the helper
-     * @return The cartId of the helper
+     * Retrieves the full shopping cart
+     * @return The cart
      */
-    public int getCart() {return this.cart;}
+    public ArrayList<Need> getCart() {return cart;}
 
     /**
      * Retrieves the role of the user
@@ -90,13 +91,26 @@ public class Helper {
      */
     public Boolean isAdmin() {return admin;}
 
+    /**
+     * removes an item from shopping cart. this assumes the given id is actually in the shopping cart, does nothing otherwise
+     * @param id The id of the product to remove
+     */
+    public void removeFromCart(int id) {
+        for (Need need : cart) {
+            if(need.getId()==id){
+                cart.remove(need);
+                break;
+            }
+        }
+    }
+
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        return String.format(STRING_FORMAT,id, username, password, cart, admin);
+        return String.format(STRING_FORMAT,username, password, cart);
     }
 
 }

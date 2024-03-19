@@ -139,18 +139,7 @@ public class HelperFileDAO implements HelperDAO {
             return getHelpersArray();
         }
     }
-
-
-    /**
-    ** {@inheritDoc}
-     */
-    @Override
-    public Helper[] findHelpers(String containsText) {
-        synchronized(helpers) {
-            return getHelpersArray(containsText);
-        }
-    }
-
+    
     /**
     ** {@inheritDoc}
      */
@@ -188,9 +177,10 @@ public class HelperFileDAO implements HelperDAO {
         synchronized(helpers) {
             // We create a new helper object because the username field is immutable
             boolean admin = false;
+            ArrayList<Need> list = new ArrayList<>();
             if (helper.getUsername().equals("admin")) {admin = true;}
             int id = nextId();
-            Helper newHelper = new Helper(id, helper.getUsername(),helper.getPassword(), id, admin);
+            Helper newHelper = new Helper(id, helper.getUsername(),helper.getPassword(), admin, list);
             helpers.put(newHelper.getUsername(),newHelper);
             save(); // may throw an IOException
             return newHelper;
