@@ -17,7 +17,9 @@
 
   </div>
   <button type="button" (click)="goBack()">go back</button>
+  <div *ngIf="userService.getCurrentUser() !== null">
   <button type="button" (click)="save()">save</button>
+  </div>
   </div>
   
 
@@ -41,9 +43,12 @@
   
     </div>
     <button type="button" (click)="goBack()">Go Back</button>
+    <div *ngIf="userService.getCurrentUser() !== null">
     <button type="button" >Add To Cart</button>
-    <button type="button" >Cart</button>
+    <button type="button" routerLink="/checkout"> My Funding Basket</button>
+    </div>
   </div>
+
 
 
 
