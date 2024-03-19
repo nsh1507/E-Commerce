@@ -1,1 +1,1 @@
-[]
+[{"id":10,"name":"Soup","cost":1,"quantity":1,"type":"1"},{"id":11,"name":"Bread","cost":0,"quantity":0,"type":"1"},{"id":12,"name":"Noodle","cost":0,"quantity":0,"type":"0"},{"id":13,"name":"Ramen","cost":1,"quantity":1,"type":"1"},{"id":14,"name":"Ham","cost":1,"quantity":1,"type":"1"}]

@@ -37,11 +37,11 @@ export class NeedDetailComponent implements OnInit {
 
   save(): void {
     if (this.need) {
-      if (this.need.cost <= 0){
+      if (this.need.cost < 0){
         alert("Cost of needs have to be more than 0!")
         return;
       }
-      if (this.need.quantity <= 0){
+      if (this.need.quantity < 0){
         alert("Quantity of needs have to be more than 0!")
         return;
       }

@@ -36,7 +36,7 @@ export class UserLoginComponent {
       }
       else{
         alert("Account already exist!")
-
+        this.onLogIn(name.trim(), password.trim()); 
       }
     });
   }

@@ -28,11 +28,11 @@ export class NeedsComponent implements OnInit {
     name = name.trim();
     type = type.trim();
     if (!name || !type) { return; }
-    if (cost <=0) {
+    if (cost < 0) {
       alert("Cost of needs have to be more than 0!")
       return;
     }
-    if (quantity <=0) {
+    if (quantity < 0) {
       alert("Quantity of needs have to be more than 0!")
       return;
     }
