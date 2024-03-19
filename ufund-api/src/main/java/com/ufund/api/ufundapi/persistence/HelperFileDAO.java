@@ -191,7 +191,7 @@ public class HelperFileDAO implements HelperDAO {
     @Override
     public Helper updateHelper(Helper helper) throws IOException {
         synchronized(helpers) {
-            if (helpers.containsKey(helper.getUsername()) == false)
+            if (!helpers.containsKey(helper.getUsername()))
                 return null;  // helper does not exist
 
             helpers.put(helper.getUsername(),helper);

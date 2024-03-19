@@ -7,7 +7,12 @@ public class NeedtoAdd {
     /** Number of items which the user is trying to purchase */
     @JsonProperty("quantity") private int quantity;
 
-    
+    /**
+     * Constructor for the product reference
+     * 
+     * @param id Id of the product
+     * @param quantity Number of items which the user is trying to purchase
+     */
     public NeedtoAdd(@JsonProperty("id") int id, @JsonProperty("quantity") int quantity) {
         this.id = id;
         this.quantity = quantity;
