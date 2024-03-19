@@ -1,65 +1,83 @@
 package com.ufund.api.ufundapi.persistence;
 
 import java.io.IOException;
-import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.Basket;
 
 public interface BasketDAO {
     
     /**
-     * Get the contents of a funding basket.
-     * @param id the id of the funding basket.
-     * @return an array of the funding basket's contents.
-     * @throws IOException if basket storage can't be accessed
+     * Retrieves all {@link Basket basket} from the data store
+     * 
+     * @return Array of {@link Basket basket} objects, array may be empty, but will not be null
+     * @throws IOException If the data store cannot be accessed
      */
-    Need[] getContents( int id ) throws IOException;
+    Basket[] getBaskets() throws IOException;
 
     /**
-     * Searches the basket for Needs containing the keyword.
-     * @param id the id of the funding basket.
-     * @param name the keyword being searched
-     * @return an array of Needs containing the keyword
-     * @throws IOException if basket storage can't be accessed
+     * Retrieves a {@link Basket basket} from the file
+     * 
+     * @param id ID of the {@link Basket basket} corresponding to the user
+     * @return {@link Basket basket} or null if not found
+     * @throws IOException If the data store cannot be accessed
      */
-    Need[] searchBasket( int id, String name) throws IOException;
+    Basket getBasket(int id) throws IOException;
 
     /**
-     * Gets a {@link Need need} from a Helper's funding basket
-     * @param id the id of the funding basket
-     * @param needid the id of the need
-     * @return the need from the basket
+     * Updates a {@link Basket basket} in the data store
+     * 
+     * @param basket {@link Basket basket} to update
+     * @return {@link Basket basket} (null if not found)
+     * @throws IOException If the data store cannot be accessed
      */
-    Need getBasketNeed( int id, int needid );
+    Basket updateBasket(Basket basket) throws IOException;
 
     /**
-     * Adds a {@link Need need} to a Helper's funding basket.
-     * @param need the need being added
-     * @param id the id of the basket
-     * @return whether the add was successful
-     * @throws IOException if basket storage can't be accessed
+     * Adds an item to the basket
+     * 
+     * @param id Id of the basket
+     * @param productId Id of the product
+     * @param quantity Quantity of the product
+     * @throws IOException If the data store cannot be accessed
+     * @return True if the item was added, false if not
      */
-    boolean addToBasket( int id, Need need ) throws IOException;
+    boolean addItem(int id, int productId, int quantity) throws IOException;
 
     /**
-     * Removes a {@link Need need} from a Helper's funding basket.
-     * @param id the id of the funding basket.
-     * @param needid the id of the need to be removed.
-     * @return whether the removal was successful
-     * @throws IOException if basket storage can't be accessed
+     * Removes an item from the basket
+     * 
+     * @param id Id of the basket
+     * @param productId Id of the product
+     * @throws IOException If the data store cannot be accessed
+     * @return True if the item was removed, false if it was not found
      */
-    boolean removeFromBasket( int id, int needid) throws IOException;
+    boolean removeItem(int id, int productId) throws IOException;
 
     /**
-     * Empties all {@link Need need} from a Helper's funding basket.
-     * @param id the id of the funding basket.
-     * @return whether the basket was successfully emptied.
-     * @throws IOException if basket storage can't be accessed
+     * Edits the quantity of an item in the basket
+     * 
+     * @param id Id of the basket
+     * @param productId Id of the product
+     * @param quantity Quantity of the product
+     * @throws IOException If the data store cannot be accessed
+     * @return True if the item was edited, false if it was not found
      */
-    boolean clearBasket( int id ) throws IOException;
+    boolean editQuantity(int id, int productId, int quantity) throws IOException;
 
     /**
-     * Loads a Helper's basket from the underlying storage into Java objects
-     * @param id the id of the basket being accessed
-     * @throws IOException if basket storage can't be accessed
+     * Saves a {@link Basket basket} to the data store
+     * 
+     * @param basket Created {@link Basket basket} to save
+     * @return {@link Basket basket} (null if not found)
+     * @throws IOException If the data store cannot be accessed
      */
-    void updateBasket( int id ) throws IOException;
+    Basket createBasket(Basket basket) throws IOException;
+
+    /**
+     * Deletes a {@link Basket basket} from the data store
+     * 
+     * @param id ID of the {@link Basket basket} to delete
+     * @return True if the ID {@link Basket} was deleted false if not
+     * @throws IOException If the data store cannot be accessed
+     */
+    boolean deleteBasket(int id) throws IOException;
 }
