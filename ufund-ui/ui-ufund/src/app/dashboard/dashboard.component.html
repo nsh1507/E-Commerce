@@ -1,6 +1,7 @@
 <button (click)="logOut()">Logout</button>
 <div *ngIf="!userService.isAdmin()">
 <button (click)="delete()">Delete Account</button>
+<button >Cart</button>
 </div>
 
 <h2 *ngIf="userService.getCurrentUser() != null">Welcome <strong>{{user?.username}}</strong>!</h2>
