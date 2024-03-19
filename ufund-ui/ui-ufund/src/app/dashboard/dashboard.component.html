@@ -3,15 +3,18 @@
 <button (click)="delete()">Delete Account</button>
 </div>
 
-<h2>Welcome <strong>{{user?.username}}</strong>!</h2>
-<h2>Top Needs</h2>
+<h2 *ngIf="userService.getCurrentUser() != null">Welcome <strong>{{user?.username}}</strong>!</h2>
+<h2 *ngIf="needs.length!==0"> <strong>Needs</strong></h2>
 
 <div class="needs-menu">
+  <h2 *ngIf="needs.length==0"> <strong>No products</strong></h2>
   <a *ngFor="let need of needs"
       routerLink="/detail/{{need.id}}">
-      {{need.name}}
+      {{need.name}} (${{need.cost}})
   </a>
 </div>
+
+
 
 <app-need-search></app-need-search>
 
