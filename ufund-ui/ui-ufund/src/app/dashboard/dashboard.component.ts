@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
   needs: Need[] = [];
   user: User | null = null;
 
-  constructor(private needService: NeedService, private userService: Userservice, private router: Router) { }
+  constructor(private needService: NeedService, public userService: Userservice, private router: Router) { }
 
   ngOnInit(): void {
     this.getNeeds();
