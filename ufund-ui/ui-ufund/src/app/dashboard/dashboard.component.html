@@ -12,7 +12,9 @@
   <a *ngFor="let need of needs"
       routerLink="/detail/{{need.id}}">
       Name: {{need.name}}, 
+      <ul></ul>
       Cost: (${{need.cost}}),
+      <ul></ul>
       Quantity: {{need.quantity}}
   </a>
 </div>
