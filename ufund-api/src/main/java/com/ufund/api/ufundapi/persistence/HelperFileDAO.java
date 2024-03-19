@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ufund.api.ufundapi.model.Helper;
+import com.ufund.api.ufundapi.model.Need;;
 
 @Component
 public class HelperFileDAO implements HelperDAO {
@@ -136,6 +137,17 @@ public class HelperFileDAO implements HelperDAO {
     public Helper[] getHelpers() {
         synchronized(helpers) {
             return getHelpersArray();
+        }
+    }
+
+
+    /**
+    ** {@inheritDoc}
+     */
+    @Override
+    public Helper[] findHelpers(String containsText) {
+        synchronized(helpers) {
+            return getHelpersArray(containsText);
         }
     }
 
