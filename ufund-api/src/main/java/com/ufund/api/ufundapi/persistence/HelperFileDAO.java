@@ -178,7 +178,7 @@ public class HelperFileDAO implements HelperDAO {
             boolean admin = false;
             if (helper.getUsername().equals("admin")) {admin = true;}
             int id = nextId();
-            Helper newHelper = new Helper(id, helper.getUsername(),helper.getPassword(), id, admin);
+            Helper newHelper = new Helper(id, helper.getUsername(),helper.getPassword(), helper.getCart(), admin);
             helpers.put(newHelper.getUsername(),newHelper);
             save(); // may throw an IOException
             return newHelper;
