@@ -14,7 +14,9 @@ import { User } from '../user';
 })
 export class NeedDetailComponent implements OnInit {
   need: Need | undefined;
+  needs: Need[] = [];
   currentUser: User | null = null;
+  userCart: Need[] | undefined = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -25,6 +27,8 @@ export class NeedDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getNeed();
+    this.getUserCart();
+    this.getNeedsFromCart()
     this.currentUser = this.userService.getCurrentUser();
   }
 
@@ -32,6 +36,15 @@ export class NeedDetailComponent implements OnInit {
     const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
     this.needService.getNeed(id)
       .subscribe(need => this.need = need);
+  }
+
+
+  getUser(): void {
+    this.currentUser = this.userService.getCurrentUser();
+  }
+
+  getUserCart(): void{
+    this.userCart = this.userService.getCurrentUser()?.cart;
   }
 
   goBack(): void {
@@ -52,4 +65,30 @@ export class NeedDetailComponent implements OnInit {
         .subscribe(() => this.goBack());
     }
   }
+
+  getNeedsFromCart(): void {
+    this.needService.getNeeds()
+      .subscribe((needs) => {
+        needs.forEach((need) => {
+          let index = 0;
+          while (this.userCart !== undefined && index < this.userCart.length){
+            if (need.id === this.userCart[index].id) {
+              this.needs.push(this.userCart[index]);
+            }
+            index ++;
+          }
+        })
+      }
+    );
+  }
+
+  addToCart(){
+    this.userService.addToCart(this.need!)
+    this.getUser()
+  }
+
+  removeFromCart(): void {
+    this.userService.removeFromCart(this.need!)
+    this.getUser()
+}
 }

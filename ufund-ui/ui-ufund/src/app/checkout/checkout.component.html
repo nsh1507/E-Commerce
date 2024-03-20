@@ -1,1 +1,14 @@
 <button> Checkout</button>
+<button (click)="goBack()">Go Back</button>
+
+<h2><strong>Basket Content</strong></h2>
+<div class="needs-menu">
+    <h2 *ngIf="needs.length==0"> <strong>No products</strong></h2>
+    <a *ngFor="let need of needs"
+        routerLink="/detail/{{need.id}}">
+        Name: {{need.name}}
+        <ul></ul>
+        Cost: (${{need.cost}})
+    </a>
+  </div>
+  
