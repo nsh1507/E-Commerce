@@ -61,15 +61,13 @@ public class HelperControllerTest {
 
 
     @Test
-    public void testHelperControllerCreateHelper() throws IOException {
+    public void testDeleteHelper() throws IOException {
         Helper testHelper = new Helper(0, "Helper", "Hell", false, new ArrayList<Need>());
       
-        ResponseEntity<Helper> created = new ResponseEntity<Helper>(testHelper,HttpStatus.CREATED);
+        ResponseEntity<Helper> deleted = new ResponseEntity<Helper>(testHelper,HttpStatus.CREATED);
         ResponseEntity<Helper> serverError = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         HelperDAO helperDAOMock = mock(HelperDAO.class);
-
-        when(helperDAOMock.createHelper(testHelper)).thenReturn(testHelper);
 
 
         HelperController helperController = new HelperController(helperDAOMock);
@@ -77,7 +75,7 @@ public class HelperControllerTest {
         ResponseEntity<Helper> testResponse = helperController.createHelper(testHelper);
 
         //assertEquals(found, testResponse);
-        assertEquals(created, testResponse);
+        assertEquals(deleted, testResponse);
 
         when(helperDAOMock.createHelper(testHelper)).thenThrow(new IOException("Error"));
         ResponseEntity<Helper> testServerError = helperController.createHelper(testHelper);
@@ -85,9 +83,8 @@ public class HelperControllerTest {
     }
 
 
-
     @Test
-    public void testHelperControllerGetHelpers() throws IOException {
+    public void testGetHelpers() throws IOException {
         Helper testHelper = new Helper(0, "HELPER", "Hell",false, new ArrayList<>());
         Helper testHelperNull = null;
 
@@ -119,8 +116,22 @@ public class HelperControllerTest {
         Helper[] nullHelperArray = new Helper[1];
         when(helperDAOMock.getHelpers()).thenReturn(nullHelperArray);
 
+
         when(helperDAOMock.getHelpers()).thenThrow(new IOException("Error"));
         ResponseEntity<Helper[]> testErrorResponses = helperController.getHelpers();
         assertEquals(serverError, testErrorResponses);
+    }
+
+
+    @Test
+    public void testUpdateHelper() throws IOException {
+
+        ResponseEntity<Helper> notFound = new ResponseEntity<Helper>(HttpStatus.NOT_FOUND);
+
+        HelperDAO helperDAOMock = mock(HelperDAO.class);
+
+        HelperController helperController= new HelperController(helperDAOMock);
+        assertEquals(notFound, helperController.updateHelper(null));
+
     }
 }
