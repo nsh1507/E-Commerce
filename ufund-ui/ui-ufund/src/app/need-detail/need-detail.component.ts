@@ -18,6 +18,7 @@ export class NeedDetailComponent implements OnInit {
   currentUser: User | null = null;
   userCart: Need[] | undefined = [];
 
+
   constructor(
     private route: ActivatedRoute,
     private needService: NeedService,
@@ -82,9 +83,45 @@ export class NeedDetailComponent implements OnInit {
     );
   }
 
-  addToCart(){
-    this.userService.addToCart(this.need!)
-    this.getUser()
+  addToCart(): void{
+
+    let cartMap: Map<Need, number> = new Map();
+    let broke = false;
+    let index = 0;
+    this.getUserCart();
+
+    if (!this.userCart) {
+      this.userCart = [];
+    }
+
+    if(this.userCart.length !== 0 && index < this.userCart.length){
+      alert(this.userCart.length)
+      while(index < this.userCart.length){
+        if (!cartMap.has(this.userCart[index])) {
+          cartMap.set(this.userCart[index], 1)
+          ++index;
+        }
+        else{
+          let updatedValue = cartMap.get(this.userCart[index])! + 1 
+          cartMap.set(this.userCart[index], updatedValue)
+          if (cartMap.get(this.userCart[index])! > this.userCart[index].quantity) {
+            broke = true;
+            break;
+          } 
+          ++index;
+          
+        }
+      }
+    }
+
+    if(broke){
+      alert("No more Needs to add");
+      return;
+    }
+    else{
+      this.userService.addToCart(this.need!)
+      this.getUser()
+    }
   }
 
   removeFromCart(): void {    
