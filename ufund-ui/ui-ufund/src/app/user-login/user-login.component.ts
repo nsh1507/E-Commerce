@@ -35,8 +35,7 @@ export class UserLoginComponent {
         this.signUp = false;
       }
       else{
-        alert("Account already exist!")
-        this.onLogIn(name.trim(), password.trim()); 
+        alert("Username is Taken!")
       }
     });
   }
