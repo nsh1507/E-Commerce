@@ -216,7 +216,7 @@ public class HelperController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-}
+
 
         /**
      * Adds a {@linkplain Need} to the {@linkplain Helper}'s basket
@@ -270,4 +270,3 @@ public class HelperController {
         }
     }
 }
-
