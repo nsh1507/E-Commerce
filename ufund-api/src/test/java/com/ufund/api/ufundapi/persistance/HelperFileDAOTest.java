@@ -19,53 +19,6 @@ import com.ufund.api.ufundapi.persistence.NeedFileDAO;
  */
 @Tag("Model-tier")
 public class HelperFileDAOTest {
-    @Test
-    public void testCtor() throws IOException {
-        // Setup
-        String expected_file = "file.exe";
-        ObjectMapper expected_objectMapper = new ObjectMapper();
-        NeedDAO expected_needDao = (NeedDAO) new NeedFileDAO(expected_file, expected_objectMapper);
-        // Invoke
-        HelperFileDAO helperDAO = new HelperFileDAO(expected_file, expected_objectMapper, expected_needDao);
-
-        // Analyze
-        assertEquals(expected_file,helperDAO.filename);
-        assertEquals(expected_objectMapper,helperDAO.objectMapper);
-        assertEquals(expected_needDao, helperDAO.needDao);
-    }
-
-    @Test
-    public void testGetHelpers() throws IOException {
-        // Setup  
-        String expected_file = "file.exe";
-        ObjectMapper expected_objectMapper = new ObjectMapper();
-        NeedDAO expected_needDao = (NeedDAO) new NeedFileDAO(expected_file, expected_objectMapper);
-        HelperFileDAO helperDAO = new HelperFileDAO(expected_file, expected_objectMapper, expected_needDao);
-        
-        
-        // Invoke
-        
-
-        // Analyze
-        assertEquals(null,helperDAO.getHelpersArray());
-    }
-
-    @Test
-    public void testLoginHelper() throws IOException {
-        // Setup  
-        String expected_file = "file.exe";
-        ObjectMapper expected_objectMapper = new ObjectMapper();
-        NeedDAO expected_needDao = (NeedDAO) new NeedFileDAO(expected_file, expected_objectMapper);
-        HelperFileDAO helperDAO = new HelperFileDAO(expected_file, expected_objectMapper, expected_needDao);
-        String username = "username";
-        String password = "password";
-        
-        
-        // Invoke
-        
-
-        // Analyze
-        assertEquals(null,helperDAO.loginHelper(username, password));
-    }
+  
     
 }

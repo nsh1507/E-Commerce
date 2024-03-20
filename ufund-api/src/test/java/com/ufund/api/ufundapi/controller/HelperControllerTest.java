@@ -58,4 +58,69 @@ public class HelperControllerTest {
         ResponseEntity<Helper> response2 = helperController.removeFromBasket("testHelperName", testNeed.getId());
         assertEquals(HttpStatus.OK, response2.getStatusCode());
     }
+
+
+    @Test
+    public void testHelperControllerCreateHelper() throws IOException {
+        Helper testHelper = new Helper(0, "Helper", "Hell", false, new ArrayList<Need>());
+      
+        ResponseEntity<Helper> created = new ResponseEntity<Helper>(testHelper,HttpStatus.CREATED);
+        ResponseEntity<Helper> serverError = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        HelperDAO helperDAOMock = mock(HelperDAO.class);
+
+        when(helperDAOMock.createHelper(testHelper)).thenReturn(testHelper);
+
+
+        HelperController helperController = new HelperController(helperDAOMock);
+
+        ResponseEntity<Helper> testResponse = helperController.createHelper(testHelper);
+
+        //assertEquals(found, testResponse);
+        assertEquals(created, testResponse);
+
+        when(helperDAOMock.createHelper(testHelper)).thenThrow(new IOException("Error"));
+        ResponseEntity<Helper> testServerError = helperController.createHelper(testHelper);
+        assertEquals(serverError, testServerError);
+    }
+
+
+
+    @Test
+    public void testHelperControllerGetHelpers() throws IOException {
+        Helper testHelper = new Helper(0, "HELPER", "Hell",false, new ArrayList<>());
+        Helper testHelperNull = null;
+
+        ResponseEntity<Helper> found = new ResponseEntity<Helper>(testHelper,HttpStatus.OK);
+        ResponseEntity<Helper> missing = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        ResponseEntity<Helper> serverError = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        Helper[] helperArray = {testHelper};
+        HelperDAO helperDAOMock = mock(HelperDAO.class);
+        when(helperDAOMock.getHelper("HELPER")).thenReturn(testHelper);
+        when(helperDAOMock.getHelper("FAKEHELPER")).thenReturn(testHelperNull);
+
+        when(helperDAOMock.getHelpers()).thenReturn(helperArray);
+
+        HelperController helperController = new HelperController(helperDAOMock);
+
+        ResponseEntity<Helper> testResponse = helperController.getHelper("HELPER");
+        ResponseEntity<Helper> testNullResponse = helperController.getHelper("FAKEHELPER");
+
+
+        assertEquals(found, testResponse);
+        assertEquals(missing, testNullResponse);
+
+        ResponseEntity<Helper[]> foundArray = new ResponseEntity<Helper[]>(helperArray,HttpStatus.OK);
+
+        ResponseEntity<Helper[]> testResponses = helperController.getHelpers();
+        assertEquals(foundArray, testResponses);
+
+        Helper[] nullHelperArray = new Helper[1];
+        when(helperDAOMock.getHelpers()).thenReturn(nullHelperArray);
+
+        when(helperDAOMock.getHelpers()).thenThrow(new IOException("Error"));
+        ResponseEntity<Helper[]> testErrorResponses = helperController.getHelpers();
+        assertEquals(serverError, testErrorResponses);
+    }
 }

@@ -79,4 +79,41 @@ public class HelperTest {
 
         assertFalse(pizza.equals(burger));
     }
+
+
+    @Test
+    public void testSetter(){
+        // Setup
+        Helper helper = new Helper(99,"Galactic Agent","Hell",false,new ArrayList<Need>());
+        // When the same id is passed in, our mock Need DAO will return the Need object
+
+        String expected_password = "Jell";
+        helper.setPassword(expected_password);
+
+        Boolean expected_admin = false;
+
+        String expected_username = "Jack";
+        helper.setUserName(expected_username);
+
+        assertEquals(expected_admin, helper.isAdmin());
+        assertEquals(expected_password, helper.getPassword());
+        assertEquals(expected_username, helper.getUsername());
+        
+    }
+
+    @Test
+    public void testToString() {
+        // Setup
+        int id = 99;
+        String name = "Wi-Fire";
+        String expected_string = String.format(Helper.STRING_FORMAT,name,"Hell",new ArrayList<Need>());
+        Helper helper = new Helper(id, name,"Hell",false, new ArrayList<Need>());
+
+        // Invoke
+        String actual_string = helper.toString();
+
+        // Analyze
+        assertEquals(expected_string,actual_string);
+    }
+
 }
