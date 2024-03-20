@@ -205,9 +205,9 @@ public class HelperController {
      *       
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
-    @GetMapping("/checkout")
-    public ResponseEntity<Boolean> checkoutBasket(String username) {
-        LOG.info("GET /checkout");
+    @DeleteMapping("/checkout")
+    public ResponseEntity<Boolean> checkoutBasket(@PathVariable String username) {
+        LOG.info("DELETE /checkout/" + username);
         try {
             return new ResponseEntity<>(helperDao.checkoutBasket(username), HttpStatus.OK);
         

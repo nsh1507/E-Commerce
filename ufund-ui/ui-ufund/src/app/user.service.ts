@@ -99,7 +99,7 @@ export class Userservice {
     const url = `${this.usersUrl}/basket/${this.currentUser?.username}`;
     this.http.put(url, need, this.httpOptions).pipe(
       tap(_ => this.log(`added product w/ id=${need.id} from cart`)),
-      catchError(this.handleError<any>('addToShoppingCart'))
+      catchError(this.handleError<any>('addToCart'))
     ).subscribe(user => this.currentUser = user);
     
     return true;
@@ -113,7 +113,7 @@ export class Userservice {
 
       this.http.delete(url, this.httpOptions).pipe(
         tap(_ => this.log(`deleted product w/ id=${need.id} from cart`)),
-        catchError(this.handleError<any>('removeFromShoppingCart'))
+        catchError(this.handleError<any>('removeFromCart'))
       ).subscribe(user => this.currentUser = user);
 
       return true;
@@ -121,6 +121,16 @@ export class Userservice {
     return false;
   }
 
+
+   /** DELETE: delete the user from the server */
+   checkOut(username: string): Observable<User | undefined> {
+    const url = `${this.usersUrl}/checkout/${username}`;
+
+    return this.http.delete<User>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`check out cart of username=${username}`)),
+      catchError(this.handleError<User>('checkout'))
+    );
+  }
 
   /**
    * Handle Http operation that failed.

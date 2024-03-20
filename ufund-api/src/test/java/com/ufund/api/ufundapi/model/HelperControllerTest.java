@@ -1,4 +1,4 @@
-package com.ufund.api.model;
+package com.ufund.api.ufundapi.model;
 
 public class HelperControllerTest {
     
