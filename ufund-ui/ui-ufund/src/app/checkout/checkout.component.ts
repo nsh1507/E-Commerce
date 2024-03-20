@@ -27,7 +27,7 @@ export class CheckoutComponent {
   ngOnInit(): void {
     this.getNeedsFromCart();
     this.getUser();
-    this.getUserCart();
+    this.getUserCart();;
   }
   
   getUser(): void {
@@ -88,7 +88,6 @@ export class CheckoutComponent {
 
 
     let cartMap: Map<number, number> = new Map();
-    let broke = false;
     let index = 0;
 
     if(this.userCart.length !== 0 && index < this.userCart.length){
@@ -100,12 +99,7 @@ export class CheckoutComponent {
         else{
           let updatedValue = cartMap.get(this.userCart[index].id)! + 1 
           cartMap.set(this.userCart[index].id, updatedValue)
-          if (cartMap.get(this.userCart[index].id)! >= this.userCart[index].quantity) {
-            broke = true;
-            break;
-          } 
           ++index;
-          
         }
       }
     }
