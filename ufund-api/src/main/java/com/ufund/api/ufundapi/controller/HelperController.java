@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import com.ufund.api.ufundapi.persistence.HelperDAO;
 import com.ufund.api.ufundapi.model.Helper;
+import com.ufund.api.ufundapi.model.Need;
 
 /**
  * Handles the REST API requests for the Helper resource
@@ -193,6 +194,78 @@ public class HelperController {
         }
         catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    // /**
+    //  * Responds to the GET request for checking out the current user's basket
+    //  * 
+    //  * @return ResponseEntity with an HTTP status of OK and body of true if the basket was checked
+    //  *         out<br>
+    //  *       
+    //  *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+    //  */
+    // @DeleteMapping("/checkout")
+    // public ResponseEntity<Boolean> checkoutBasket(@PathVariable String username) {
+    //     LOG.info("DELETE /checkout/" + username);
+    //     try {
+    //         return new ResponseEntity<>(helperDao.checkoutBasket(username), HttpStatus.OK);
+        
+    //     } catch (IOException e) {
+    //         LOG.log(Level.SEVERE, e.getLocalizedMessage());
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
+
+
+        /**
+     * Adds a {@linkplain Need} to the {@linkplain Helper}'s basket
+     * 
+     * @param helpername Helper to add the item to
+     * @param need Need to add to the helper's basket
+     * @return {@linkplain Helper}
+     *         status OK if operation is successful
+     *         status INTERNAL_SERVER_ERROR if IOException occurs
+     */
+    @PutMapping("/basket/{helpername}")
+    public ResponseEntity<Helper> addToBasket(@PathVariable String helpername, @RequestBody Need need) {
+        LOG.info("PUT /helpers/basket/ " + helpername);
+        try {
+            Helper helper = this.helperDao.getHelper(helpername);
+            if (helper == null) {
+                helper = this.helperDao.createHelper(helper);
+            }
+
+            helper.addToCart(need);
+            helper = this.helperDao.updateHelper(helper);
+            return new ResponseEntity<Helper>(helper, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Removes a {@linkplain Need} from the {@linkplain Helper}'s basket
+     * 
+     * @param helpername Helper to remove the item from
+     * @param needID ID of need to remove from the helper's basket
+     * @return {@linkplain Helper}
+     *         status OK if operation is successful
+     *         status INTERNAL_SERVER_ERROR if IOException occurs
+     */
+    @DeleteMapping("/basket/{helpername}/{needID}")
+    public ResponseEntity<Helper> removeFromBasket(@PathVariable String helpername, @PathVariable int needID) {
+        LOG.info("DELETE /helpers/basket/ " + helpername + needID);
+        try {
+            Helper helper = this.helperDao.getHelper(helpername);
+            if (helper == null) {
+                helper = this.helperDao.createHelper(helper);
+            }
+
+            helper.removeFromCart(needID);
+            helper = this.helperDao.updateHelper(helper);
+            return new ResponseEntity<Helper>(helper, HttpStatus.OK);
+        } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -1,4 +1,5 @@
 <div *ngIf="need">
+  <div *ngIf="userService.isAdmin()">
   <h2>{{need.name | uppercase}} Details</h2>
   <div><span>id: </span>{{need.id}}</div>
   <div>
@@ -16,5 +17,41 @@
 
   </div>
   <button type="button" (click)="goBack()">go back</button>
+  <div *ngIf="userService.getCurrentUser() !== null">
   <button type="button" (click)="save()">save</button>
+  </div>
+  </div>
+  
+
+
+
+  <div *ngIf="!userService.isAdmin()">
+    <h2>{{need.name | uppercase}} Details</h2>
+    <div><span>id: </span>{{need.id}}</div>
+    <div>
+      <label for="need-name">Need name: </label>
+      <input id="need-name" [(ngModel)]="need.name" placeholder="Need name" readonly/>
+  
+      <label for="need-cost">Need cost: </label>
+      <input id="need-cost" [(ngModel)]="need.cost" placeholder="Need cost" readonly/>
+  
+      <label for="need-quantity">Need quantity: </label>
+      <input id="need-quantity" [(ngModel)]="need.quantity" placeholder="Need quantity" readonly/>
+  
+      <label for="need-type">Need type: </label>
+      <input id="need-type" [(ngModel)]="need.type" placeholder="Need type" readonly/>
+  
+    </div>
+    <button type="button" (click)="goBack()">Go Back</button>
+    <div *ngIf="userService.getCurrentUser() !== null">
+    <button type="button" (click)="addToCart()">Add To Cart</button>
+    <button type="button" (click)="removeFromCart()">Remove From Cart</button>
+    <button type="button" routerLink="/checkout"> My Cart</button>
+    </div>
+  </div>
+
+
+
+
+
 </div>

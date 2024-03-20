@@ -18,27 +18,28 @@ geometry: margin=1in
 
 ## Executive Summary
 
-This is a summary of the project.
+This is a project which creates a website for a food charity. In this website, the user is able to login as a user or an admin using a username and password. The admin is able to view the needs cupboard and add or delete needs from it. The Helper is able to view the needs in the needs cupboard that the admin has added. The Helper can also search for needs using a search bar and have access to view and modify the funding basket. Items in the funding basket persist even after the Helper logs out and logs back in. Users can also send feedback to the admin, which the admin can see after they log in. The users can "check out" needs when they have decided to contribute to them, and they can also see a history of previous needs they have contributed to that persists through log in and log outs.
 
 ### Purpose
->  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
-> important user group and user goals._
+> _**[Sprint 2 & 4] Provide a very brief statement about the project and the most important user group and user goals.
+An U-Fund Charity webpage where customers can purchase needs that will go for a cause. The U-Fund admin have full control over the cupboard and will be the sole user to be able to add, delete, the edit needs. Admin, however, will not have access to a regular user funding basket.
 
 ### Glossary and Acronyms
 > _**[Sprint 2 & 4]** Provide a table of terms and acronyms._
 
-| Term   |          Definition                |
-|--------|------------------------------------|
-| SPA    |  Single Page                       |
-| DAO    |  Data Access Object                |
-| CSS	   |  Cascading Style Sheets            |
-| TS	   |  Type Script                       |
-| HTML   |	Hypertext Markup Language         |
-| Admin  |	Can edit products and orders      |
-| User   | Generic person using the site      |
-|Customer| Person that has an account         |
-|Need    |A purchasable item in the cupboard  |
-|Cupboard| Access to the needs                |
+| Term    |            Definition               |
+|---------|-------------------------------------|
+| SPA     |  Single Page                        |
+| DAO     |  Data Access Object                 |
+| CSS	    |  Cascading Style Sheets             |
+| TS	    |  Type Script                        |
+| Angular |  Framework for web application      |
+| HTML    |	 Hypertext Markup Language          |
+| Admin   |	 Can edit products and orders       |
+| Admin   |  User that can edit the inventory   |
+| Helper  |  User that can edit their cart      |
+| Need    |  A purchasable item in the cupboard |
+| Cupboard|  Access to the needs                |
 
 
 ## Requirements
@@ -49,8 +50,37 @@ This section describes the features of the application.
 > story.  Focus on top-level features from the Vision document and
 > maybe Epics and critical Stories._
 
+  - Admin can add, remove, and modify needs in the needs cupboard
+  - Helper can browse needs in the needs cupboard and search using keywords
+  - Helper can add/delete products from their cart
+  - Helper can log in to an existing account with username and password, or register should the account not exist
+  - Helper can checkout their needs from the basket
+
 ### Definition of MVP
 > _**[Sprint 2 & 4]** Provide a simple description of the Minimum Viable Product._
+
+  - Minimal Authentication for Helper/U-fund Manager login & logout
+    - A Helper can create a new account with a new username and password
+    - A Helper can log into an existing account
+    - The Admin already has an account in the system
+    - The Admin and Helper can log out of their account
+    - Data Persistence on the Helper Basket
+    - Username of user is unique
+
+  - Helper functionality
+    - Helper can see list of needs
+    - Helper can search for a need
+    - Helper can add/remove an need to their funding basket
+    - Helper can proceed to check-out and fund all needs they are supporting
+
+  - Needs Management
+    - U-fund Manager(s) can add, remove and edit the data of all their needs stored in their needs cupboard
+    - A U-fund Manager cannot see contents of funding basket(s) of Helpers
+    - A U-fund Manager does not have a basket
+
+  - Data Persistence
+    - The contents of the Helper basket in the basket will remain the same when the Helper log out and log back in.
+    - When a Helper purchase all the need from the Cupboard, another Helper will not be able to see the needs from the Cupboard anymore until the Admin restock
 
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
@@ -173,8 +203,15 @@ This section describes the web interface flow; this is how the user views and in
 > coverage targets, why you selected those values, and how well your
 > code coverage met your targets._
 
->_**[Sprint 2 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss
-> those._
+>_**[Sprint 2 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss those._
 
 ## Ongoing Rationale
->_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
+>_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**major**_ team decisions or design milestones/changes and corresponding justification._
+
+  - (2024/2/10): Sprint 1
+    - The 10% feature will be Helper Feedback and Purchase History Page
+  - (2024/3/19): Sprint 2
+    - The team will change the architecture of the project significantly by removing the Basket logic in the API entirely and will be represented as an array of Needs in the Helper
+    - Rationale:
+      - Reduce the number of unnecessary unit testing
+      - Making the Basket as an attribute of Helper would make a significantly improvement on the design and better adherence to GRASP Principles by reducing Coupling

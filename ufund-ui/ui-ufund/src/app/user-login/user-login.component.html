@@ -7,10 +7,10 @@
             <form class="signUp-form">
                 <h2 class="signUp-title"> User Sign Up</h2>
                 <div class="form-control">
-                    <input #name placeholder="Username" required/>
+                    <input #name placeholder="Username------Type in 'admin' for admin account" required/>
                 </div>
                 <div class="form-control">
-                    <input #password placeholder="Password" required/>
+                    <input #password placeholder="Password------Type in 'admin' for admin account" required/>
                 </div>
                 <button (click)="onSignIn(name.value, password.value)">Sign Up</button>
                 <p>Already have an account? <a href="#" (click)="signUp = false">Login</a></p>

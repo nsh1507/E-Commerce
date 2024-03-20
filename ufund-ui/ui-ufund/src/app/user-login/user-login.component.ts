@@ -35,8 +35,7 @@ export class UserLoginComponent {
         this.signUp = false;
       }
       else{
-        alert("Account already exist!")
-
+        alert("Username is Taken!")
       }
     });
   }

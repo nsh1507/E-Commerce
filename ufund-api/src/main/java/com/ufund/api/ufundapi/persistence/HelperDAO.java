@@ -3,6 +3,7 @@ package com.ufund.api.ufundapi.persistence;
 import java.io.IOException;
 
 import com.ufund.api.ufundapi.model.Helper;
+import com.ufund.api.ufundapi.model.Need;
 
 /**
  * Interface for saving a helper to the data store
@@ -81,4 +82,12 @@ public interface HelperDAO {
      * @throws IOException if underlying storage cannot be accessed
      */
     boolean deleteHelper(String username) throws IOException;
+
+    /**
+     * Checks out the {@linkplain Need}s in the Helper's basket.
+     * @param username: the username of the Helper being checked out.
+     * @return whether the checkout was successful.
+     * @throws IOException if underlying storage can't be accessed
+     */
+    boolean checkoutBasket(String username) throws IOException;
 }

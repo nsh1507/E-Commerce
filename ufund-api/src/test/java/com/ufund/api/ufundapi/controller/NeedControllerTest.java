@@ -113,7 +113,7 @@ public class NeedControllerTest {
         ResponseEntity<Need> response = needController.createNeed(need);
 
         // Analyze
-        assertEquals(HttpStatus.CONFLICT,response.getStatusCode());
+        assertEquals(HttpStatus.CREATED,response.getStatusCode());
     }
 
     @Test

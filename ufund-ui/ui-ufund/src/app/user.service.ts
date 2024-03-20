@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { User } from './user';
+import { Need } from './need';
 import { MessageService } from './message.service';
 
 
@@ -90,6 +91,45 @@ export class Userservice {
 
   isAdmin() {
     return (this.currentUser?.username === "admin");
+  }
+
+
+  addToCart(need: Need){
+    if(this.currentUser !== null){
+    const url = `${this.usersUrl}/basket/${this.currentUser?.username}`;
+    this.http.put(url, need, this.httpOptions).pipe(
+      tap(_ => this.log(`added product w/ id=${need.id} from cart`)),
+      catchError(this.handleError<any>('addToCart'))
+    ).subscribe(user => this.currentUser = user);
+    
+    return true;
+    }
+    return false;
+  }
+
+  removeFromCart(need: Need){
+    if (this.currentUser !== null){
+    const url = `${this.usersUrl}/basket/${this.currentUser?.username}/${need.id}`;
+
+      this.http.delete(url, this.httpOptions).pipe(
+        tap(_ => this.log(`deleted product w/ id=${need.id} from cart`)),
+        catchError(this.handleError<any>('removeFromCart'))
+      ).subscribe(user => this.currentUser = user);
+
+      return true;
+    }
+    return false;
+  }
+
+
+   /** DELETE: delete the user from the server */
+   checkOut(username: string): Observable<User | undefined> {
+    const url = `${this.usersUrl}/checkout/${username}`;
+
+    return this.http.delete<User>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`check out cart of username=${username}`)),
+      catchError(this.handleError<User>('checkout'))
+    );
   }
 
   /**

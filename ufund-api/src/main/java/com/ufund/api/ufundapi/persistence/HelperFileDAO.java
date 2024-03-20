@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ufund.api.ufundapi.model.Helper;
+import com.ufund.api.ufundapi.model.Need;;
 
 @Component
 public class HelperFileDAO implements HelperDAO {
@@ -20,11 +21,13 @@ public class HelperFileDAO implements HelperDAO {
     Map<String,Helper> helpers;   // Provides a local cache of the helper objects
                                 // so that we don't need to read from the file
                                 // each time
-    private ObjectMapper objectMapper;  // Provides conversion between Helper
+    public ObjectMapper objectMapper;  // Provides conversion between Helper
                                         // objects and JSON text format written
                                         // to the file
-    private String filename;    // Filename to read from and write to
+    public String filename;    // Filename to read from and write to
     private static int nextId;  // The next Id to assign to a new helper
+
+    public NeedDAO needDao;
 
     /**
      * Creates a Helper File Data Access Object
@@ -34,9 +37,10 @@ public class HelperFileDAO implements HelperDAO {
      * 
      * @throws IOException when file cannot be accessed or read from
      */
-    public HelperFileDAO(@Value("${helpers.file}") String filename,ObjectMapper objectMapper) throws IOException {
+    public HelperFileDAO(@Value("${helpers.file}") String filename,ObjectMapper objectMapper, NeedDAO needDao ) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
+        this.needDao = needDao;
         load();  // load the helpers from the file
     }
 
@@ -59,7 +63,7 @@ public class HelperFileDAO implements HelperDAO {
      * 
      * @return  The array of {@link Helper helpers}, may be empty
      */
-    private Helper[] getHelpersArray() {
+    public Helper[] getHelpersArray() {
         return getHelpersArray(null);
     }
 
@@ -138,7 +142,7 @@ public class HelperFileDAO implements HelperDAO {
             return getHelpersArray();
         }
     }
-
+    
     /**
     ** {@inheritDoc}
      */
@@ -176,9 +180,10 @@ public class HelperFileDAO implements HelperDAO {
         synchronized(helpers) {
             // We create a new helper object because the username field is immutable
             boolean admin = false;
+            ArrayList<Need> list = new ArrayList<>();
             if (helper.getUsername().equals("admin")) {admin = true;}
             int id = nextId();
-            Helper newHelper = new Helper(id, helper.getUsername(),helper.getPassword(), id, admin);
+            Helper newHelper = new Helper(id, helper.getUsername(),helper.getPassword(), admin, list);
             helpers.put(newHelper.getUsername(),newHelper);
             save(); // may throw an IOException
             return newHelper;
@@ -213,5 +218,43 @@ public class HelperFileDAO implements HelperDAO {
             else
                 return false;
         }
+    }
+
+     /**
+     * Checks out the {@linkplain Need}s in the Helper's basket.
+     * @param username: the username of the Helper being checked out.
+     * @return whether the checkout was successful.
+     * @throws IOException if underlying storage can't be accessed
+     */
+    @Override
+    public boolean checkoutBasket(String username) throws IOException {
+        ArrayList<Need> basket = getHelper(username).getCart();
+        if (basket == null)
+            throw new IOException();
+
+        synchronized (basket) {
+            // Update the need from the list of needs since it's been funded
+            Need matchedNeed;
+            // Verify needs
+            for (Need need : basket){
+                matchedNeed = needDao.getNeed(need.getId());
+                // If match is null, return false
+                // If Available quantity has changed to be lower than what the user was requesting or cost increased, return false
+                if (matchedNeed == null || matchedNeed.getQuantity() < need.getQuantity() || need.getCost() < matchedNeed.getCost())
+                    return false;
+            }
+            // Update needs
+            for (Need need : basket){
+                matchedNeed = needDao.getNeed(need.getId());
+                // If we find a matching need, update the quantity. If quantity is 0 or below, delete the need
+                matchedNeed.setQuantity(matchedNeed.getQuantity() - need.getQuantity());
+                if (matchedNeed.getQuantity() > 0)
+                    needDao.updateNeed(matchedNeed);
+                else
+                    needDao.deleteNeed(matchedNeed.getId());
+            }
+            basket.clear();
+        }
+        return true;
     }
 }
