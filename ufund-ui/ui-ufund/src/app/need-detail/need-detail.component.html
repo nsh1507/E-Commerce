@@ -44,7 +44,8 @@
     </div>
     <button type="button" (click)="goBack()">Go Back</button>
     <div *ngIf="userService.getCurrentUser() !== null">
-    <button type="button" >Add To Cart</button>
+    <button type="button" (click)="addToCart()">Add To Cart</button>
+    <button type="button" (click)="removeFromCart()">Remove From Cart</button>
     <button type="button" routerLink="/checkout"> My Cart</button>
     </div>
   </div>

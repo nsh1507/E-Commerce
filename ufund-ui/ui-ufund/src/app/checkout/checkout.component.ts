@@ -14,6 +14,7 @@ import { User } from '../user';
 export class CheckoutComponent {
   needs: Need[] = [];
   user: User | null = null;
+  userCart: Need[] | undefined = [];
 
   constructor(
     public userService: Userservice, 
@@ -22,23 +23,33 @@ export class CheckoutComponent {
     public needService: NeedService) {}
 
   ngOnInit(): void {
-    this.getNeeds();
+    this.getNeedsFromCart();
     this.getUser();
+    this.getUserCart();
   }
   
   getUser(): void {
     this.user = this.userService.getCurrentUser();
   }
+
+  getUserCart(): void{
+    this.userCart = this.userService.getCurrentUser()?.cart;
+  }
   
-  getNeeds(): void {
-    let index = 0;
+  getNeedsFromCart(): void {
     this.needService.getNeeds()
       .subscribe((needs) => {
         needs.forEach((need) => {
-        if (need.id === this.userService.getCurrentUser()?.cart[index++].id) {
-          this.needs.push(need);
-        }
-      })});
+          let index = 0;
+          while (this.userCart !== undefined && index < this.userCart.length){
+            if (need.id === this.userCart[index].id) {
+              this.needs.push(this.userCart[index]);
+            }
+            index ++;
+          }
+        })
+      }
+    );
   }
   
   logOut(){
