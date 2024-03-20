@@ -17,6 +17,8 @@ export class NeedDetailComponent implements OnInit {
   needs: Need[] = [];
   currentUser: User | null = null;
   userCart: Need[] | undefined = [];
+  totalCost: number = 0;
+  totalQuantity: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -82,25 +84,64 @@ export class NeedDetailComponent implements OnInit {
     );
   }
 
-  addToCart(){
-    let cartMap: Map<Need, number> = new Map();
-
-    let index = 0;
-    while(this.userCart !== undefined && index < this.userCart.length){
-      if(cartMap.has(this.userCart[index])){
-        cartMap.set(this.userCart[index], 1)
+  refreshCartDisplay(): void {
+    this.userService.getUserCart().subscribe(
+      (cart: Need[] | undefined) => {
+        this.userCart = cart;
+        if (cart) {
+          // Proceed with operations that require cart to be defined
+          this.updateCartTotals();
+        } else {
+          // Handle the case where cart is undefined
+          // For example, you might clear the totals or display a message
+          console.log("Cart is undefined.");
+        }
+      },
+      error => {
+        console.error('Error refreshing cart:', error);
+        alert('There was an error refreshing your cart.');
       }
-      else{
-        cartMap.set(this.userCart[index], +1);
-      }
-    }
-
-    this.userService.addToCart(this.need!)
-    this.getUser()
-  }
-
-  removeFromCart(): void {
-    this.userService.removeFromCart(this.need!)
-    this.getUser()
+    );
 }
+
+updateCartTotals(): void {
+  this.totalCost = 0;
+  this.totalQuantity = 0;
+
+  this.userCart?.forEach(need => {
+    this.totalCost += need.cost * need.quantity;
+    this.totalQuantity += need.quantity;
+  });
+}
+
+addToCart() {
+  if (!this.need) {
+    alert("No need selected to add to cart.");
+    return;
+  }
+  // Assuming a method to get count of this need in the cart exists
+  let currentNeedQuantity = this.countNeed(this.need);
+  
+  if (currentNeedQuantity < this.need.quantity) {
+    this.userService.addToCart(this.need).subscribe(() => {
+      this.refreshCartDisplay(); // Make sure this method effectively updates the UI
+    });
+  } else {
+    alert("Cannot add more of this item as it exceeds the available quantity.");
+  }
+}
+
+removeFromCart() {
+  if (!this.need) {
+    alert("No need selected to remove from cart.");
+    return;
+  }
+  this.userService.removeFromCart(this.need).subscribe(() => {
+    this.refreshCartDisplay(); // Ensure this method updates the UI as expected
+  });
+}
+
+  countNeed(need: Need): number {
+    return this.userCart?.filter(item => item.id === need.id).length || 0;
+  }
 }
