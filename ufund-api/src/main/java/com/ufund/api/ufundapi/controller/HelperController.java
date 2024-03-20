@@ -196,4 +196,23 @@ public class HelperController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    /**
+     * Responds to the GET request for checking out the current user's basket
+     * 
+     * @return ResponseEntity with an HTTP status of OK and body of true if the basket was checked
+     *         out<br>
+     *       
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     */
+    @GetMapping("/checkout")
+    public ResponseEntity<Boolean> checkoutBasket() {
+        LOG.info("GET /checkout");
+        try {
+            return new ResponseEntity<>(helperDao.checkoutBasket(), HttpStatus.OK);
+        
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
