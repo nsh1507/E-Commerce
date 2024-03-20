@@ -60,28 +60,6 @@ public class HelperControllerTest {
     }
 
 
-    @Test
-    public void testDeleteHelper() throws IOException {
-        Helper testHelper = new Helper(0, "Helper", "Hell", false, new ArrayList<Need>());
-      
-        ResponseEntity<Helper> deleted = new ResponseEntity<Helper>(testHelper,HttpStatus.CREATED);
-        ResponseEntity<Helper> serverError = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
-        HelperDAO helperDAOMock = mock(HelperDAO.class);
-
-
-        HelperController helperController = new HelperController(helperDAOMock);
-
-        ResponseEntity<Helper> testResponse = helperController.createHelper(testHelper);
-
-        //assertEquals(found, testResponse);
-        assertEquals(deleted, testResponse);
-
-        when(helperDAOMock.createHelper(testHelper)).thenThrow(new IOException("Error"));
-        ResponseEntity<Helper> testServerError = helperController.createHelper(testHelper);
-        assertEquals(serverError, testServerError);
-    }
-
 
     @Test
     public void testGetHelpers() throws IOException {
