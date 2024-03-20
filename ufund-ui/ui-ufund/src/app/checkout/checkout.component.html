@@ -6,11 +6,11 @@
     <h2 *ngIf="needs.length==0"> <strong>No products</strong></h2>
     <a *ngFor="let need of needs"
         routerLink="/detail/{{need.id}}">
-        Name: {{need.name}}, 
+        Name: {{need.name}}
         <ul></ul>
-        Cost: (${{need.cost}}),
+        Cost: (${{need.cost}})
         <ul></ul>
-        Quantity: {{need.quantity}}
+        Quantity in Cart: {{need.quantity}}
     </a>
   </div>
   

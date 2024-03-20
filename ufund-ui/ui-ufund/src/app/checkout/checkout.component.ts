@@ -31,11 +31,12 @@ export class CheckoutComponent {
   }
   
   getNeeds(): void {
+    let index = 0;
     this.needService.getNeeds()
       .subscribe((needs) => {
         needs.forEach((need) => {
-        if (need.quantity > 0) {
-          this.needs.push(need)
+        if (need.id === this.userService.getCurrentUser()?.cart[index++].id) {
+          this.needs.push(need);
         }
       })});
   }
