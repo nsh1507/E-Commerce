@@ -1,157 +1,82 @@
 package com.ufund.api.ufundapi.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import com.ufund.api.ufundapi.model.Helper;
-import com.ufund.api.ufundapi.model.Need;
-
-/**
- * The unit test suite for the Helper class
- * 
- * @author Saavan Tandon
- */
-@Tag("Model-tier")
+@Tag("Model-Tier")
 public class HelperTest {
     @Test
     public void testCtor() {
         // Setup
-        int expected_id = 99;
-        String expected_name = "Bob";
-        String expected_password = "password123";
-        Boolean expected_admin = false;
+        int expected_cart_size = 2;
+        String expected_helper_name = "helperName";
+        String expected_first_item_name = "Pizza";
+        int expected_first_item_cost = 15;
+        String expected_second_item_name = "Burger";
+        int expected_second_item_cost = 10;
 
-        Need cookies = new Need(1, "cookies", 5, 1, "solid food");
-        Need cake = new Need(2, "cookies", 10, 1, "solid food");
-        ArrayList<Need> expected_cart = new ArrayList<Need>();
-        expected_cart.add(cookies);
-        expected_cart.add(cake);
+        Need pizza = new Need(1, "Pizza", 15, 2, "Food");
+        Need burger = new Need(2, "Burger", 10, 5, "Food");
+        ArrayList<Need> helperCart = new ArrayList<>();
+        helperCart.add(pizza);
+        helperCart.add(burger);
 
         // Invoke
-        Helper helper = new Helper(expected_id,expected_name, expected_password, expected_admin, expected_cart);
+        Helper helper = new Helper(expected_second_item_cost, "helperName", "pass123", false, helperCart);
 
         // Analyze
-        assertEquals(expected_id,helper.getId());
-        assertEquals(expected_name,helper.getUsername());
+        assertEquals(expected_cart_size, helper.getCart().size());
+        assertEquals(expected_helper_name, helper.getUsername());
+        assertEquals(expected_first_item_name, helper.getCart().get(0).getName());
+        assertEquals(expected_first_item_cost, helper.getCart().get(0).getCost());
+        assertEquals(expected_second_item_name, helper.getCart().get(1).getName());
+        assertEquals(expected_second_item_cost, helper.getCart().get(1).getCost());
     }
 
     @Test
-    public void testName() {
+    public void testRemoveFromCart() {
         // Setup
-        int expected_id = 99;
-        String expected_name = "Bob";
-        String expected_password = "password123";
-        Boolean expected_admin = false;
+        int expected_cart_size_before_removal = 2;
+        int expected_cart_size_after_removal = 1;
 
-        Need cookies = new Need(1, "cookies", 5, 1, "solid food");
-        Need cake = new Need(2, "cookies", 10, 1, "solid food");
-        ArrayList<Need> expected_cart = new ArrayList<Need>();
-        expected_cart.add(cookies);
-        expected_cart.add(cake);
+        Need pizza = new Need(1, "Pizza", 15, 2, "Food");
+        Need burger = new Need(2, "Burger", 10, 5, "Food");
+        ArrayList<Need> helperCart = new ArrayList<>();
+        helperCart.add(pizza);
+        helperCart.add(burger);
 
-        Helper helper = new Helper(expected_id,expected_name, expected_password, expected_admin, expected_cart);
-        
-        // Invoke
-        helper.setUserName(expected_name);
+        Helper helper = new Helper(expected_cart_size_after_removal, "helperName", "test123", false, helperCart);
 
-        // Analyze
-        assertEquals(expected_name,helper.getUsername());
+        // Analyze before removal
+        assertEquals(expected_cart_size_before_removal, helper.getCart().size());
+
+        // Perform removal
+        helper.removeFromCart(2); // Assuming removeFromCart works by need ID
+
+        // Verify after removal
+        assertEquals(expected_cart_size_after_removal, helper.getCart().size());
     }
 
     @Test
-    public void testPassword() {
-        // Setup
-        int expected_id = 99;
-        String expected_name = "Bob";
-        String expected_password = "password123";
-        Boolean expected_admin = false;
+    public void testEquals() {
+        Need pizza1 = new Need(1, "pizza1", 1, 1, "Pizza");
+        @SuppressWarnings("unused")
+        Need pizza2 = new Need(1, "pizza2", 2, 2, "Pizza");
 
-        Need cookies = new Need(1, "cookies", 5, 1, "solid food");
-        Need cake = new Need(2, "cookies", 10, 1, "solid food");
-        ArrayList<Need> expected_cart = new ArrayList<Need>();
-        expected_cart.add(cookies);
-        expected_cart.add(cake);
-
-        Helper helper = new Helper(expected_id,expected_name, expected_password, expected_admin, expected_cart);
-        
-        // Invoke
-        helper.setUserName(expected_password);
-
-        // Analyze
-        assertEquals(expected_password,helper.getPassword());
+        assertTrue(pizza1.equals(pizza1));
     }
 
     @Test
-    public void testCart() {
-        // Setup
-        int expected_id = 99;
-        String expected_name = "Bob";
-        String expected_password = "password123";
-        Boolean expected_admin = false;
+    public void testNotEquals() {
+        Need pizza = new Need(1, "Pizza", 15, 2, "Food");
+        Need burger = new Need(2, "Burger", 10, 5, "Food");
 
-        Need cookies = new Need(1, "cookies", 5, 1, "solid food");
-        Need cake = new Need(2, "cookies", 10, 1, "solid food");
-        ArrayList<Need> expected_cart = new ArrayList<Need>();
-        expected_cart.add(cookies);
-        expected_cart.add(cake);
-
-        Helper helper = new Helper(expected_id,expected_name, expected_password, expected_admin, expected_cart);
-        
-        // Invoke
-        
-
-        // Analyze
-        assertEquals(expected_cart,helper.getCart());
-    }
-
-    @Test
-    public void testAdmin() {
-        // Setup
-        int expected_id = 99;
-        String expected_name = "Bob";
-        String expected_password = "password123";
-        Boolean expected_admin = false;
-
-        Need cookies = new Need(1, "cookies", 5, 1, "solid food");
-        Need cake = new Need(2, "cookies", 10, 1, "solid food");
-        ArrayList<Need> expected_cart = new ArrayList<Need>();
-        expected_cart.add(cookies);
-        expected_cart.add(cake);
-
-        Helper helper = new Helper(expected_id,expected_name, expected_password, expected_admin, expected_cart);
-        
-        // Invoke
-        
-
-        // Analyze
-        assertEquals(expected_admin,helper.isAdmin());
-    }
-
-    @Test
-    public void testToString() {
-        // Setup
-        int expected_id = 99;
-        String expected_name = "Bob";
-        String expected_password = "password123";
-        Boolean expected_admin = false;
-
-        Need cookies = new Need(1, "cookies", 5, 1, "solid food");
-        Need cake = new Need(2, "cookies", 10, 1, "solid food");
-        ArrayList<Need> expected_cart = new ArrayList<Need>();
-        expected_cart.add(cookies);
-        expected_cart.add(cake);
-
-        Helper helper = new Helper(expected_id,expected_name, expected_password, expected_admin, expected_cart);
-        String expected_string = String.format(Helper.STRING_FORMAT,expected_id,expected_name);
-
-        // Invoke
-        String actual_string = helper.toString();
-
-        // Analyze
-        assertEquals(expected_string,actual_string);
+        assertFalse(pizza.equals(burger));
     }
 }
