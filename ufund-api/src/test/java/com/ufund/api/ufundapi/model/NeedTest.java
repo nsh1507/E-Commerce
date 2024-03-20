@@ -58,6 +58,7 @@ public class NeedTest {
 
         // Analyze
         assertEquals(expected_cost,need.getCost());
+        
     }
 
 
@@ -108,5 +109,24 @@ public class NeedTest {
 
         // Analyze
         assertEquals(expected_string,actual_string);
+    }
+
+
+
+    @Test
+    public void testSetters() {
+        int id = 99;
+        String name = "Wi-Fire";
+        Need need = new Need(id,name,0,0,"Men");
+        need.setCost(69);
+        int testCost= need.getCost();
+        need.setQuantity(69);
+        int testQuantity = need.getQuantity();
+        need.setName("TestProduct");
+        String testName = need.getName();
+
+        assertEquals(69, testCost);
+        assertEquals(69, testQuantity);
+        assertEquals("TestProduct", testName);
     }
 }
