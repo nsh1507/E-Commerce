@@ -3,16 +3,11 @@ package com.ufund.api.ufundapi.persistance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufund.api.ufundapi.model.Helper;
-import com.ufund.api.ufundapi.model.Need;
-import com.ufund.api.ufundapi.persistence.HelperDAO;
 import com.ufund.api.ufundapi.persistence.HelperFileDAO;
 import com.ufund.api.ufundapi.persistence.NeedDAO;
 import com.ufund.api.ufundapi.persistence.NeedFileDAO;

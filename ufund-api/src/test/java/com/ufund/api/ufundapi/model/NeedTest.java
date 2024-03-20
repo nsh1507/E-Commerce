@@ -43,6 +43,58 @@ public class NeedTest {
         assertEquals(expected_name,need.getName());
     }
 
+
+    @Test
+    public void testCost() {
+        // Setup
+        int id = 99;
+        String name = "Wi-Fire";
+        Need need = new Need(id,name,0,0,"Men");
+
+        Integer expected_cost = 5000;
+
+        // Invoke
+        need.setCost(expected_cost);
+
+        // Analyze
+        assertEquals(expected_cost,need.getCost());
+    }
+
+
+    @Test
+    public void testQuantity() {
+        // Setup
+        int id = 99;
+        String name = "Wi-Fire";
+        Need need = new Need(id,name,0,0,"Men");
+
+        Integer expected_quantity = 5000;
+
+        // Invoke
+        need.setQuantity(expected_quantity);
+
+        // Analyze
+        assertEquals(expected_quantity,need.getQuantity());
+    }
+
+
+    @Test
+    public void testType() {
+        // Setup
+        int id = 99;
+        String name = "Wi-Fire";
+        Need need = new Need(id,name,0,0,"Men");
+
+        String expected_type = "Galactic Agent";
+
+        // Invoke
+        need.setType(expected_type);
+
+        // Analyze
+        assertEquals(expected_type,need.getType());
+    }
+
+
     @Test
     public void testToString() {
         // Setup
