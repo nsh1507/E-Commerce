@@ -27,6 +27,8 @@ public class HelperFileDAO implements HelperDAO {
     private String filename;    // Filename to read from and write to
     private static int nextId;  // The next Id to assign to a new helper
 
+    private NeedDAO needDao;
+
     /**
      * Creates a Helper File Data Access Object
      * 
@@ -35,9 +37,10 @@ public class HelperFileDAO implements HelperDAO {
      * 
      * @throws IOException when file cannot be accessed or read from
      */
-    public HelperFileDAO(@Value("${helpers.file}") String filename,ObjectMapper objectMapper) throws IOException {
+    public HelperFileDAO(@Value("${helpers.file}") String filename,ObjectMapper objectMapper, NeedDAO needDao ) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
+        this.needDao = needDao;
         load();  // load the helpers from the file
     }
 
@@ -215,5 +218,43 @@ public class HelperFileDAO implements HelperDAO {
             else
                 return false;
         }
+    }
+
+     /**
+     * Checks out the {@linkplain Need}s in the Helper's basket.
+     * @param username: the username of the Helper being checked out.
+     * @return whether the checkout was successful.
+     * @throws IOException if underlying storage can't be accessed
+     */
+    @Override
+    public boolean checkoutBasket(String username) throws IOException {
+        ArrayList<Need> basket = getHelper(username).getCart();
+        if (basket == null)
+            throw new IOException();
+
+        synchronized (basket) {
+            // Update the need from the list of needs since it's been funded
+            Need matchedNeed;
+            // Verify needs
+            for (Need need : basket){
+                matchedNeed = needDao.getNeed(need.getId());
+                // If match is null, return false
+                // If Available quantity has changed to be lower than what the user was requesting or cost increased, return false
+                if (matchedNeed == null || matchedNeed.getQuantity() < need.getQuantity() || need.getCost() < matchedNeed.getCost())
+                    return false;
+            }
+            // Update needs
+            for (Need need : basket){
+                matchedNeed = needDao.getNeed(need.getId());
+                // If we find a matching need, update the quantity. If quantity is 0 or below, delete the need
+                matchedNeed.setQuantity(matchedNeed.getQuantity() - need.getQuantity());
+                if (matchedNeed.getQuantity() > 0)
+                    needDao.updateNeed(matchedNeed);
+                else
+                    needDao.deleteNeed(matchedNeed.getId());
+            }
+            basket.clear();
+        }
+        return true;
     }
 }
