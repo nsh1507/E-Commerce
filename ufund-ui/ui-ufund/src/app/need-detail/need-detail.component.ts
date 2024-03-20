@@ -83,6 +83,18 @@ export class NeedDetailComponent implements OnInit {
   }
 
   addToCart(){
+    let cartMap: Map<Need, number> = new Map();
+
+    let index = 0;
+    while(this.userCart !== undefined && index < this.userCart.length){
+      if(cartMap.has(this.userCart[index])){
+        cartMap.set(this.userCart[index], 1)
+      }
+      else{
+        cartMap.set(this.userCart[index], +1);
+      }
+    }
+
     this.userService.addToCart(this.need!)
     this.getUser()
   }
