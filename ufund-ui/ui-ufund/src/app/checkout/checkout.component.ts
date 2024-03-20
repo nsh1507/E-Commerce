@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Userservice } from '../user.service';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NeedService } from '../need.service';
 import { Need } from '../need';
 import { User } from '../user';
@@ -13,10 +13,12 @@ import { User } from '../user';
 })
 export class CheckoutComponent {
   needs: Need[] = [];
+  need: Need | undefined;
   user: User | null = null;
   userCart: Need[] | undefined = [];
 
   constructor(
+    private route: ActivatedRoute,
     public userService: Userservice, 
     private location: Location, 
     private router: Router, 
@@ -36,6 +38,14 @@ export class CheckoutComponent {
     this.userCart = this.userService.getCurrentUser()?.cart;
   }
   
+
+  getNeed(): void {
+    const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
+    this.needService.getNeed(id)
+      .subscribe(need => this.need = need);
+  }
+
+
   getNeedsFromCart(): void {
     this.needService.getNeeds()
       .subscribe((needs) => {
@@ -69,5 +79,43 @@ export class CheckoutComponent {
     this.location.back();
   }
 
-  
+  checkout() {
+    this.getUserCart();
+    if (!this.userCart){
+      this.userCart = []
+    }
+    
+
+
+    let cartMap: Map<number, number> = new Map();
+    let broke = false;
+    let index = 0;
+
+    if(this.userCart.length !== 0 && index < this.userCart.length){
+      while(index < this.userCart.length){
+        if (cartMap.has(this.userCart[index].id) === false) {
+          cartMap.set(this.userCart[index].id, 1)
+          ++index;
+        }
+        else{
+          let updatedValue = cartMap.get(this.userCart[index].id)! + 1 
+          cartMap.set(this.userCart[index].id, updatedValue)
+          if (cartMap.get(this.userCart[index].id)! >= this.userCart[index].quantity) {
+            broke = true;
+            break;
+          } 
+          ++index;
+          
+        }
+      }
+    }
+
+
+    for (let product of this.userCart) {
+      product.quantity = product.quantity - cartMap.get(product.id)!;
+      this.userService.removeFromCart(product);
+      this.needService.updateNeed(product)
+      .subscribe(() => this.router.navigateByUrl("dashboard"));
+    }
+  }
 }

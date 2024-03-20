@@ -18,6 +18,7 @@ export class NeedDetailComponent implements OnInit {
   currentUser: User | null = null;
   userCart: Need[] | undefined = [];
 
+
   constructor(
     private route: ActivatedRoute,
     private needService: NeedService,
@@ -82,7 +83,32 @@ export class NeedDetailComponent implements OnInit {
     );
   }
 
-  addToCart(){
+  addToCart(): void{
+
+    this.getUserCart();
+    if (!this.userCart){
+      this.userCart = []
+    }
+
+    let cartMap: Map<number, number> = new Map();
+    let index = 0;
+
+
+      while(index < this.userCart.length){
+        if (cartMap.has(this.userCart[index].id) === false) {
+          cartMap.set(this.userCart[index].id, 1)
+          ++index;
+        }
+        else{
+          let updatedValue = cartMap.get(this.userCart[index].id)! + 1 
+          cartMap.set(this.userCart[index].id, updatedValue)
+          ++index;
+          
+        }
+      }
+    
+
+
     this.userService.addToCart(this.need!)
     this.getUser()
   }

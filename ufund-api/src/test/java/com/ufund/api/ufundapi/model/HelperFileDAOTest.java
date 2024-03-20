@@ -1,5 +1,5 @@
 package com.ufund.api.ufundapi.model;
 
-public class HelperControllerTest {
+public class HelperFileDAOTest {
     
 }
