@@ -206,10 +206,10 @@ public class HelperController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @GetMapping("/checkout")
-    public ResponseEntity<Boolean> checkoutBasket() {
+    public ResponseEntity<Boolean> checkoutBasket(String username) {
         LOG.info("GET /checkout");
         try {
-            return new ResponseEntity<>(helperDao.checkoutBasket(), HttpStatus.OK);
+            return new ResponseEntity<>(helperDao.checkoutBasket(username), HttpStatus.OK);
         
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
