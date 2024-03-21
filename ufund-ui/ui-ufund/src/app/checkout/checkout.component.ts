@@ -107,6 +107,7 @@ export class CheckoutComponent {
 
     for (let product of this.userCart) {
       product.quantity = product.quantity - cartMap.get(product.id)!;
+      if (product.quantity < 0) {product.quantity = 0;}
       this.userService.removeFromCart(product);
       this.needService.updateNeed(product)
       .subscribe(() => this.router.navigateByUrl("dashboard"));
