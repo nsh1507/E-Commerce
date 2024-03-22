@@ -94,39 +94,51 @@ export class Userservice {
   }
 
 
-  getUserCart(): Observable<Need[] | undefined> {
-    if (this.currentUser === null) {
-      return of(undefined);
+  addToCart(need: Need){
+    if(this.currentUser !== null){
+    const url = `${this.usersUrl}/basket/${this.currentUser?.username}`;
+    this.http.put(url, need, this.httpOptions).pipe(
+      tap(_ => this.log(`added product w/ id=${need.id} from cart`)),
+      catchError(this.handleError<any>('addToShoppingCart'))
+    ).subscribe(user => this.currentUser = user);
+    
+    return true;
     }
-    const url = `${this.usersUrl}/${this.currentUser.username}/cart`;
-    return this.http.get<Need[]>(url)
-      .pipe(
-        tap(_ => this.log('fetched user cart')),
-        catchError(this.handleError<Need[]>('getUserCart', []))
-      );
+    return false;
   }
 
-  addToCart(need: Need): Observable<User | undefined> {
-    if (this.currentUser !== null) {
-      const url = `${this.usersUrl}/basket/${this.currentUser.username}`;
-      return this.http.put<User>(url, need, this.httpOptions);
+  removeFromCart(need: Need){
+    if (this.currentUser !== null){
+    const url = `${this.usersUrl}/basket/${this.currentUser?.username}/${need.id}`;
+
+      this.http.delete(url, this.httpOptions).pipe(
+        tap(_ => this.log(`deleted product w/ id=${need.id} from cart`)),
+        catchError(this.handleError<any>('removeFromShoppingCart'))
+      ).subscribe(user => this.currentUser = user);
+
+      return true;
     }
-    return of(undefined);
-  }
-  
-  removeFromCart(need: Need): Observable<User | undefined> {
-    if (this.currentUser !== null) {
-      const url = `${this.usersUrl}/basket/${this.currentUser.username}/${need.id}`;
-      return this.http.delete<User>(url, this.httpOptions);
-    }
-    return of(undefined);
+    return false;
   }
 
-  // Updated handleError method to handle errors properly...
+
+  /**
+   * Handle Http operation that failed.
+   * Let the app continue.
+   *
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T | undefined> => {
+
+      // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
+
+      // TODO: better job of transforming error for user consumption
       this.log(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result.
       return of(result);
     };
   }
