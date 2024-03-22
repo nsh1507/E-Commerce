@@ -254,10 +254,21 @@ baskets from the underlying storage into Helper instances.
 
 >_**[Sprint 2 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss those._
 
-![Replace with your Model Tier class diagram 1, etc.](Code_Coverage.png)
+**U-fund API Class Level Code Coverage:**
+![Replace with Class Level Code Coverage, etc.](Code-Coverage.png)
 
-- The reason for low percentages on the Persistence tier is because the team is currently missing one of the test file for HelperFileDAO. The team will implement and improve the unit testing for both persistence and controller classes for the following Sprint.
+**U-fund API Controller Code Coverage:**
+![Replace with Controller Tier Code Coverage, etc.](Controller-Code-Coverage.png)
+  - **Controller**: The controller tier has 66% code coverage overall, meaning that the team will improve on it in the following Sprints. 
 
+**U-fund API Model Code Coverage:**
+![Replace with your Model Tier Code Coverage, etc.](Model-Code-Coverage.png)
+  - **Model**: The model tier has 100% code coverage overall, meaning it is very well tested. All tests created for this tier passed.
+
+**U-fund API Persistence Code Coverage:**
+![Replace with your Persistence Tier Code Coverage, etc.](Persistence-Code-Coverage.png)
+  - **Persistence**: The reason for low percentages on the Persistence tier is because the team is currently missing one of the test file for HelperFileDAO. The team will implement and improve the unit tetsing for both persistence and controller classes for the following Sprint.
+ 
 ## Ongoing Rationale
 >_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**major**_ team decisions or design milestones/changes and corresponding justification._
 
