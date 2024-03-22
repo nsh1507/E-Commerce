@@ -149,26 +149,26 @@ This section describes the web interface flow; this is how the user views and in
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
 
 ### ViewModel Tier
-> _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
+> _**[Sprint 1]** List the classes supporting this tier and provide a description of there purposes_
 
-**NeedController:** Responds to HTML requests for the Needs resource. It connects the Need UI to the Need model
+- **NeedController:** Responds to HTML requests for the Needs resource. It connects the Need UI to the Need model
 in the backend and will create, update, and get needs from the needs cupboard as necessary, all by accessing
 methods in NeedDAO objects.
 
-**HelperController:** Responds to HTML requests for the Helper resource. It connects the Funding Basket and Helper
+- **HelperController:** Responds to HTML requests for the Helper resource. It connects the Funding Basket and Helper
 related UI to the backend, with functionality to create, get and authenticate helpers as well as manipulate
 a Helper's Funding Basket, all by accessing methods in HelperDAO objects.
 
-**NeedDAO:** An interface for the Data Access Object used to access and modify the underlying storage
+- **NeedDAO:** An interface for the Data Access Object used to access and modify the underlying storage
 for the Needs Cupboard.
 
-**NeedFileDAO:** The specific implementation of NeedDAO. Contains functionality to create and get a need from
+- **NeedFileDAO:** The specific implementation of NeedDAO. Contains functionality to create and get a need from
 the underlying storage, as well as search, update, and delete.
 
-**HelperDAO:** An interface for the Data Access Object used to access and modify the underlying storage for
+- **HelperDAO:** An interface for the Data Access Object used to access and modify the underlying storage for
 Helpers and their funding baskets.
 
-**HelperFileDAO:** the specific implementation of HelperDAO. Access the underlying storage to create, 
+- **HelperFileDAO:** the specific implementation of HelperDAO. Access the underlying storage to create, 
 get, and update Helpers as well as their Funding Baskets. Also authenticates their login credentials.
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
