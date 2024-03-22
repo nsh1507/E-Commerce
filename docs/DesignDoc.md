@@ -227,8 +227,7 @@ baskets from the underlying storage into Helper instances.
 > _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
 
 ## Testing
-> _This section will provide information about the testing performed
-> and the results of the testing._
+> _This section will provide information about the testing performed and the results of the testing._
 
 ### Acceptance Testing
 > **[Sprint 2 & 4]** Report on the number of user stories that have passed all their
