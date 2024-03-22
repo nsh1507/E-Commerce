@@ -21,13 +21,13 @@ public class HelperFileDAO implements HelperDAO {
     Map<String,Helper> helpers;   // Provides a local cache of the helper objects
                                 // so that we don't need to read from the file
                                 // each time
-    private ObjectMapper objectMapper;  // Provides conversion between Helper
+    public ObjectMapper objectMapper;  // Provides conversion between Helper
                                         // objects and JSON text format written
                                         // to the file
-    private String filename;    // Filename to read from and write to
+    public String filename;    // Filename to read from and write to
     private static int nextId;  // The next Id to assign to a new helper
 
-    private NeedDAO needDao;
+    public NeedDAO needDao;
 
     /**
      * Creates a Helper File Data Access Object
@@ -63,7 +63,7 @@ public class HelperFileDAO implements HelperDAO {
      * 
      * @return  The array of {@link Helper helpers}, may be empty
      */
-    private Helper[] getHelpersArray() {
+    public Helper[] getHelpersArray() {
         return getHelpersArray(null);
     }
 

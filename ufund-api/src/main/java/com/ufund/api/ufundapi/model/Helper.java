@@ -11,7 +11,7 @@ public class Helper {
     private static final Logger LOG = Logger.getLogger(Helper.class.getName());
 
     // Package private for tests
-    static final String STRING_FORMAT = "Helper [username=%s, password=%s, cart=%s]";
+    public static final String STRING_FORMAT = "Helper [username=%s, password=%s, cart=%s]";
 
     @JsonProperty("id") private int id;
     @JsonProperty("username") private String username;

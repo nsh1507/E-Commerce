@@ -18,7 +18,7 @@ geometry: margin=1in
 
 ## Executive Summary
 
-This is a summary of the project.
+This is a project which creates a website for a food charity. In this website, the user is able to login as a user or an admin using a username and password. The admin is able to view the needs cupboard and add or delete needs from it. The user, on the other hand, is then able to view the needs in the needs cupboard that the admin has added. They can also search for needs using a search bar and have access to the funding basket, meaning they can add and delete needs from it. Items in the funding basket and needs cupboard persist even after one logs out and logs back in. Users can also send feedback to the admin, which the admin can see after they log in. Finally, the users can "check out" needs when they have decided to contribute to them, and they can also see a history of previous needs they have contributed to that persists through log in and log outs.
 
 ### Purpose
 >  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
@@ -48,6 +48,11 @@ This section describes the features of the application.
 > _In this section you do not need to be exhaustive and list every
 > story.  Focus on top-level features from the Vision document and
 > maybe Epics and critical Stories._
+
+  - User can log in with username and password, access an account with separate 
+  - Admin can add, remove, and modify needs in the needs cupboard
+  - Helper can browse needs in the needs cupboard and search using keywords
+  - 
 
 ### Definition of MVP
 > _**[Sprint 2 & 4]** Provide a simple description of the Minimum Viable Product._
