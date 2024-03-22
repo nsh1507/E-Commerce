@@ -278,4 +278,4 @@ baskets from the underlying storage into Helper instances.
     - The team will change the architecture of the project significantly by removing the Basket logic in the API entirely and will be represented as an array of Needs in the Helper
     - Rationale:
       - Reduce the number of unnecessary unit testing
-      - Making the Basket as an attribute of Helper would make a significantly improvement on the design and better adherence to GRASP Principles by reducing Coupling
+      - Making the Basket as an attribute of Helper would make a significantly improvement on the design and better adherence to GRASP Principles by reducing Coupling Issue
