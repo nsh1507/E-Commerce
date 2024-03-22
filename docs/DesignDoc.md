@@ -22,7 +22,9 @@ This is a project which creates a website for a food charity. In this website, t
 
 ### Purpose
 > _**[Sprint 2 & 4] Provide a very brief statement about the project and the most important user group and user goals.
-An U-Fund Charity webpage where customers can purchase needs that will go for a cause. The U-Fund admin have full control over the cupboard and will be the sole user to be able to add, delete, the edit needs. Admin, however, will not have access to a regular user funding basket.
+
+The U-Fund Chairty webpage will allow Helpers to donate money to causes and items in order to assist the food bank. This will
+allow people with money to spare to assist those who are in need.
 
 ### Glossary and Acronyms
 > _**[Sprint 2 & 4]** Provide a table of terms and acronyms._
@@ -148,6 +150,26 @@ This section describes the web interface flow; this is how the user views and in
 
 ### ViewModel Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
+
+**NeedController:** Responds to HTML requests for the Needs resource. It connects the Need UI to the Need model
+in the backend and will create, update, and get needs from the needs cupboard as necessary, all by accessing
+methods in NeedDAO objects.
+
+**HelperController:** Responds to HTML requests for the Helper resource. It connects the Funding Basket and Helper
+related UI to the backend, with functionality to create, get and authenticate helpers as well as manipulate
+a Helper's Funding Basket, all by accessing methods in HelperDAO objects.
+
+**NeedDAO:** An interface for the Data Access Object used to access and modify the underlying storage
+for the Needs Cupboard.
+
+**NeedFileDAO:** The specific implementation of NeedDAO. Contains functionality to create and get a need from
+the underlying storage, as well as search, update, and delete.
+
+**HelperDAO:** An interface for the Data Access Object used to access and modify the underlying storage for
+Helpers and their funding baskets.
+
+**HelperFileDAO:** the specific implementation of HelperDAO. Access the underlying storage to create, 
+get, and update Helpers as well as their Funding Baskets. Also authenticates their login credentials.
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
