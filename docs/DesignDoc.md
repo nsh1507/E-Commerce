@@ -183,6 +183,14 @@ get, and update Helpers as well as their Funding Baskets. Also authenticates the
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
 
+**Need:** Acts as a Java representation of a single need and its attributes. Works in tandem
+with NeedFileDAO and NeedController such that needs are loaded from the underlying 
+storage into Need instances.
+
+**Helper:** Acts as a Java representation for a single Helper, its data, and its Funding Basket.
+Works in tandem with HelperController and HelperFileDAO to load Helpers and their funding
+baskets from the underlying storage into Helper instances.
+
 > _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
 > Tier above._
