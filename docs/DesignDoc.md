@@ -204,6 +204,14 @@ baskets from the underlying storage into Helper instances.
 
 > _**[Sprint 1]** Name and describe the initial OO Principles that your team has considered in support of your design (and implementation) for this first Sprint._
 
+**Low Coupling:** (describe how DAO interfaces reduce coupling between Controllers and DAOs)
+
+**Dependency Inversion/Injection:** (describe how DAO interfaces are injected into Controller classes' contructors rather than being
+initialized in the controller)
+
+**Pure Fabrication:** (describe how HelperFileDAO/NeedFileDAO doesn't represent a real entity but is created
+for the purpose of separating the methods that access Helper and Need storage )
+
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
 
 > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
