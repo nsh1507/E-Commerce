@@ -1,17 +1,21 @@
-<h2>My Needs</h2>
+<button (click)="logOut()">Logout</button>
+
+<div *ngIf="userService.isAdmin()">
+
+<h2><strong>Add Needs</strong></h2>
 
 <div>
   <label for="new-need">Need name: </label>
-  <input id="new-need" #needName />
+  <input type ="text" id="new-need" #needName placeholder="Name"/>
 
   <label for="new-need">Need cost: </label>
-  <input type ="number" id="new-need" #needCost />
+  <input type ="number" id="new-need" #needCost placeholder="Cost"/>
 
   <label for="new-need">Need quantity: </label>
-  <input type ="number" id="new-need" #needQuantity />
+  <input type ="number" id="new-need" #needQuantity placeholder="Quantity"/>
 
   <label for="new-need">Need type: </label>
-  <input id="new-need" #needType />
+  <input type ="text" id="new-need" #needType placeholder="Type"/>
   
 
   <!-- (click) passes input value to add() and then clears the input -->
@@ -30,3 +34,8 @@
       (click)="delete(need)">x</button>
   </li>
 </ul>
+</div>
+
+<div *ngIf="!userService.isAdmin()">
+  <h2><strong>Admin Feature Only</strong></h2>
+</div>

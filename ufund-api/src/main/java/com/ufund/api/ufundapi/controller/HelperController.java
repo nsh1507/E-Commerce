@@ -18,47 +18,46 @@ import java.util.logging.Logger;
 
 import com.ufund.api.ufundapi.persistence.HelperDAO;
 import com.ufund.api.ufundapi.model.Helper;
+import com.ufund.api.ufundapi.model.Need;
 
 /**
- * Handles the REST API requests for the Helpers resource
+ * Handles the REST API requests for the Helper resource
  * <p>
  * {@literal @}RestController Spring annotation identifies this class as a REST API
  * method handler to the Spring framework
- * 
- * @author Nam Huynh
  */
 
 @RestController
 @RequestMapping("helpers")
 public class HelperController {
     private static final Logger LOG = Logger.getLogger(HelperController.class.getName());
-    private HelperDAO helperDAO;
+    private HelperDAO helperDao;
 
     /**
      * Creates a REST API controller to reponds to requests
      * 
-     * @param helperDAO The {@link Helper Data Access Object} to perform CRUD operations
+     * @param helperDao The {@link HelperDAO Helper Data Access Object} to perform CRUD operations
      * <br>
      * This dependency is injected by the Spring Framework
      */
-    public HelperController(HelperDAO helperDAO) {
-        this.helperDAO = helperDAO;
+    public HelperController(HelperDAO helperDao) {
+        this.helperDao = helperDao;
     }
 
     /**
-     * Responds to the GET request for a {@linkplain Helper helper} for the given id
+     * Responds to the GET request for an {@linkplain Helper helper} for the given username
      * 
-     * @param id The id used to locate the {@link Helper helper}
+     * @param username The username used to locate the {@link Helper helper}
      * 
      * @return ResponseEntity with {@link Helper helper} object and HTTP status of OK if found<br>
      * ResponseEntity with HTTP status of NOT_FOUND if not found<br>
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<Helper> getHelper(@PathVariable int id) {
-        LOG.info("GET /helpers/" + id);
+    @GetMapping("/{username}")
+    public ResponseEntity<Helper> getHelper(@PathVariable String username) {
+        LOG.info("GET /helpers/" + username);
         try {
-            Helper helper = helperDAO.getHelper(id);
+            Helper helper = helperDao.getHelper(username);
             if (helper != null)
                 return new ResponseEntity<Helper>(helper,HttpStatus.OK);
             else
@@ -71,7 +70,7 @@ public class HelperController {
     }
 
     /**
-     * Responds to the GET request for all {@linkplain Helper helper}
+     * Responds to the GET request for all {@linkplain Helper helpers}
      * 
      * @return ResponseEntity with array of {@link Helper helper} objects (may be empty) and
      * HTTP status of OK<br>
@@ -81,9 +80,9 @@ public class HelperController {
     public ResponseEntity<Helper[]> getHelpers() {
         LOG.info("GET /helpers");
         try {
-            Helper[] helpersArray = helperDAO.getHelpers();
-            if (helpersArray != null)
-                return new ResponseEntity<Helper[]>(helpersArray,HttpStatus.OK);
+            Helper[] helperArray = helperDao.getHelpers();
+            if (helperArray != null)
+                return new ResponseEntity<Helper[]>(helperArray,HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -91,26 +90,27 @@ public class HelperController {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        
     }
 
     /**
-     * Responds to the GET request for all {@linkplain Helper helper} whose name contains
-     * the text in name
+     * Responds to the GET request for an {@linkplain Helper helper} for the given username and password
      * 
-     * @param name The name parameter which contains the text used to find the {@link Helper helper}
+     * @param username The username used to login to the {@link Helper helper}
+     * @param password The username used to login to the {@link Helper helper}
      * 
-     * @return ResponseEntity with array of {@link Helper helper} objects (may be empty) and
-     * HTTP status of OK<br>
+     * @return ResponseEntity with {@link Helper helper} object and HTTP status of OK if logged in<br>
+     * ResponseEntity with HTTP status of UNAUTHORIZED if not logged in<br>
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
-    */
-
-    @GetMapping("/")
-    public ResponseEntity<Helper[]> searchHelpers(@RequestParam String name) {
-        LOG.info("GET /helpers/?name="+name);
+     */
+    @GetMapping(path = "/{username}", params = "password")
+    public ResponseEntity<Helper> loginHelper(@PathVariable String username, @RequestParam String password) {
+        LOG.info("GET /helpers/" + username + "?password="+ password);
         try {
-            Helper[] helpersArray = helperDAO.findHelpers(name);
-            return new ResponseEntity<Helper[]>(helpersArray,HttpStatus.OK);
+            Helper helper = helperDao.loginHelper(username, password);
+            if (helper != null)
+                return new ResponseEntity<Helper>(helper,HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
@@ -119,7 +119,7 @@ public class HelperController {
     }
 
     /**
-     * Creates a {@linkplain Helper helper} with the provided helper object
+     * Creates an {@linkplain Helper helper} with the provided helper object
      * 
      * @param helper - The {@link Helper helper} to create
      * 
@@ -132,39 +132,40 @@ public class HelperController {
         LOG.info("POST /helpers " + helper);
 
         try {
-            Helper[] conflicts = helperDAO.findHelpers(helper.getName());
-            for (Helper n : conflicts) {
-                if (n.getName().equals(helper.getName())) {
-                    return new ResponseEntity<>(HttpStatus.CONFLICT);
-                }
+            if (helperDao.getHelper(helper.getUsername()) != null) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
-            Helper helperResponse = helperDAO.createHelper(helper);
-            return new ResponseEntity<Helper>(helperResponse, HttpStatus.CREATED);
-        } catch (IOException e) {
+            
+            Helper newHelper = helperDao.createHelper(helper);
+            return new ResponseEntity<Helper>(newHelper,HttpStatus.CREATED);
+                
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     /**
      * Updates the {@linkplain Helper helper} with the provided {@linkplain Helper helper} object, if it exists
      * 
-     * @param helpers The {@link Helper helper} to update
+     * @param helper The {@link Helper helper} to update
      * 
      * @return ResponseEntity with updated {@link Helper helper} object and HTTP status of OK if updated<br>
      * ResponseEntity with HTTP status of NOT_FOUND if not found<br>
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PutMapping("")
-    public ResponseEntity<Helper> updateHelpers(@RequestBody Helper helpers) {
-        LOG.info("PUT /helpers " + helpers);
-        try {   
-            Helper updated = helperDAO.updateHelpers(helpers);
-            if (updated != null){
-                return new ResponseEntity<Helper>(updated, HttpStatus.OK);
-            }
-            else{
+    public ResponseEntity<Helper> updateHelper(@RequestBody Helper helper) {
+        LOG.info("PUT /helpers " + helper);
+
+        try {
+            Helper newHelper = helperDao.updateHelper(helper);
+            if (newHelper != null)
+                return new ResponseEntity<Helper>(newHelper,HttpStatus.OK);
+            else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
         }
         catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
@@ -173,28 +174,98 @@ public class HelperController {
     }
 
     /**
-     * Deletes a {@linkplain Helper helper} with the given id
+     * Deletes an {@linkplain Helper helper} with the given username
      * 
-     * @param id The id of the {@link Helper helper} to deleted
+     * @param username The username of the {@link Helper helper} to deleted
      * 
      * @return ResponseEntity HTTP status of OK if deleted<br>
      * ResponseEntity with HTTP status of NOT_FOUND if not found<br>
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Helper> deleteHelper(@PathVariable int id) {
-        LOG.info("DELETE /helpers/" + id);
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Helper> deleteHelper(@PathVariable String username) {
+        LOG.info("DELETE /helpers/" + username);
+
         try {
-           Boolean deleted = helperDAO.deleteHelper(id);
-           if (deleted){
-               return new ResponseEntity<>(HttpStatus.OK);
-           }
-           else{
-               return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-           }
+            if ( helperDao.deleteHelper(username) )
+                return new ResponseEntity<Helper>(HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    // /**
+    //  * Responds to the GET request for checking out the current user's basket
+    //  * 
+    //  * @return ResponseEntity with an HTTP status of OK and body of true if the basket was checked
+    //  *         out<br>
+    //  *       
+    //  *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+    //  */
+    // @DeleteMapping("/checkout")
+    // public ResponseEntity<Boolean> checkoutBasket(@PathVariable String username) {
+    //     LOG.info("DELETE /checkout/" + username);
+    //     try {
+    //         return new ResponseEntity<>(helperDao.checkoutBasket(username), HttpStatus.OK);
+        
+    //     } catch (IOException e) {
+    //         LOG.log(Level.SEVERE, e.getLocalizedMessage());
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
+
+
+        /**
+     * Adds a {@linkplain Need} to the {@linkplain Helper}'s basket
+     * 
+     * @param helpername Helper to add the item to
+     * @param need Need to add to the helper's basket
+     * @return {@linkplain Helper}
+     *         status OK if operation is successful
+     *         status INTERNAL_SERVER_ERROR if IOException occurs
+     */
+    @PutMapping("/basket/{helpername}")
+    public ResponseEntity<Helper> addToBasket(@PathVariable String helpername, @RequestBody Need need) {
+        LOG.info("PUT /helpers/basket/ " + helpername);
+        try {
+            Helper helper = this.helperDao.getHelper(helpername);
+            if (helper == null) {
+                helper = this.helperDao.createHelper(helper);
+            }
+
+            helper.addToCart(need);
+            helper = this.helperDao.updateHelper(helper);
+            return new ResponseEntity<Helper>(helper, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Removes a {@linkplain Need} from the {@linkplain Helper}'s basket
+     * 
+     * @param helpername Helper to remove the item from
+     * @param needID ID of need to remove from the helper's basket
+     * @return {@linkplain Helper}
+     *         status OK if operation is successful
+     *         status INTERNAL_SERVER_ERROR if IOException occurs
+     */
+    @DeleteMapping("/basket/{helpername}/{needID}")
+    public ResponseEntity<Helper> removeFromBasket(@PathVariable String helpername, @PathVariable int needID) {
+        LOG.info("DELETE /helpers/basket/ " + helpername + needID);
+        try {
+            Helper helper = this.helperDao.getHelper(helpername);
+            if (helper == null) {
+                helper = this.helperDao.createHelper(helper);
+            }
+
+            helper.removeFromCart(needID);
+            helper = this.helperDao.updateHelper(helper);
+            return new ResponseEntity<Helper>(helper, HttpStatus.OK);
+        } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

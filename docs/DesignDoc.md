@@ -18,27 +18,30 @@ geometry: margin=1in
 
 ## Executive Summary
 
-This is a summary of the project.
+This is a project which creates a website for a food charity. In this website, the user is able to login as a user or an admin using a username and password. The admin is able to view the needs cupboard and add or delete needs from it. The Helper is able to view the needs in the needs cupboard that the admin has added. The Helper can also search for needs using a search bar and have access to view and modify the funding basket. Items in the funding basket persist even after the Helper logs out and logs back in. Users can also send feedback to the admin, which the admin can see after they log in. The users can "check out" needs when they have decided to contribute to them, and they can also see a history of previous needs they have contributed to that persists through log in and log outs.
 
 ### Purpose
->  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
-> important user group and user goals._
+> _**[Sprint 2 & 4] Provide a very brief statement about the project and the most important user group and user goals.
+
+The U-Fund Chairty webpage will allow Helpers to donate money to causes and items in order to assist the food bank. This will
+allow people with money to spare to assist those who are in need.
 
 ### Glossary and Acronyms
 > _**[Sprint 2 & 4]** Provide a table of terms and acronyms._
 
-| Term   |          Definition                |
-|--------|------------------------------------|
-| SPA    |  Single Page                       |
-| DAO    |  Data Access Object                |
-| CSS	   |  Cascading Style Sheets            |
-| TS	   |  Type Script                       |
-| HTML   |	Hypertext Markup Language         |
-| Admin  |	Can edit products and orders      |
-| User   | Generic person using the site      |
-|Customer| Person that has an account         |
-|Need    |A purchasable item in the cupboard  |
-|Cupboard| Access to the needs                |
+| Term    |            Definition               |
+|---------|-------------------------------------|
+| SPA     |  Single Page                        |
+| DAO     |  Data Access Object                 |
+| CSS	    |  Cascading Style Sheets             |
+| TS	    |  Type Script                        |
+| Angular |  Framework for web application      |
+| HTML    |	 Hypertext Markup Language          |
+| Admin   |	 Can edit products and orders       |
+| Admin   |  User that can edit the inventory   |
+| Helper  |  User that can edit their cart      |
+| Need    |  A purchasable item in the cupboard |
+| Cupboard|  Access to the needs                |
 
 
 ## Requirements
@@ -49,8 +52,37 @@ This section describes the features of the application.
 > story.  Focus on top-level features from the Vision document and
 > maybe Epics and critical Stories._
 
+  - Admin can add, remove, and modify needs in the needs cupboard
+  - Helper can browse needs in the needs cupboard and search using keywords
+  - Helper can add/delete products from their cart
+  - Helper can log in to an existing account with username and password, or register should the account not exist
+  - Helper can checkout their needs from the basket
+
 ### Definition of MVP
 > _**[Sprint 2 & 4]** Provide a simple description of the Minimum Viable Product._
+
+  - Minimal Authentication for Helper/U-fund Manager login & logout
+    - A Helper can create a new account with a new username and password
+    - A Helper can log into an existing account
+    - The Admin already has an account in the system
+    - The Admin and Helper can log out of their account
+    - Data Persistence on the Helper Basket
+    - Username of user is unique
+
+  - Helper functionality
+    - Helper can see list of needs
+    - Helper can search for a need
+    - Helper can add/remove an need to their funding basket
+    - Helper can proceed to check-out and fund all needs they are supporting
+
+  - Needs Management
+    - U-fund Manager(s) can add, remove and edit the data of all their needs stored in their needs cupboard
+    - A U-fund Manager cannot see contents of funding basket(s) of Helpers
+    - A U-fund Manager does not have a basket
+
+  - Data Persistence
+    - The contents of the Helper basket in the basket will remain the same when the Helper log out and log back in.
+    - When a Helper purchase all the need from the Cupboard, another Helper will not be able to see the needs from the Cupboard anymore until the Admin restock
 
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
@@ -117,7 +149,27 @@ This section describes the web interface flow; this is how the user views and in
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
 
 ### ViewModel Tier
-> _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
+> _**[Sprint 1]** List the classes supporting this tier and provide a description of there purposes_
+
+- **NeedController:** Responds to HTML requests for the Needs resource. It connects the Need UI to the Need model
+in the backend and will create, update, and get needs from the needs cupboard as necessary, all by accessing
+methods in NeedDAO objects.
+
+- **HelperController:** Responds to HTML requests for the Helper resource. It connects the Funding Basket and Helper
+related UI to the backend, with functionality to create, get and authenticate helpers as well as manipulate
+a Helper's Funding Basket, all by accessing methods in HelperDAO objects.
+
+- **NeedDAO:** An interface for the Data Access Object used to access and modify the underlying storage
+for the Needs Cupboard.
+
+- **NeedFileDAO:** The specific implementation of NeedDAO. Contains functionality to create and get a need from
+the underlying storage, as well as search, update, and delete.
+
+- **HelperDAO:** An interface for the Data Access Object used to access and modify the underlying storage for
+Helpers and their funding baskets.
+
+- **HelperFileDAO:** the specific implementation of HelperDAO. Access the underlying storage to create, 
+get, and update Helpers as well as their Funding Baskets. Also authenticates their login credentials.
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -130,6 +182,14 @@ This section describes the web interface flow; this is how the user views and in
 
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
+
+**Need:** Acts as a Java representation of a single need and its attributes. Works in tandem
+with NeedFileDAO and NeedController such that needs are loaded from the underlying 
+storage into Need instances.
+
+**Helper:** Acts as a Java representation for a single Helper, its data, and its Funding Basket.
+Works in tandem with HelperController and HelperFileDAO to load Helpers and their funding
+baskets from the underlying storage into Helper instances.
 
 > _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -161,11 +221,21 @@ This section describes the web interface flow; this is how the user views and in
 > and the results of the testing._
 
 ### Acceptance Testing
-> _**[Sprint 2 & 4]** Report on the number of user stories that have passed all their
+> **[Sprint 2 & 4]** Report on the number of user stories that have passed all their
 > acceptance criteria tests, the number that have some acceptance
 > criteria tests failing, and the number of user stories that
 > have not had any testing yet. Highlight the issues found during
 > acceptance testing and if there are any concerns._
+
+- **23** user stories in total, covering:
+  - Admins being able to edit needs from the cupboard
+  - Helpers being able to login/creating their account
+  - Helpers being able to edit needs from their basket
+  - Helpers being able to checkout their basket
+  - Helpers being able to search for needs
+  - Persistence of the shopping carts
+
+**All user stories have passed their acceptance criteria tests.**
 
 ### Unit Testing and Code Coverage
 > _**[Sprint 4]** Discuss your unit testing strategy. Report on the code coverage
@@ -173,8 +243,19 @@ This section describes the web interface flow; this is how the user views and in
 > coverage targets, why you selected those values, and how well your
 > code coverage met your targets._
 
->_**[Sprint 2 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss
-> those._
+>_**[Sprint 2 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss those._
+
+![Replace with your Model Tier class diagram 1, etc.](Code_Coverage.png)
+
+- The reason for low percentages on the Persistence tier is because the team is currently missing one of the test file for HelperFileDAO. The team will implement and improve the unit tetsing for both persistence and controller classes for the following Sprint.
 
 ## Ongoing Rationale
->_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
+>_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**major**_ team decisions or design milestones/changes and corresponding justification._
+
+  - (2024/2/10): Sprint 1
+    - The 10% feature will be Helper Feedback and Purchase History Page
+  - (2024/3/19): Sprint 2
+    - The team will change the architecture of the project significantly by removing the Basket logic in the API entirely and will be represented as an array of Needs in the Helper
+    - Rationale:
+      - Reduce the number of unnecessary unit testing
+      - Making the Basket as an attribute of Helper would make a significantly improvement on the design and better adherence to GRASP Principles by reducing Coupling

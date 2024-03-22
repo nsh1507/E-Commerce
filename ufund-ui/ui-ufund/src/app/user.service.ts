@@ -5,13 +5,15 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { User } from './user';
+import { Need } from './need';
 import { MessageService } from './message.service';
 
 
 @Injectable({ providedIn: 'root' })
 export class Userservice {
 
-  private usersUrl = 'http://localhost:8080/users';  // URL to web api
+  private usersUrl = 'http://localhost:8080/helpers';  // URL to web api
+  private currentUser: User | null = null;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -22,7 +24,7 @@ export class Userservice {
     private messageService: MessageService) { }
 
   /** GET users from the server */
-  getUsers(): Observable<User[]> {
+  getUsers(): Observable<User[] | undefined> {
     return this.http.get<User[]>(this.usersUrl)
       .pipe(
         tap(_ => this.log('fetched users')),
@@ -30,59 +32,46 @@ export class Userservice {
       );
   }
 
-  /** GET user by id. Return `undefined` when id not found */
-  getUserNo404<Data>(id: number): Observable<User> {
-    const url = `${this.usersUrl}/?id=${id}`;
-    return this.http.get<User[]>(url)
-      .pipe(
-        map(users => users[0]), // returns a {0|1} element array
-        tap(h => {
-          const outcome = h ? 'fetched' : 'did not find';
-          this.log(`${outcome} user id=${id}`);
-        }),
-        catchError(this.handleError<User>(`getUser id=${id}`))
-      );
-  }
-
-  /** GET user by id. Will 404 if id not found */
-  getUser(id: number): Observable<User> {
-    const url = `${this.usersUrl}/${id}`;
+  /** GET user by username. Will 404 if username not found */
+  getUser(username: string): Observable<User | undefined> {
+    const url = `${this.usersUrl}/${username}`;
     return this.http.get<User>(url).pipe(
-      tap(_ => this.log(`fetched user id=${id}`)),
-      catchError(this.handleError<User>(`getUser id=${id}`))
+      tap(_ => this.log(`fetched user username=${username}`)),
+      catchError(this.handleError<User>(`getUser username=${username}`))
     );
   }
 
-  /* GET users whose name contains search term */
-  searchUsers(term: string): Observable<User[]> {
-    if (!term.trim()) {
-      // if not search term, return empty user array.
-      return of([]);
-    }
-    return this.http.get<User[]>(`${this.usersUrl}/?name=${term}`).pipe(
-      tap(x => x.length ?
-         this.log(`found users matching "${term}"`) :
-         this.log(`no users matching "${term}"`)),
-      catchError(this.handleError<User[]>('searchUsers', []))
+  /** GET user by username and password. Will 401 if user not found */
+  loginUser(username: string, password: string): Observable<User | undefined> {
+    const url = `${this.usersUrl}/${username}?password=${password}`;
+    return this.http.get<User>(url).pipe(
+      tap(_ => this.log(`fetched user username=${username} password=${password}`)),
+      tap(user => this.currentUser = user),
+      catchError(this.handleError<User>(`getUser username=${username} password=${password}`))
     );
+  }
+
+  logoutUser(): void {
+    this.currentUser = null;
   }
 
   //////// Save methods //////////
 
   /** POST: add a new user to the server */
-  addUser(user: User): Observable<User> {
+  addUser(user: User): Observable<User | undefined> {
     return this.http.post<User>(this.usersUrl, user, this.httpOptions).pipe(
-      tap((newUser: User) => this.log(`added user w/ id=${newUser.id}`)),
+      tap((newUser: User) => this.log(`added user w/ username=${newUser.username}`)),
+      tap(user => this.currentUser = user),
       catchError(this.handleError<User>('addUser'))
     );
   }
 
   /** DELETE: delete the user from the server */
-  deleteUser(id: number): Observable<User> {
-    const url = `${this.usersUrl}/${id}`;
+  deleteUser(username: string): Observable<User | undefined> {
+    const url = `${this.usersUrl}/${username}`;
 
     return this.http.delete<User>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`deleted user id=${id}`)),
+      tap(_ => this.log(`deleted user username=${username}`)),
       catchError(this.handleError<User>('deleteUser'))
     );
   }
@@ -90,8 +79,56 @@ export class Userservice {
   /** PUT: update the user on the server */
   updateUser(user: User): Observable<any> {
     return this.http.put(this.usersUrl, user, this.httpOptions).pipe(
-      tap(_ => this.log(`updated user id=${user.id}`)),
+      tap(_ => this.log(`updated user username=${user.username}`)),
       catchError(this.handleError<any>('updateUser'))
+    );
+  }
+
+  /** Get current logged in user NOW */
+  getCurrentUser() {
+    return this.currentUser;
+  }
+
+  isAdmin() {
+    return (this.currentUser?.username === "admin");
+  }
+
+
+  addToCart(need: Need){
+    if(this.currentUser !== null){
+    const url = `${this.usersUrl}/basket/${this.currentUser?.username}`;
+    this.http.put(url, need, this.httpOptions).pipe(
+      tap(_ => this.log(`added product w/ id=${need.id} from cart`)),
+      catchError(this.handleError<any>('addToCart'))
+    ).subscribe(user => this.currentUser = user);
+    
+    return true;
+    }
+    return false;
+  }
+
+  removeFromCart(need: Need){
+    if (this.currentUser !== null){
+    const url = `${this.usersUrl}/basket/${this.currentUser?.username}/${need.id}`;
+
+      this.http.delete(url, this.httpOptions).pipe(
+        tap(_ => this.log(`deleted product w/ id=${need.id} from cart`)),
+        catchError(this.handleError<any>('removeFromCart'))
+      ).subscribe(user => this.currentUser = user);
+
+      return true;
+    }
+    return false;
+  }
+
+
+   /** DELETE: delete the user from the server */
+   checkOut(username: string): Observable<User | undefined> {
+    const url = `${this.usersUrl}/checkout/${username}`;
+
+    return this.http.delete<User>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`check out cart of username=${username}`)),
+      catchError(this.handleError<User>('checkout'))
     );
   }
 
@@ -103,7 +140,7 @@ export class Userservice {
    * @param result - optional value to return as the observable result
    */
   private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
+    return (error: any): Observable<T | undefined> => {
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
@@ -112,12 +149,12 @@ export class Userservice {
       this.log(`${operation} failed: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
-      return of(result as T);
+      return of(result);
     };
   }
 
-  /** Log a Userservice message with the MessageService */
+  /** Log an UserService message with the MessageService */
   private log(message: string) {
-    this.messageService.add(`Userservice: ${message}`);
+    this.messageService.add(`UserService: ${message}`);
   }
 }
