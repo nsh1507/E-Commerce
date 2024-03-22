@@ -183,7 +183,7 @@ get, and update Helpers as well as their Funding Baskets. Also authenticates the
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
 
-- **Need:** Acts as a Java representation of a single need and its attributes. Works in tandem
+**Need:** Acts as a Java representation of a single need and its attributes. Works in tandem
 with NeedFileDAO and NeedController such that needs are loaded from the underlying 
 storage into Need instances.
 
@@ -204,15 +204,17 @@ baskets from the underlying storage into Helper instances.
 
 > _**[Sprint 1]** Name and describe the initial OO Principles that your team has considered in support of your design (and implementation) for this first Sprint._
 
-**Low Coupling:** (describe how DAO interfaces reduce coupling between Controllers and DAOs)
+**Single Responsibility:** (created a domain model, separating classes based on their individual purpose, which follows Single Responsibilty as each class serves one unique purpose)
 
-**Dependency Inversion/Injection:** (describe how DAO interfaces are injected into Controller classes' contructors rather than being
-initialized in the controller)
-
-**Pure Fabrication:** (describe how HelperFileDAO/NeedFileDAO doesn't represent a real entity but is created
-for the purpose of separating the methods that access Helper and Need storage )
+**Open/Closed:** (Incorporated restapi classes into projects which used encapsulation to keep some modules public and others private, which protects data and enhances security)
 
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
+
+**Low Coupling:** (describe how DAO interfaces reduce coupling between Controllers and DAOs)
+
+**Dependency Inversion/Injection:** (describe how DAO interfaces are injected into Controller classes' contructors rather than being initialized in the controller)
+
+**Pure Fabrication:** (describe how HelperFileDAO/NeedFileDAO doesn't represent a real entity but is created for the purpose of separating the methods that access Helper and Need storage)
 
 > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
 
@@ -253,20 +255,9 @@ for the purpose of separating the methods that access Helper and Need storage )
 
 >_**[Sprint 2 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss those._
 
-**U-fund API Class Level Code Coverage:**
-![Replace with Class Level Code Coverage, etc.](Code-Coverage.png)
+![Replace with your Model Tier class diagram 1, etc.](Code_Coverage.png)
 
-**U-fund API Controller Code Coverage:**
-![Replace with Controller Tier Code Coverage, etc.](Controller-Code-Coverage.png)
-  - **Controller**: The controller tier has 66% code coverage overall, meaning that the team will improve on it in the following Sprints. 
-
-**U-fund API Model Code Coverage:**
-![Replace with your Model Tier Code Coverage, etc.](Model-Code-Coverage.png)
-  - **Model**: The model tier has 100% code coverage overall, meaning it is very well tested. All tests created for this tier passed.
-
-**U-fund API Persistence Code Coverage:**
-![Replace with your Persistence Tier Code Coverage, etc.](Persistence-Code-Coverage.png)
-  - **Persistence**: The reason for low percentages on the Persistence tier is because the team is currently missing one of the test file for HelperFileDAO. The team will implement and improve the unit tetsing for both persistence and controller classes for the following Sprint.
+- The reason for low percentages on the Persistence tier is because the team is currently missing one of the test file for HelperFileDAO. The team will implement and improve the unit tetsing for both persistence and controller classes for the following Sprint.
 
 ## Ongoing Rationale
 >_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**major**_ team decisions or design milestones/changes and corresponding justification._
