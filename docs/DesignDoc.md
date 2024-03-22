@@ -198,7 +198,7 @@ baskets from the underlying storage into Helper instances.
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as critical attributes and methods._
 > 
-![Replace with your Model Tier class diagram 1, etc.](Model-Tier.png)
+![Replace with your Model Tier class diagram 1, etc.](UML.png)
 
 ## OO Design Principles
 
