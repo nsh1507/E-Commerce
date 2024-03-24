@@ -12,8 +12,27 @@
     <label for="need-quantity">Need quantity: </label>
     <input id="need-quantity" [(ngModel)]="need.quantity" placeholder="Need quantity"/>
 
-    <label for="need-type">Need type: </label>
-    <input id="need-type" [(ngModel)]="need.type" placeholder="Need type"/>
+    <!-- <label for="need-type">Need type: </label>
+    <input id="need-type" [(ngModel)]="need.type" placeholder="Need type"/> -->
+
+
+    <div class="needType">
+      <p class="type">Need Type</p>
+      <select class="inputbox" name="Need Type" id="new-need" [(ngModel)]="need.type">
+        <option value="" selected disabled>--Need Type--</option>
+        <option class="select-option" value="Fruits">Fruits</option>
+        <option class="select-option" value="Vegetables">Vegetables</option>
+        <option class="select-option" value="Grains">Grains</option>
+        <option class="select-option" value="Meat">Meat</option>
+        <option class="select-option" value="Poultry">Poultry</option>
+        <option class="select-option" value="Seafood">Seafood</option>
+        <option class="select-option" value="Dairy">Dairy</option>
+        <option class="select-option" value="Condiments">Condiments</option>
+        <option class="select-option" value="Soup">Soup</option>
+      </select>
+    </div>
+
+
 
   </div>
   <button type="button" (click)="goBack()">go back</button>
