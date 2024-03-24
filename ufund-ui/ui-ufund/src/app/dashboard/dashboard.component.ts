@@ -27,9 +27,6 @@ export class DashboardComponent implements OnInit {
 
   getNeeds(): void {
     this.needService.getNeeds()
-<<<<<<< HEAD
-      .subscribe((needs: Need[]) => this.needs = needs.slice(1, 5));
-=======
         .subscribe((needs) => {
           needs.forEach((need) => {
             if (need.quantity > 0) {
@@ -49,6 +46,5 @@ export class DashboardComponent implements OnInit {
         this.logOut();
       });
     }
->>>>>>> 36245ae6418cc96b331749dd917dbb4a724e96ed
   }
 }
