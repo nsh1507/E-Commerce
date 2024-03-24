@@ -1,7 +1,7 @@
-# U-Fund:  _____ _replace with your particular fundraising type_ _____
+# U-Fund:  Food Bank
 # Modify this document to expand any and all sections that are applicable for a better understanding from your users/testers/collaborators (remove this comment and other instructions areas for your FINAL release)
 
-An online U-Fund system built in Java 17=> and ___ _replace with other platform requirements_ ___
+An online U-Fund system built in Java 17
   
 ## Team
 
@@ -66,9 +66,8 @@ To run tests on all the tiers in isolation do this:
 ## How to setup/run/test program 
 1. Tester, first obtain the Acceptance Test plan
 2. IP address of target machine running the app
-3. Execute ________
-4. ...
-5. ...
+3. Execute mvn test
+
 
 ## License
 
