@@ -16,6 +16,8 @@ input {
 
 
 select {
+  color: #435960;
+  font-weight: bold;
   display: block;
   width: 100%;
   padding: .5rem;

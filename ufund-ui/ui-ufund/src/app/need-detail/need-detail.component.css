@@ -10,6 +10,8 @@ input {
 
 
 select {
+  color: #435960;
+  font-weight: bold;
   font-size: 1em;
   padding: .5rem;
 }
