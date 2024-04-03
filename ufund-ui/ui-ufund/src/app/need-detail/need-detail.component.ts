@@ -85,40 +85,6 @@ export class NeedDetailComponent implements OnInit {
 
   addToCart(): void{
 
-    // this.getUserCart();
-    // if (!this.userCart){
-    //   this.userCart = []
-    // }
-
-    // let cartMap: Map<number, number> = new Map();
-    // let index = 0;
-
-    // while(index < this.userCart.length){
-    //   alert(this.userCart.length)
-    //   if (cartMap.has(this.userCart[index].id) === false) {
-    //     cartMap.set(this.userCart[index].id, 1)
-    //     ++index;
-    //     alert(this.userCart[index].quantity)
-    //     alert(cartMap.get(this.userCart[index].id)!)
-    //     if (this.userCart[index].quantity === cartMap.get(this.userCart[index].id)!){
-    //       alert("No more needs to add!")
-      
-    //     }
-    //   }
-    //   else{
-    //     alert("HERE 2")
-    //     let updatedValue = cartMap.get(this.userCart[index].id)! + 1 
-    //     cartMap.set(this.userCart[index].id, updatedValue)
-    //     ++index;  
-    //     if (this.userCart[index].quantity === cartMap.get(this.userCart[index].id)!){
-    //       alert("No more needs to add!")
-         
-    //     }  
-    //   }
-    // }
-    
-
-    // alert("added!")
     this.userService.addToCart(this.need!)
     this.getUser()
   }
