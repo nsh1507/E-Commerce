@@ -6,4 +6,5 @@ export interface User {
     password: string;
     isAdmin: boolean;
     cart: Array<Need>;
+    history: Array<Need>;
 }

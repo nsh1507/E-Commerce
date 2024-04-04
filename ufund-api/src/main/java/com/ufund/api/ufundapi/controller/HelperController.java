@@ -269,4 +269,34 @@ public class HelperController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
+    /**
+     * Adds a {@linkplain Need} to the {@linkplain Helper}'s purchase history
+     * 
+     * @param helpername Helper to add the item to
+     * @param need Need to add to the helper's purchase history
+     * @return {@linkplain Helper}
+     *         status OK if operation is successful
+     *         status INTERNAL_SERVER_ERROR if IOException occurs
+     */
+    @PutMapping("/history/{helpername}")
+    public ResponseEntity<Helper> addToHistory(@PathVariable String helpername, @RequestBody Need need) {
+        LOG.info("PUT /helpers/history/ " + helpername);
+        try {
+            Helper helper = this.helperDao.getHelper(helpername);
+            if (helper == null) {
+                helper = this.helperDao.createHelper(helper);
+            }
+
+            helper.addToHistory(need);
+            helper = this.helperDao.updateHelper(helper);
+            return new ResponseEntity<Helper>(helper, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

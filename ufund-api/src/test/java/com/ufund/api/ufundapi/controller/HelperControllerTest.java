@@ -31,7 +31,7 @@ public class HelperControllerTest {
     @SuppressWarnings("null")
     @Test
     public void testGetHelper() throws IOException {
-        Helper testHelper = new Helper(0, "testHelperName", "pass123", false, null);
+        Helper testHelper = new Helper(0, "testHelperName", "pass123", false, null, null);
         when(mockHelperDAO.getHelper("testHelperName")).thenReturn(testHelper);
         ResponseEntity<Helper> response = helperController.getHelper("testHelperName");
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -41,7 +41,7 @@ public class HelperControllerTest {
 
     @Test
     public void testAddToBasket() throws IOException {
-        Helper testHelper = new Helper(0, "testHelperName", "test123", false, new ArrayList<Need>());
+        Helper testHelper = new Helper(0, "testHelperName", "test123", false, new ArrayList<Need>(), new ArrayList<Need>());
         Need testNeed = new Need(1, "Need1", 10, 2, "Description");
         when(mockHelperDAO.getHelper("testHelperName")).thenReturn(testHelper);
         ResponseEntity<Helper> response = helperController.addToBasket("testHelperName", testNeed);
@@ -50,7 +50,7 @@ public class HelperControllerTest {
 
     @Test
     public void testRemoveFromBasket() throws IOException {
-        Helper testHelper = new Helper(0, "testHelperName", "test321", false, new ArrayList<Need>());
+        Helper testHelper = new Helper(0, "testHelperName", "test321", false, new ArrayList<Need>(), new ArrayList<Need>());
         Need testNeed = new Need(1, "Need1", 10, 2, "Description");
         when(mockHelperDAO.getHelper("testHelperName")).thenReturn(testHelper);
         ResponseEntity<Helper> response = helperController.addToBasket("testHelperName", testNeed);
@@ -63,7 +63,7 @@ public class HelperControllerTest {
 
     @Test
     public void testGetHelpers() throws IOException {
-        Helper testHelper = new Helper(0, "HELPER", "Hell",false, new ArrayList<>());
+        Helper testHelper = new Helper(0, "HELPER", "Hell",false, new ArrayList<>(), new ArrayList<Need>());
         Helper testHelperNull = null;
 
         ResponseEntity<Helper> found = new ResponseEntity<Helper>(testHelper,HttpStatus.OK);

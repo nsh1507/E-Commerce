@@ -180,10 +180,11 @@ public class HelperFileDAO implements HelperDAO {
         synchronized(helpers) {
             // We create a new helper object because the username field is immutable
             boolean admin = false;
-            ArrayList<Need> list = new ArrayList<>();
+            ArrayList<Need> cart = new ArrayList<>();
+            ArrayList<Need> history = new ArrayList<>();
             if (helper.getUsername().equals("admin")) {admin = true;}
             int id = nextId();
-            Helper newHelper = new Helper(id, helper.getUsername(),helper.getPassword(), admin, list);
+            Helper newHelper = new Helper(id, helper.getUsername(),helper.getPassword(), admin, cart, history);
             helpers.put(newHelper.getUsername(),newHelper);
             save(); // may throw an IOException
             return newHelper;
@@ -218,43 +219,5 @@ public class HelperFileDAO implements HelperDAO {
             else
                 return false;
         }
-    }
-
-     /**
-     * Checks out the {@linkplain Need}s in the Helper's basket.
-     * @param username: the username of the Helper being checked out.
-     * @return whether the checkout was successful.
-     * @throws IOException if underlying storage can't be accessed
-     */
-    @Override
-    public boolean checkoutBasket(String username) throws IOException {
-        ArrayList<Need> basket = getHelper(username).getCart();
-        if (basket == null)
-            throw new IOException();
-
-        synchronized (basket) {
-            // Update the need from the list of needs since it's been funded
-            Need matchedNeed;
-            // Verify needs
-            for (Need need : basket){
-                matchedNeed = needDao.getNeed(need.getId());
-                // If match is null, return false
-                // If Available quantity has changed to be lower than what the user was requesting or cost increased, return false
-                if (matchedNeed == null || matchedNeed.getQuantity() < need.getQuantity() || need.getCost() < matchedNeed.getCost())
-                    return false;
-            }
-            // Update needs
-            for (Need need : basket){
-                matchedNeed = needDao.getNeed(need.getId());
-                // If we find a matching need, update the quantity. If quantity is 0 or below, delete the need
-                matchedNeed.setQuantity(matchedNeed.getQuantity() - need.getQuantity());
-                if (matchedNeed.getQuantity() > 0)
-                    needDao.updateNeed(matchedNeed);
-                else
-                    needDao.deleteNeed(matchedNeed.getId());
-            }
-            basket.clear();
-        }
-        return true;
     }
 }
