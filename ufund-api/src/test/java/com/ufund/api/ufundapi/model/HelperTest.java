@@ -28,7 +28,7 @@ public class HelperTest {
         helperCart.add(burger);
 
         // Invoke
-        Helper helper = new Helper(expected_second_item_cost, "helperName", "pass123", false, helperCart);
+        Helper helper = new Helper(expected_second_item_cost, "helperName", "pass123", false, helperCart, new ArrayList<Need>());
 
         // Analyze
         assertEquals(expected_cart_size, helper.getCart().size());
@@ -51,7 +51,7 @@ public class HelperTest {
         helperCart.add(pizza);
         helperCart.add(burger);
 
-        Helper helper = new Helper(expected_cart_size_after_removal, "helperName", "test123", false, helperCart);
+        Helper helper = new Helper(expected_cart_size_after_removal, "helperName", "test123", false, helperCart, new ArrayList<Need>());
 
         // Analyze before removal
         assertEquals(expected_cart_size_before_removal, helper.getCart().size());
@@ -84,7 +84,7 @@ public class HelperTest {
     @Test
     public void testSetter(){
         // Setup
-        Helper helper = new Helper(99,"Galactic Agent","Hell",false,new ArrayList<Need>());
+        Helper helper = new Helper(99,"Galactic Agent","Hell",false,new ArrayList<Need>(), new ArrayList<Need>());
         // When the same id is passed in, our mock Need DAO will return the Need object
 
         String expected_password = "Jell";
@@ -107,7 +107,7 @@ public class HelperTest {
         int id = 99;
         String name = "Wi-Fire";
         String expected_string = String.format(Helper.STRING_FORMAT,name,"Hell",new ArrayList<Need>());
-        Helper helper = new Helper(id, name,"Hell",false, new ArrayList<Need>());
+        Helper helper = new Helper(id, name,"Hell",false, new ArrayList<Need>(), new ArrayList<Need>());
 
         // Invoke
         String actual_string = helper.toString();

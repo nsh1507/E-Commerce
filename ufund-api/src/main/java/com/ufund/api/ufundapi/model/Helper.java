@@ -18,6 +18,7 @@ public class Helper {
     @JsonProperty("password") private String password;
     @JsonProperty("admin") private boolean admin;
     @JsonProperty("cart") private ArrayList<Need> cart;
+    @JsonProperty("history") private ArrayList<Need> history;
 
     /**
      * Create an helper with the given username and password
@@ -26,6 +27,7 @@ public class Helper {
      * @param password The password of the helper
      * @param admin whether user is admin
      * @param cart list of Needs
+     * @param history list of purchase history
      * 
      * {@literal @}JsonProperty is used in serialization and deserialization
      * of the JSON object to the Java object in mapping the fields.  If a field
@@ -33,11 +35,12 @@ public class Helper {
      * value, i.e. 0 for int
      */
     public Helper(@JsonProperty("id") int id, @JsonProperty("username") String username, @JsonProperty("password") String password,
-                  @JsonProperty("admin") Boolean admin, @JsonProperty("cart") ArrayList<Need> cart ) {
+                  @JsonProperty("admin") Boolean admin, @JsonProperty("cart") ArrayList<Need> cart, @JsonProperty("history") ArrayList<Need> history) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.cart = cart;
+        this.history = history;
         if (this.username.equals("admin") && this.password.equals("admin")) {this.admin = true;}
         else{ this.admin = false;}
     }
@@ -78,6 +81,14 @@ public class Helper {
      * @param quantity The product to add
      */
     public void addToCart(Need prod) {this.cart.add(prod);}
+
+
+    /**
+     * adds an item to the end of the history page
+     * @param quantity The product to add
+     */
+    public void addToHistory(Need prod) {this.history.add(prod);}
+
 
     /**
      * Retrieves the full shopping cart

@@ -84,7 +84,6 @@ export class NeedDetailComponent implements OnInit {
   }
 
   addToCart(): void{
-
     this.userService.addToCart(this.need!)
     this.getUser()
   }

@@ -7,11 +7,11 @@ import { Need } from '../need';
 import { User } from '../user';
 
 @Component({
-  selector: 'app-checkout',
-  templateUrl: './checkout.component.html',
-  styleUrl: './checkout.component.css'
+  selector: 'app-history',
+  templateUrl: './history.component.html',
+  styleUrl: './history.component.css'
 })
-export class CheckoutComponent {
+export class HistoryComponent {
   needs: Need[] = [];
   need: Need | undefined;
   user: User | null = null;
@@ -35,7 +35,7 @@ export class CheckoutComponent {
   }
 
   getUserCart(): void{
-    this.userCart = this.userService.getCurrentUser()?.cart;
+    this.userCart = this.userService.getCurrentUser()?.history;
   }
   
 
@@ -62,56 +62,7 @@ export class CheckoutComponent {
     );
   }
   
-  logOut(){
-    this.userService.logoutUser();
-    this.router.navigateByUrl("login");
-  }
-  
-  delete() {
-    if(this.user !== null) {
-      this.userService.deleteUser(this.user.username).subscribe(_ => {
-        this.logOut();
-      });
-    }
-  }
-
   goBack(): void {
     this.location.back();
-  }
-
-  checkout() {
-    this.getUserCart();
-    if (!this.userCart){
-      this.userCart = []
-    }
-    
-
-
-    let cartMap: Map<number, number> = new Map();
-    let index = 0;
-
-    if(this.userCart.length !== 0 && index < this.userCart.length){
-      while(index < this.userCart.length){
-        if (cartMap.has(this.userCart[index].id) === false) {
-          cartMap.set(this.userCart[index].id, 1)
-          ++index;
-        }
-        else{
-          let updatedValue = cartMap.get(this.userCart[index].id)! + 1 
-          cartMap.set(this.userCart[index].id, updatedValue)
-          ++index;
-        }
-      }
-    }
-
-
-    for (let product of this.userCart) {
-      product.quantity = product.quantity - cartMap.get(product.id)!;
-      if (product.quantity < 0) {product.quantity = 0;}
-      this.userService.addToHistory(product)
-      this.userService.removeFromCart(product);
-      this.needService.updateNeed(product)
-      .subscribe(() => this.router.navigateByUrl("dashboard"));
-    }
   }
 }

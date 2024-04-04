@@ -14,6 +14,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { RouterModule } from '@angular/router';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { HistoryComponent } from './history/history.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { CheckoutComponent } from './checkout/checkout.component';
     MessagesComponent,
     NeedSearchComponent,
     UserLoginComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    HistoryComponent
   ],
   bootstrap: [ AppComponent ]
 })

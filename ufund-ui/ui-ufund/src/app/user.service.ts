@@ -122,6 +122,20 @@ export class Userservice {
   }
 
 
+  addToHistory(need: Need){
+    if(this.currentUser !== null){
+    const url = `${this.usersUrl}/history/${this.currentUser?.username}`;
+    this.http.put(url, need, this.httpOptions).pipe(
+      tap(_ => this.log(`added product w/ id=${need.id} from cart`)),
+      catchError(this.handleError<any>('addToCart'))
+    ).subscribe(user => this.currentUser = user);
+    
+    return true;
+    }
+    return false;
+  }
+
+
    /** DELETE: delete the user from the server */
    checkOut(username: string): Observable<User | undefined> {
     const url = `${this.usersUrl}/checkout/${username}`;
