@@ -65,7 +65,9 @@
     <button type="button" (click)="goBack()">Go Back</button>
     <div *ngIf="userService.getCurrentUser() !== null">
     <button type="button" (click)="addToCart()">Add To Cart</button>
+    <app-popup-add *ngIf="addPop"></app-popup-add>
     <button type="button" (click)="removeFromCart()">Remove From Cart</button>
+    <app-popup-del *ngIf="delPop"></app-popup-del>
     <button type="button" routerLink="/checkout"> My Cart</button>
     </div>
   </div>

@@ -16,6 +16,8 @@ import { RouterModule } from '@angular/router';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { HistoryComponent } from './history/history.component';
 import { FeedbackComponent } from './feedback/feedback.component';
+import { PopupAddComponent } from './popup-add/popup-add.component';
+import { PopupDelComponent } from './popup-del/popup-del.component';
 
 @NgModule({
   imports: [
@@ -40,7 +42,9 @@ import { FeedbackComponent } from './feedback/feedback.component';
     UserLoginComponent,
     CheckoutComponent,
     HistoryComponent,
-    FeedbackComponent
+    FeedbackComponent,
+    PopupAddComponent,
+    PopupDelComponent
   ],
   bootstrap: [ AppComponent ]
 })

@@ -17,6 +17,8 @@ export class NeedDetailComponent implements OnInit {
   needs: Need[] = [];
   currentUser: User | null = null;
   userCart: Need[] | undefined = [];
+  addPop = false;
+  delPop = false;
 
 
   constructor(
@@ -87,11 +89,19 @@ export class NeedDetailComponent implements OnInit {
     if (this.need!.quantity == 0){
       alert("Product is out of Stock")
     }
+    this.addPop = true;
+    setTimeout(() => {
+      this.addPop = false;
+    }, 950);
     this.userService.addToCart(this.need!)
     this.getUser()
   }
 
   removeFromCart(): void {    
+    this.delPop = true;
+    setTimeout(() => {
+      this.delPop = false;
+    }, 950);
     this.userService.removeFromCart(this.need!)
     this.getUser()
 }
