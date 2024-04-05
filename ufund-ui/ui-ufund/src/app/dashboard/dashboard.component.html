@@ -1,12 +1,12 @@
 <button (click)="logOut()">Logout</button>
-<div *ngIf="userService.getCurrentUser() != null && !userService.isAdmin()">
-<button (click)="delete()">Delete Account</button>
-<button routerLink="/checkout">My Cart</button>
-<button routerLink="/history">Purchase History</button>
-<button routerLink="/feedback">Leave a Review</button>
+<div style="width:50%; display: inline-block;" *ngIf="userService.getCurrentUser() != null && !userService.isAdmin()">
+  <button (click)="delete()">Delete Account</button>
+  <button routerLink="/checkout">My Cart</button>
+  <button routerLink="/history">Purchase History</button>
+  <button routerLink="/feedback">Leave a Review</button>
 </div>
-<div *ngIf="userService.getCurrentUser() != null && userService.isAdmin()">
-<button routerLink="/feedback">See Review</button>
+<div style="width:50%; display: inline-block;" *ngIf="userService.getCurrentUser() != null && userService.isAdmin()">
+  <button routerLink="/feedback">See Review</button>
 </div>
 
 <h2 *ngIf="userService.getCurrentUser() != null">Welcome <strong>{{user?.username}}</strong>!</h2>
