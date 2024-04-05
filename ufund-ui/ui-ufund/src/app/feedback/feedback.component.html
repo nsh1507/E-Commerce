@@ -12,10 +12,10 @@
     </div>
 </div>
 
-<div *ngIf="userService.isAdmin()">
+<div class="feedbacks-menu"  *ngIf="userService.isAdmin()">
     <ul class="feedbacks">
         <li *ngFor="let feedback of feedbacks">
-            Feedback: {{feedback.feedback}}, 
+            Feedback: {{feedback.feedback}}
             <ul></ul>
         </li>
       </ul>
