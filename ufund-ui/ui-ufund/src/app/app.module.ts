@@ -44,7 +44,7 @@ import { PopupDelComponent } from './popup-del/popup-del.component';
     HistoryComponent,
     FeedbackComponent,
     PopupAddComponent,
-    PopupDelComponent
+    PopupDelComponent,
   ],
   bootstrap: [ AppComponent ]
 })

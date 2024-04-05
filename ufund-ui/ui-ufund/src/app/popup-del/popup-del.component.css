@@ -13,6 +13,7 @@
     border: 1px solid #ccc;
     border-radius: 8px; /* Slightly increased border radius for a softer look */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adjusted box shadow for a subtle effect */
+    animation: fade-in-out 2s ease-in-out;
     width: 90%;
     color: #333333; /* Darkened text color for better readability */
     font-weight: bold;
