@@ -7,6 +7,7 @@
 <div *ngIf="userService.getCurrentUser() != null && !userService.isAdmin()">
 
     <h2><strong>Leave a Feedback</strong></h2>
+    <button type="button" (click)="goBack()">Go Back</button>
     
     <div>
       <label for="new-feedback">Feedback: </label>
@@ -19,6 +20,7 @@
 </div>
 
 <div *ngIf="userService.getCurrentUser() != null && userService.isAdmin()">
+  <button type="button" (click)="goBack()">Go Back</button>
   <h2><strong>Feedbacks from Helper</strong></h2>
     <ul class="feedbacks-menu">
         <li *ngFor="let feedback of feedbacks">

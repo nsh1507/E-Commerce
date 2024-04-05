@@ -3,6 +3,7 @@ import { Feedback } from '../feedback';
 import { FeedbackService } from '../feedback.service';
 import { Userservice } from '../user.service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-feedback',
@@ -13,7 +14,7 @@ export class FeedbackComponent {
 
   feedbacks: Feedback[] = [];
 
-  constructor(private feedbackService: FeedbackService, public userService: Userservice, private router: Router) { }
+  constructor(private feedbackService: FeedbackService, public userService: Userservice, private router: Router, private location: Location) { }
 
   ngOnInit(): void {
     this.getFeedbacks();
@@ -41,6 +42,10 @@ export class FeedbackComponent {
   logOut(){
     this.userService.logoutUser();
     this.router.navigateByUrl("login");
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
 }
