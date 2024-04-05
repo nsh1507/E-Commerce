@@ -15,11 +15,12 @@ body {
   background: url('https://i.imgur.com/MYZd7of.png') no-repeat center center;
   background-color: lavender;
   padding: 100px;
+  margin-top:10%;
   max-width: 500px;
   
   border-radius: 150px;
   padding: 150px; 
-  height: 550px; 
+  height: 250px; 
   
   display: none;
 }

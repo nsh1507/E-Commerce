@@ -107,7 +107,10 @@ export class CheckoutComponent {
 
     for (let product of this.userCart) {
       product.quantity = product.quantity - cartMap.get(product.id)!;
-      if (product.quantity < 0) {product.quantity = 0;}
+      if (product.quantity < 0) {
+        alert("Not enough " + product.name + " in the inventory")
+        return;
+      }
       this.userService.addToHistory(product)
       this.userService.removeFromCart(product);
       this.needService.updateNeed(product)

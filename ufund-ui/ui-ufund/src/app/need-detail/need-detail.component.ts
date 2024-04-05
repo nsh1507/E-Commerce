@@ -84,6 +84,9 @@ export class NeedDetailComponent implements OnInit {
   }
 
   addToCart(): void{
+    if (this.need!.quantity == 0){
+      alert("Product is out of Stock")
+    }
     this.userService.addToCart(this.need!)
     this.getUser()
   }
