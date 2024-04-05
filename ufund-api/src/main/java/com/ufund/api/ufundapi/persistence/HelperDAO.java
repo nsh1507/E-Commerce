@@ -3,7 +3,6 @@ package com.ufund.api.ufundapi.persistence;
 import java.io.IOException;
 
 import com.ufund.api.ufundapi.model.Helper;
-import com.ufund.api.ufundapi.model.Need;
 
 /**
  * Interface for saving a helper to the data store
