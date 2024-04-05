@@ -15,6 +15,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { RouterModule } from '@angular/router';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { HistoryComponent } from './history/history.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { HistoryComponent } from './history/history.component';
     NeedSearchComponent,
     UserLoginComponent,
     CheckoutComponent,
-    HistoryComponent
+    HistoryComponent,
+    FeedbackComponent
   ],
   bootstrap: [ AppComponent ]
 })

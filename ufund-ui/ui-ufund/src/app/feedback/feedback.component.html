@@ -1,0 +1,22 @@
+<div *ngIf="!userService.isAdmin()">
+
+    <h2><strong>Leave a Feedback</strong></h2>
+    
+    <div>
+      <label for="new-feedback">Feedback: </label>
+      <input type ="text" id="new-feedback" #feedbackName placeholder="Name"/>
+
+    
+      <!-- (click) passes input value to add() and then clears the input -->
+      <button type="button" class="add-button" (click)="add(feedbackName.value); feedbackName.value=''"> Add feedback </button>
+    </div>
+</div>
+
+<div *ngIf="userService.isAdmin()">
+    <ul class="feedbacks">
+        <li *ngFor="let feedback of feedbacks">
+            Feedback: {{feedback.feedback}}, 
+            <ul></ul>
+        </li>
+      </ul>
+</div>
