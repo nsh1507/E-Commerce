@@ -18,7 +18,7 @@ import com.ufund.api.ufundapi.model.Need;;
 @Component
 public class HelperFileDAO implements HelperDAO {
     private static final Logger LOG = Logger.getLogger(HelperFileDAO.class.getName());
-    Map<String,Helper> helpers;   // Provides a local cache of the helper objects
+    public Map<String,Helper> helpers;   // Provides a local cache of the helper objects
                                 // so that we don't need to read from the file
                                 // each time
     public ObjectMapper objectMapper;  // Provides conversion between Helper
@@ -113,7 +113,7 @@ public class HelperFileDAO implements HelperDAO {
      * 
      * @throws IOException when file cannot be accessed or read from
      */
-    boolean load() throws IOException {
+    public boolean load() throws IOException {
         helpers = new TreeMap<>();
         nextId = 0;
 
