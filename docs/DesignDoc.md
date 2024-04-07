@@ -279,3 +279,8 @@ baskets from the underlying storage into Helper instances.
     - Rationale:
       - Reduce the number of unnecessary unit testing
       - Making the Basket as an attribute of Helper would make a significantly improvement on the design and better adherence to GRASP Principles by reducing Coupling Issue
+  - (2024/4/3): Sprint 3
+    - The team will change the architecture of the project by adding the a list of purchase history to the Helper
+    - Rationale:
+      - Reduce the number of unnecessary unit testing
+      - Making it easier to implement and keep track of the purchase history
