@@ -132,9 +132,6 @@ public class NeedController {
         LOG.info("POST /needs " + need);
         try {
             Need newNeed = needDAO.createNeed(need);
-            if (newNeed == null) {
-                return new ResponseEntity<Need>(HttpStatus.CONFLICT);
-            }
             return new ResponseEntity<Need>(newNeed,HttpStatus.CREATED);
         }
         catch(IOException e) {
