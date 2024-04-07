@@ -17,13 +17,13 @@ import com.ufund.api.ufundapi.model.Feedback;
 @Component
 public class FeedbackFileDAO implements FeedbackDAO{
     private static final Logger LOG = Logger.getLogger(FeedbackFileDAO.class.getName());
-    Map<Integer,Feedback> feedbacks;   // Provides a local cache of the feedback objects
+    public Map<Integer,Feedback> feedbacks;   // Provides a local cache of the feedback objects
                                 // so that we don't feedback to read from the file
                                 // each time
     private ObjectMapper objectMapper;  // Provides conversion between Feedback
                                         // objects and JSON text format written
                                         // to the file
-    private static int nextId;  // The next Id to assign to a new feedback
+    public static int nextId;  // The next Id to assign to a new feedback
     private String filename;    // Filename to read from and write to
 
     /**
@@ -88,7 +88,7 @@ public class FeedbackFileDAO implements FeedbackDAO{
      * 
      * @throws IOException when file cannot be accessed or written to
      */
-    private boolean save() throws IOException {
+    public boolean save() throws IOException {
         Feedback[] feedbackArray = getFeedbacksArray();
 
         // Serializes the Java Objects to JSON objects into the file
@@ -107,7 +107,7 @@ public class FeedbackFileDAO implements FeedbackDAO{
      * 
      * @throws IOException when file cannot be accessed or read from
      */
-    private boolean load() throws IOException {
+    public boolean load() throws IOException {
         feedbacks = new TreeMap<>();
         nextId = 0;
 
