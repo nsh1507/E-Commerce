@@ -133,7 +133,7 @@ public class NeedController {
         try {
             Need newNeed = needDAO.createNeed(need);
             if (newNeed == null) {
-                return new ResponseEntity<>(HttpStatus.CONFLICT);
+                return new ResponseEntity<Need>(HttpStatus.CONFLICT);
             }
             return new ResponseEntity<Need>(newNeed,HttpStatus.CREATED);
         }
