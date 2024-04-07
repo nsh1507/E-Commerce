@@ -13,6 +13,7 @@ import { Location } from '@angular/common';
 export class FeedbackComponent {
 
   feedbacks: Feedback[] = [];
+  addPop = false;
 
   constructor(private feedbackService: FeedbackService, public userService: Userservice, private router: Router, private location: Location) { }
 
@@ -28,6 +29,10 @@ export class FeedbackComponent {
   add(feedback: string): void {
     feedback = feedback.trim()
     if (!feedback) { return; }
+    this.addPop = true;
+    setTimeout(() => {
+      this.addPop = false;
+    }, 950);
     this.feedbackService.addFeedback({ feedback } as Feedback)
       .subscribe(feedback => {
         this.feedbacks.push(feedback);

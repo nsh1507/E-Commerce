@@ -16,6 +16,7 @@
     
       <!-- (click) passes input value to add() and then clears the input -->
       <button type="button" class="add-button" (click)="add(feedbackName.value); feedbackName.value=''"> Add feedback </button>
+      <app-feedback-pop *ngIf="addPop"></app-feedback-pop>
     </div>
 </div>
 

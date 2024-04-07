@@ -18,6 +18,7 @@ import { HistoryComponent } from './history/history.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { PopupAddComponent } from './popup-add/popup-add.component';
 import { PopupDelComponent } from './popup-del/popup-del.component';
+import { FeedbackPopComponent } from './feedback-pop/feedback-pop.component';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { PopupDelComponent } from './popup-del/popup-del.component';
     FeedbackComponent,
     PopupAddComponent,
     PopupDelComponent,
+    FeedbackPopComponent,
   ],
   bootstrap: [ AppComponent ]
 })
